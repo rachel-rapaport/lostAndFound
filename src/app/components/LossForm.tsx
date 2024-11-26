@@ -1,6 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LossFormData from "../types/lossFormType";
+import axios from "axios";
+import { Category } from "../types/Category";
 
 const LossForm = () => {
   const [formData, setFormData] = useState<LossFormData>({
@@ -11,13 +13,40 @@ const LossForm = () => {
     city2: "",
   });
   const [isBus, setIsBus] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [subCategories, setSubCategories] = useState<Record<string, string[]>>(
+    {}
+  );
 
-  const categories = ["Electronics", "Clothing", "Furniture"];
-  const subCategories: Record<string, string[]> = {
-    Electronics: ["Phone", "Laptop", "Tablet"],
-    Clothing: ["Shirts", "Pants", "Jackets"],
-    Furniture: ["Table", "Chair", "Couch"],
-  };
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/category")
+      .then((response) => {
+        const fetchedData = response.data;
+
+        const categoryNames: string[] = fetchedData.map(
+          (category: Category) => category.name
+        );
+
+        const subCategoryMap: Record<string, string[]> = fetchedData.reduce(
+          (acc: Record<string, string[]>, category: Category) => {
+            acc[category.name] = category.subcategories.map(
+              (subcategory: { name: string }) => subcategory.name // Extract the name of each subcategory
+            );
+            return acc;
+          },
+          {}
+        );
+
+        setCategories(categoryNames);
+        setSubCategories(subCategoryMap);
+
+        console.log("Categories:", categoryNames);
+        console.log("Subcategories:", subCategoryMap);
+      })
+      .catch((error) => console.error("Error loading categories:", error));
+  }, []);
+
   const hebrewColors: string[] = [
     "אדום",
     "כחול",
@@ -69,6 +98,7 @@ const LossForm = () => {
           דיווח על אבידה
         </p>
         <div className="space-y-4">
+            
           {/* Category */}
           <div>
             <label
@@ -172,7 +202,7 @@ const LossForm = () => {
               htmlFor="city1"
               className="block text-sm font-medium text-gray-700"
             >
-           {isBus?'בחר  את עיר המוצא ':'בחר עיר'}
+              {isBus ? "בחר  את עיר המוצא " : "בחר עיר"}
             </label>
             <select
               id="city1"
@@ -192,29 +222,32 @@ const LossForm = () => {
           </div>
 
           {/* City2 (Optional) */}
-          {isBus?(     <div>
-            <label
-              htmlFor="city2"
-              className="block text-sm font-medium text-gray-700"
-            >
-              בחר את עיר היעד
-            </label>
-            <select
-              id="city2"
-              name="city2"
-              value={formData.city2 || ""}
-              onChange={handleChange}
-              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-            >
-              <option value="">בחר עיר</option>
-              {cities.map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-          </div>):(<></>)}
-     
+          {isBus ? (
+            <div>
+              <label
+                htmlFor="city2"
+                className="block text-sm font-medium text-gray-700"
+              >
+                בחר את עיר היעד
+              </label>
+              <select
+                id="city2"
+                name="city2"
+                value={formData.city2 || ""}
+                onChange={handleChange}
+                className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="">בחר עיר</option>
+                {cities.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : (
+            <></>
+          )}
 
           {/* Submit Button */}
           <div className="mt-6">
