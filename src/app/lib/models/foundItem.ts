@@ -1,4 +1,4 @@
-import { FoundItem } from "@/app/types/FoundItem";
+import { FoundItem } from "@/app/types/foundItem";
 import mongoose, { Model, Schema } from "mongoose"
 
 const FoundItemSchema: Schema<FoundItem> = new Schema({

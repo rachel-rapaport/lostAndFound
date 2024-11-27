@@ -1,4 +1,4 @@
-import { Notification } from "@/app/types/Notification";
+import { Notification } from "@/app/types/notification";
 import mongoose, { Model, Schema } from "mongoose";
 
 const NotificationSchema: Schema<Notification> = new Schema({

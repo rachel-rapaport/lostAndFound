@@ -1,4 +1,4 @@
-import { LostItem } from "@/app/types/LostItem";
+import { LostItem } from "@/app/types/lostItem";
 import mongoose, { Model, Schema } from "mongoose";
 
 const LostItemSchema: Schema<LostItem> = new Schema({
