@@ -7,4 +7,4 @@ export interface LostItem extends Document {
     color: string;
     city1: string;
     city2: string;
-}
+} 

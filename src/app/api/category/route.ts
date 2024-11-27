@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import csvtojson from 'csvtojson';
-import { Category } from '@/app/types/Category';
+import { Category } from '@/app/types/category';
 
 export async function GET() {
     // Contains the path to the categories.csv file

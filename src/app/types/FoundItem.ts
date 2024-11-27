@@ -9,4 +9,4 @@ export interface FoundItem extends Document {
     city2: string;
     image: string;
     description: string;
-}
+} 

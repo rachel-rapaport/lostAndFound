@@ -9,4 +9,4 @@ export interface User extends Document{
     foundItems: string[];
     blockedItems: string[];
     notifications: string[];
-}
+} 
