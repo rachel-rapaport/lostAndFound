@@ -5,14 +5,15 @@ import axios from "axios";
 import { Category } from "../types/Category";
 import City from "../types/city";
 import Color from "../types/color";
+import PublicTransportation from "./PublicTransportation";
 
 const LossForm = () => {
   const [formData, setFormData] = useState<LossFormData>({
     category: "",
     subCategory: "",
     color: null,
-    city1: "",
-    city2: "",
+    city: "",
+    line: "",
   });
   const [isBus, setIsBus] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
@@ -71,16 +72,16 @@ const LossForm = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value, type } = e.target ;
+    const { name, value, type } = e.target;
 
     if (name === "colors" && type === "radio") {
-      const selectedColor  = hebrewColors.find((color) => color.color === value);
+      const selectedColor = hebrewColors.find((color) => color.name === value);
 
-      if (!selectedColor ) return;
+      if (!selectedColor) return;
 
       setFormData((prevData) => ({
         ...prevData,
-        colors: selectedColor , // Directly set the selected color object
+        colors: selectedColor, // Directly set the selected color object
       }));
     } else {
       setFormData((prevData) => ({
@@ -176,32 +177,25 @@ const LossForm = () => {
           )}
 
           {/* Colors */}
-          <div>
+          <div className="relative">
             <label className="block text-sm font-medium text-gray-700">
-              בחר לפחות צבע אחד:{" "}
+              בחר צבע:{" "}
             </label>
-            <div className="mt-2 grid grid-cols-2 gap-4">
+            <select
+              id="color"
+              name="color"
+              value={formData.color?.name}
+              onChange={handleChange}
+              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              required
+            >
+              <option value="">בחר צבע</option>
               {hebrewColors.map((color) => (
-                <div key={color.color} className="flex items-center">
-                  <input
-                    type="radio"
-                    id={color.color}
-                    name="color" // Keep the name consistent to group the radio buttons
-                    required
-                    value={color.color}
-                    checked={formData.color?.color === color.color} // Adjust to reflect single selection
-                    onChange={handleChange} // Ensure handleChange updates formData with the selected color
-                    className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                  />
-                  <label
-                    htmlFor={color.color}
-                    className="ml-2 text-sm text-gray-700"
-                  >
-                    {color.color}
-                  </label>
-                </div>
+                <option key={color.name} value={color.name}>
+                  {color.name}
+                </option>
               ))}
-            </div>
+            </select>
           </div>
 
           {/* is bus */}
@@ -223,33 +217,32 @@ const LossForm = () => {
             </label>
           </div>
 
-          {/* City1 */}
-          <div>
-            <label
-              htmlFor="city1"
-              className="block text-sm font-medium text-gray-700"
-            >
-              {isBus ? "בחר  את עיר המוצא " : "בחר עיר"}
-            </label>
-            <select
-              id="city1"
-              name="city1"
-              value={formData.city1}
-              onChange={handleChange}
-              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            >
-              <option value="">בחר עיר</option>
-              {cities.map((city) => (
-                <option key={city.id} value={city.name}>
-                  {city.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* City2 (Optional) */}
-          {isBus ? <div></div> : <></>}
+          {/* City */}
+          {isBus ?  (
+            <PublicTransportation formData={formData} setFormData={setFormData}></PublicTransportation>
+          ):(
+            <div>
+              <label
+                htmlFor="city"
+                className="block text-sm font-medium text-gray-700"
+              ></label>
+              <select
+                id="city"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                required
+              >
+                <option value="">בחר עיר</option>
+                {cities.map((city) => (
+                  <option key={city.id} value={city.name}>
+                    {city.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) }
 
           {/* Submit Button */}
           <div className="mt-6">
