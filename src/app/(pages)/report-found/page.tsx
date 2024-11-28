@@ -4,7 +4,7 @@ export default function Page() {
 
     return (
         <>
-            <h1>דיווח על מציאה</h1>
+            <h1 className="text-[4vh] font-semibold">דיווח על מציאה</h1>
             <FoundForm />
         </>
     );

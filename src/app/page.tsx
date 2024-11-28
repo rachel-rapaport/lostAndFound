@@ -2,6 +2,8 @@ import Homepage from "./components/Homepage";
 
 export default function Home() {
   return (
-    <Homepage />
+    <div className="p-[20px]">
+      <Homepage />
+    </div>
   );
 }
