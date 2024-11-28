@@ -4,7 +4,7 @@ import mongoose, { Model, Schema } from "mongoose";
 const LostItemSchema: Schema<LostItem> = new Schema({
     category: { type: String, required: true },
     subCategory: { type: String, required: true },
-    color: { type: String, required: true },
+    color: { type: [String], required: true },
     city1: { type: String, required: true },
     city2: { type: String },
 });

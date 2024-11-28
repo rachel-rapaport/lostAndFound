@@ -1,0 +1,21 @@
+[
+    { "groupId": 1, "color": "אדום" },
+    { "groupId": 1, "color": "כתום" },
+    { "groupId": 1, "color": "ורוד" },
+    { "groupId": 2, "color": "כחול" },
+    { "groupId": 2, "color": "תכלת" },
+    { "groupId": 2, "color": "ירוק" },
+    { "groupId": 2, "color": "מנטה" },
+    { "groupId": 2, "color": "טורקיז" },
+    { "groupId": 3, "color": "צהוב" },
+    { "groupId": 3, "color": "זהב" },
+    { "groupId": 4, "color": "חום" },
+    { "groupId": 4, "color": "בורדו" },
+    { "groupId": 4, "color": "נחושת" },
+    { "groupId": 5, "color": "שחור" },
+    { "groupId": 6, "color": "לבן" },
+    { "groupId": 7, "color": "אפור" },
+    { "groupId": 7, "color": "כסף" },
+    { "groupId": 8, "color": "ריבוי צבעים" }
+  ]
+  
