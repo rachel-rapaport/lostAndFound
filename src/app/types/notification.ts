@@ -2,6 +2,7 @@ import { Document } from "mongoose";
 
 export interface Notification extends Document {
     _id: string;
-    content: string;
-    wasRead: boolean;
+    massage: string;
+    userId: string;
+    read: boolean;
 } 

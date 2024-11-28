@@ -1,14 +1,17 @@
 import { FoundItem } from "@/app/types/foundItem";
 import mongoose, { Model, Schema } from "mongoose"
+import PublicTransportSchema from "../schema/publicTransportSchema";
+import PostionSchema from "../schema/postion";
+import QuestionSchema from "../schema/question";
 
 const FoundItemSchema: Schema<FoundItem> = new Schema({
-    category: { type: String, required: true },
-    subCategory: { type: String, required: true },
-    color: { type: String, required: true },
-    city1: { type: String, required: true },
-    city2: { type: String },
-    image: { type: String, required: true },
-    description: { type: String, required: true },
+    subCategoryId: { type: String, required: true },
+    colorId: { type: String, required: true },
+    postion: {type: PostionSchema, required: true },
+    publicTransport: { type: PublicTransportSchema },
+    image: { type: String},
+    descripition: { type: String},
+    questions: {type: [QuestionSchema], required: true },
 });
 
 const FoundItemModel: Model<FoundItem> =
