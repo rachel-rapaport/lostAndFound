@@ -1,11 +1,9 @@
-import PublicTransportation from "./components/PublicTransportation";
+import Homepage from "./components/Homepage";
 
-export default async function Home() {
-
+export default function Home() {
   return (
-    <>
-
-
-    </>
+    <div className="p-[20px]">
+      <Homepage />
+    </div>
   );
 }

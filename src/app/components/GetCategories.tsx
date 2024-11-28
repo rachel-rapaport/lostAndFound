@@ -1,7 +1,7 @@
 'use client'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Category } from '../types/Category';
+import { Category } from '../types/category';
 
 export default function GetCategories() {
   const [categories, setCategories] = useState([]);

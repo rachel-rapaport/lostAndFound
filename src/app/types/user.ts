@@ -1,7 +1,6 @@
 import { Document } from "mongoose";
 
 export interface User extends Document{
-    _id: string;
     fullName: string;
     password: string;
     phone: string;
@@ -9,4 +8,4 @@ export interface User extends Document{
     foundItems: string[];
     blockedItems: string[];
     notifications: string[];
-}
+} 
