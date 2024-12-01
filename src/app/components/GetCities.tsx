@@ -63,5 +63,4 @@ const GetCities: React.FC<LossDataToSend> = ({ setFormData }) => {
     </>
   );
 };
-
 export default GetCities;

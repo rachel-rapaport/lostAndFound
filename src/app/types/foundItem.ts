@@ -1,11 +1,15 @@
 import { Document } from "mongoose";
+import { PublicTransport } from "./publicTransport";
+import { Question } from "./question";
+import { Postion } from "./postion";
 
 export interface FoundItem extends Document {
-    category: string;
-    subCategory: string;
-    color: string[];
-    city: string;
-    // publicTransportLine: number;
+    _id: string;
+    subCategoryId: string;
+    colorId: string;
+    postion: Postion
+    publicTransport: PublicTransport;
     image: string;
-    description: string;
-}
+    descripition: string;
+    questions: Question[]
+} 

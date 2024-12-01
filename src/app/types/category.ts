@@ -1,5 +1,8 @@
-export default interface Category {
-    id: number,
-    name: string,
-    subcategories: { id: number, name: string }[]
+
+import { Document } from "mongoose";
+
+export interface Category extends Document{
+    _id: string;
+    title: string;
+    subCategories: string[];
 }
