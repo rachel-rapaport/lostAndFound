@@ -1,20 +1,13 @@
-// src/types/store/lostItemStore.ts
-
-import { LostItem } from "../lostItem"; // נתיב לקובץ LostItem
-import { Circle } from "../circle"; // נתיב לקובץ Circle
-import { PublicTransport } from "../publicTransport"; // נתיב לקובץ PublicTransport
+import { LostItem } from "../lostItem";
 
 export interface LostItemStore {
-    currentLostItem: LostItem;
-    getCurrentLostItem: () => LostItem | null;
-    setCurrentLostItem: (lostItem: LostItem) => void;
-    lostItemsList: LostItem[];
-    createLostItem: (newItem: LostItem) => void;
-    readLostItems: () => LostItem[];
-    updateLostItem: (id: string, updates: {
-        newCircle?: Circle;
-        updatedTransport?: Partial<PublicTransport>;
-        otherUpdates?: Partial<LostItem>;
-    }) => void;
-    deleteLostItem: (id: string) => void;
+  currentLostItem: LostItem | null;
+  lostItemsList: LostItem[];
+
+  setCurrentLostItem: (lostItem: LostItem) => void;
+  
+  setLostItems:(lostItemsList:LostItem[])=>void;
+  createLostItem: (newItem: LostItem) => void; 
+  updateLostItem: (newItem: LostItem) => void;
+  deleteLostItem: (id: string) => void; 
 }

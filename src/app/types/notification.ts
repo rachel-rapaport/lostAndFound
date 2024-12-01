@@ -1,6 +1,4 @@
-import { Document } from "mongoose";
-
-export interface Notification extends Document {
+export interface Notification{
     _id: string;
     massage: string;
     userId: string;

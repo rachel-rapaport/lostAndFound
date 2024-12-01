@@ -1,8 +1,7 @@
-import { Document } from "mongoose";
 import { Circle } from "./circle";
 import { PublicTransport } from "./publicTransport";
 
-export interface LostItem extends Document {
+export interface LostItem  {
     _id: string;
     subCategory: string;
     colorId: string;

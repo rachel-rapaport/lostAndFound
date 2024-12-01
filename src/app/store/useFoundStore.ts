@@ -1,44 +1,44 @@
 import { create } from "zustand";
-import { LostItem } from "../types/lostItem";
-import { LostItemStore } from "../types/store/lostItemStore"; 
+import { FoundItem } from "../types/foundItem";
+import { FoundItemStore } from "../types/store/foundItemStore";
 
-export const useLostItemStore = create<LostItemStore>((set) => ({
+export const useLostItemStore = create<FoundItemStore>((set) => ({
   currentLostItem: {
     _id: "",
-    subCategory: "",
+    subCategoryId: "",
     colorId: "",
-    circles: [
-      {
-        center: {
-          lat: 0,
-          lng: 0,
-        },
-        radius: 0,
-      },
-    ],
+    postion:{
+        latitude:0,
+        longitude:0,
+    },
     publicTransport: {
       typePublicTransportId: "",
       city: "",
       line: "",
     },
-  },
-
+    image: "",
+    descripition: "",
+    questions: [{
+        question: "",
+        answers: []
+    }]
+ },
   lostItemsList: [], 
 
-  setCurrentLostItem: (lostItem: LostItem) => {
+  setCurrentLostItem: (lostItem: FoundItem) => {
     set({ currentLostItem: lostItem });
   },
 
-  setLostItems: (lostItemsList: LostItem[]) => {
+  setLostItems: (lostItemsList: FoundItem[]) => {
     set({ lostItemsList });
   },
 
-  createLostItem: (newItem: LostItem) =>
+  createLostItem: (newItem: FoundItem) =>
     set((state) => ({
       lostItemsList: [...state.lostItemsList, newItem],
     })),
 
-  updateLostItem: (newItem: LostItem) =>
+  updateLostItem: (newItem: FoundItem) =>
     set((state) => ({
       lostItemsList: state.lostItemsList.map((item) =>
         item._id === newItem._id ? newItem : item 
