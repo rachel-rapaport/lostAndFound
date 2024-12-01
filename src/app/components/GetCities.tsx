@@ -42,7 +42,7 @@ export default function GetCities() {
                     className='w-full p-[8px]' />
                 <ul className='list-none p-0'>
                     {filteredCities.map((city: { name: string }, index) => (
-                        <li key={index} className='p-[5px] cursor-pointer'>{city.name}</li>))}</ul>
+                        <li key={index} className='p-[5px] cursor-pointer' onClick={() => setSearchTerm(city.name)}>{city.name}</li>))}</ul>
             </div>
         </>
     );
