@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { UserStore } from "../types/store/usetStore";
 import { User } from "../types/user";
+import { UserStore } from "../types/store/usetStore";
 
 const useUserStore=create<UserStore>((set)=>({
     curentUser:null,

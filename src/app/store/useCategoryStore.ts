@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { CategoryStore } from '../types/store/categoryStore';
 import { Category } from '../types/category';
 import { SubCategory } from '../types/subCategory';
+import { CategoryStore } from '../types/store/categoryStore';
 
 
 const useCategoryStore = create<CategoryStore>((set) => ({
