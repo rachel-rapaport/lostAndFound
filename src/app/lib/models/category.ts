@@ -1,13 +1,13 @@
-import { Category } from "@/app/types/category";
+import { CategoryForSchema } from "@/app/types/schema/categoryForSchema";
 import mongoose, { Model, Schema } from "mongoose"
+import CategorySchema from "../schema/categorySchema";
 
-const CategorySchema: Schema<Category> = new Schema({
-    title: { type: String, required: true },
-    subCategories: { type: [String], required: true },
+const CategorySchemaForModel: Schema<CategoryForSchema> = new Schema({
+    category: { type: CategorySchema, required: true },
 });
 
-const CategoryModel: Model<Category> =
-    mongoose.models.Category ||
-    mongoose.model<Category>("Category", CategorySchema);
+const CategoryModel: Model<CategoryForSchema> =
+    mongoose.models.CategoryForSchema ||
+    mongoose.model<CategoryForSchema>("Category", CategorySchemaForModel);
 
 export default CategoryModel;

@@ -1,17 +1,13 @@
-import { LostItem } from "@/app/types/lostItem";
 import mongoose, { Model, Schema } from "mongoose";
-import PublicTransportSchema from "../schema/publicTransportSchema";
-import CircleSchema from "../schema/circleSchema";
+import { LostItemForSchema } from "@/app/types/schema/lostItemForSchema";
+import LostItemSchema from "../schema/lostItemSchema";
 
-const LostItemSchema: Schema<LostItem> = new Schema({
-    subCategory: { type: String, required: true },
-    colorId: { type: String, required: true },
-    circles: { type: [CircleSchema] },
-    publicTransport: { type: PublicTransportSchema },
+const LostItemSchemaForModel: Schema<LostItemForSchema> = new Schema({
+    lostItem: { type: LostItemSchema, required: true },
 });
 
-const LostItemModel: Model<LostItem> =
-    mongoose.models.LostItem ||
-    mongoose.model<LostItem>("LostItem", LostItemSchema);
+const LostItemModel: Model<LostItemForSchema> =
+    mongoose.models.LostItemForSchema ||
+    mongoose.model<LostItemForSchema>("LostItem", LostItemSchemaForModel);
 
 export default LostItemModel;
