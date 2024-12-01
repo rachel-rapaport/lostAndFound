@@ -1,7 +1,5 @@
-
-import { Document } from "mongoose";
-
-export interface Category extends Document{
+export interface Category {
+    id: any;
     _id: string;
     title: string;
     subCategories: string[];

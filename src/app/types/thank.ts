@@ -1,6 +1,4 @@
-import { Document } from "mongoose";
-
-export interface Thank extends Document{
+export interface Thank{
     _id: string;
     userName: string;
     contect: string;

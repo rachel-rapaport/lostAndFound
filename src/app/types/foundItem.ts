@@ -1,9 +1,8 @@
-import { Document } from "mongoose";
 import { PublicTransport } from "./publicTransport";
 import { Question } from "./question";
 import { Postion } from "./postion";
 
-export interface FoundItem extends Document {
+export interface FoundItem{
     _id: string;
     subCategoryId: string;
     colorId: string;
