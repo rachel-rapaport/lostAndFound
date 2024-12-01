@@ -10,7 +10,7 @@ const GetCities: React.FC<LossDataToSend> = ({ setFormData }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/city")
+      .get("/api/city")
       .then((response) => {
         setCities(response.data);
         console.log(response.data);

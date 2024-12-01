@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import PublicTransportationProps from "../types/publicTransportationProps";
+import LossDataToSend from "../types/lossDataToSend";
 
-const PublicTransportation: React.FC<PublicTransportationProps> = ({
+const PublicTransportation: React.FC<LossDataToSend> = ({
     formData,
     setFormData,
   }) => {
@@ -16,10 +16,7 @@ const PublicTransportation: React.FC<PublicTransportationProps> = ({
     isTrain: false,
     isCablecar: false,
   });
-//   const [formData, setFormData] = useState({
-//     city: "",
-//     line: "",
-//   });
+
 
   const cities = ["pt", "tlv", "jlm"];
 

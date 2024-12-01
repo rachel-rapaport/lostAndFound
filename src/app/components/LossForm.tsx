@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from "react";
 import LossFormData from "../types/lossFormType";
 import axios from "axios";
-import { Category } from "../types/Category";
-import City from "../types/city";
+import Category from "../types/category";
+// import City from "../types/city";
 import Color from "../types/color";
 import PublicTransportation from "./PublicTransportation";
+import GetCities from "./GetCities";
 
 const LossForm = () => {
   const [formData, setFormData] = useState<LossFormData>({
@@ -17,7 +18,7 @@ const LossForm = () => {
   });
   const [isBus, setIsBus] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
-  const [cities, setCities] = useState<City[]>([]);
+  // const [, setCities] = useState<City[]>([]);
   const [subCategories, setSubCategories] = useState<Record<string, string[]>>(
     {}
   );
@@ -34,7 +35,7 @@ const LossForm = () => {
       }
     };
     fetchColors();
-
+  
     axios
       .get("/api/category")
       .then((response) => {
@@ -57,17 +58,8 @@ const LossForm = () => {
         // console.log("Subcategories:", subCategoryMap);
       })
       .catch((error) => console.error("Error loading categories:", error));
-
-    // get cities
-    axios
-      .get("https://api.israelcitiesapi.com/cities")
-      .then((response) => {
-        setCities(response.data.cities);
-      })
-      .catch((error) => {
-        console.error("Error fetching cities:", error);
-      });
-  }, []);
+  }, []); // Dependency array moved correctly
+  
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -218,31 +210,44 @@ const LossForm = () => {
           </div>
 
           {/* City */}
-          {isBus ?  (
-            <PublicTransportation formData={formData} setFormData={setFormData}></PublicTransportation>
-          ):(
-            <div>
+          {isBus ? (
+            <PublicTransportation
+              formData={formData}
+              setFormData={setFormData}
+            ></PublicTransportation>
+          ) : (
+            <div className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
               <label
                 htmlFor="city"
                 className="block text-sm font-medium text-gray-700"
               ></label>
-              <select
-                id="city"
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                required
-              >
-                <option value="">בחר עיר</option>
-                {cities.map((city) => (
-                  <option key={city.id} value={city.name}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
+              <GetCities
+                setFormData={setFormData}
+                formData={formData}
+              ></GetCities>
             </div>
-          ) }
+            // <div>
+            //   <label
+            //     htmlFor="city"
+            //     className="block text-sm font-medium text-gray-700"
+            //   ></label>
+            //   <select
+            //     id="city"
+            //     name="city"
+            //     value={formData.city}
+            //     onChange={handleChange}
+            //     className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            //     required
+            //   >
+            //     <option value="">בחר עיר</option>
+            //     {cities.map((city) => (
+            //       <option key={city.id} value={city.name}>
+            //         {city.name}
+            //       </option>
+            //     ))}
+            //   </select>
+            // </div>
+          )}
 
           {/* Submit Button */}
           <div className="mt-6">

@@ -1,4 +1,4 @@
-export interface Category {
+export default interface Category {
     id: number,
     name: string,
     subcategories: { id: number, name: string }[]
