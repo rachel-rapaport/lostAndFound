@@ -1,9 +1,11 @@
 import { Document } from "mongoose";
+import { Circle } from "./circle";
+import { PublicTransport } from "./publicTransport";
 
 export interface LostItem extends Document {
-    category: string;
+    _id: string;
     subCategory: string;
-    color: string[];
-    city: string;
-    // publicTransportLine: number;
+    colorId: string;
+    circles: Circle[];
+    publicTransport: PublicTransport;
 } 
