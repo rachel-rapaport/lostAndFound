@@ -1,6 +1,6 @@
 import { TypePublicTransportForSchema } from "@/app/types/schema/typePublicTransportForSchema";
 import mongoose, { Model, Schema } from "mongoose";
-import TypePublicTransportSchema from "../schema/TypePublictransportSchema";
+import TypePublicTransportSchema from "../schema/typePublictransportSchema";
 
 const TypePublicTransportSchemaForModel: Schema<TypePublicTransportForSchema> = new Schema({
     typePublicTransport: { type: TypePublicTransportSchema, required: true },

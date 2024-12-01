@@ -1,10 +1,10 @@
-import LossForm  from "@/app/components/LossForm";
+// import LossForm  from "@/app/components/LossForm";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-       <LossForm></LossForm>
+       {/* <LossForm></LossForm> */}
     </div>
   );
 };
