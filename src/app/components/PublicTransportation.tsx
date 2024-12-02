@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import PublicTransportationProps from "../types/publicTransportationProps";
+
+import PublicTransportationProps from "../types/publicTransportationProps"
+
 
 const PublicTransportation: React.FC<PublicTransportationProps> = ({
     formData,
