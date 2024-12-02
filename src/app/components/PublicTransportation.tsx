@@ -1,8 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import LossDataToSend from "../types/lossDataToSend";
 
-const PublicTransportation: React.FC<LossDataToSend> = ({
+import PublicTransportationProps from "../types/publicTransportationProps"
+
+
+const PublicTransportation: React.FC<PublicTransportationProps> = ({
     formData,
     setFormData,
   }) => {

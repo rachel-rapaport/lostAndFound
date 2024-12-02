@@ -10,8 +10,8 @@ const useCategoryStore = create<CategoryStore>((set) => ({
 
     setCategories: (categories: Category[]) => set({ categories }),
     createCategory: (category: Category) => set((state) => ({ categories: [...state.categories, category] })),
-    updateCategory: (category: Category) => set((state) => ({ categories: state.categories.map((c) => (category._id === c.id ? category : c)) })),
-    deleteCategory: (id: string) => set((state) => ({ categories: state.categories.filter((c) => (id !== c.id)) })),
+    updateCategory: (category: Category) => set((state) => ({ categories: state.categories.map((c) => (category._id === c._id ? category : c)) })),
+    deleteCategory: (id: string) => set((state) => ({ categories: state.categories.filter((c) => (id !== c._id)) })),
 
     setSubCategories: (subCategories: SubCategory[]) => set({ subCategories }),
     createSubCategory: (subCategory: SubCategory) => set((state) => ({ subCategories: [...state.subCategories, subCategory] })),
