@@ -1,7 +1,9 @@
+import { Color } from "./color";
+
 export default interface LossFormData {
     category: string;
     subCategory: string;
-    colors: string[];
-    city1: string;
-    city2?: string;
+    color: Color | null;
+    city: string,
+    line:string,
   }
