@@ -7,7 +7,7 @@ const LostItemSchemaForModel: Schema<LostItemForSchema> = new Schema({
 });
 
 const LostItemModel: Model<LostItemForSchema> =
-    mongoose.models.LostItemForSchema ||
+    mongoose.models.LostItem ||
     mongoose.model<LostItemForSchema>("LostItem", LostItemSchemaForModel);
 
 export default LostItemModel;

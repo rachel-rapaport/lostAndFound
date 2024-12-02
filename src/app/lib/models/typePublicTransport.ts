@@ -7,7 +7,7 @@ const TypePublicTransportSchemaForModel: Schema<TypePublicTransportForSchema> = 
 });
 
 const TypePublicTransportModel: Model<TypePublicTransportForSchema> =
-    mongoose.models.TypePublicTransportForSchema ||
+    mongoose.models.TypePublicTransport ||
     mongoose.model<TypePublicTransportForSchema>("TypePublicTransport", TypePublicTransportSchemaForModel);
 
 export default TypePublicTransportModel;
