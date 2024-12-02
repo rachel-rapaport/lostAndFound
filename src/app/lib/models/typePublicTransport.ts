@@ -3,11 +3,11 @@ import mongoose, { Model, Schema } from "mongoose";
 import TypePublicTransportSchema from "../schema/typePublictransportSchema";
 
 const TypePublicTransportSchemaForModel: Schema<TypePublicTransportForSchema> = new Schema({
-    typePublicTransport: { type: TypePublicTransportSchema, required: true },
+    typePublicTransport: { type: TypePublicTransportSchema, required: true, _id: false },
 });
 
 const TypePublicTransportModel: Model<TypePublicTransportForSchema> =
-    mongoose.models.TypePublicTransportForSchema ||
+    mongoose.models.TypePublicTransport ||
     mongoose.model<TypePublicTransportForSchema>("TypePublicTransport", TypePublicTransportSchemaForModel);
 
 export default TypePublicTransportModel;

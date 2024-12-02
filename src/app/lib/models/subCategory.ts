@@ -3,11 +3,10 @@ import mongoose, { Model, Schema } from "mongoose"
 import SubCategorySchema from "../schema/subCategorySchema";
 
 const SubCategorySchemaForModel: Schema<SubCategoryForSchema> = new Schema({
-    subCategory: { type: SubCategorySchema, required: true },
+    subCategory: { type: SubCategorySchema, required: true, _id: false },
 });
 
 const SubCategoryModel: Model<SubCategoryForSchema> =
-    mongoose.models.SubCategoryForSchema ||
-    mongoose.model<SubCategoryForSchema>("SubCategory", SubCategorySchemaForModel);
+    mongoose.models.SubCategory || mongoose.model("SubCategory", SubCategorySchemaForModel);
 
 export default SubCategoryModel;
