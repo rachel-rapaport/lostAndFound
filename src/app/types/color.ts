@@ -1,6 +1,4 @@
-import { Document } from "mongoose";
-
-export interface Color extends Document{
+export interface Color{
     _id: string;
     name: string;
     groupId: number;
