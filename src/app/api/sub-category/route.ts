@@ -28,27 +28,27 @@ export async function GET(request: NextRequest) {
     }
 }
 
-export async function GET_BY_ID(request: NextRequest) {
-    try {
-        const url = new URL(request.url);
-        const id = url.pathname.split('/').pop();
-        if (!id) {
-            return NextResponse.json({ message: "ID is missing" }, { status: 400 })
-        }
-        await connect();
-        const data = await SubCategoryModel.findById(id);
-        if (!data) {
-            return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
-        }
-        return NextResponse.json({ message: "Sub category was successfully fetched", data: data }, { status: 200 });
-    }
-    catch (error) {
-        return NextResponse.json({
-            message: "Error fetching sub category",
-            error: error
-        }, { status: 500 });
-    }
-}
+// export async function GET_BY_ID(request: NextRequest) {
+//     try {
+//         const url = new URL(request.url);
+//         const id = url.pathname.split('/').pop();
+//         if (!id) {
+//             return NextResponse.json({ message: "ID is missing" }, { status: 400 })
+//         }
+//         await connect();
+//         const data = await SubCategoryModel.findById(id);
+//         if (!data) {
+//             return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
+//         }
+//         return NextResponse.json({ message: "Sub category was successfully fetched", data: data }, { status: 200 });
+//     }
+//     catch (error) {
+//         return NextResponse.json({
+//             message: "Error fetching sub category",
+//             error: error
+//         }, { status: 500 });
+//     }
+// }
 
 export async function POST(request: NextRequest) {
     try {
