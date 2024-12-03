@@ -3,7 +3,7 @@
 // import { log } from "console";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function POST() {
 //   try {
 //     await connect();
 //     const foundItem = await request.json();
