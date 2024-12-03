@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import FoundItemModel from "@/app/lib/models/foundItem";
+import mongoose from "mongoose";
 
 // GET a found item by id
 export async function GET(
@@ -45,31 +46,43 @@ export async function PUT(
 ) {
   const { id } = params;
   try {
+    if (!id) {
+      return NextResponse.json({ message: "ID is missing" }, { status: 400 });
+    }
     await connect();
     const body = await req.json();
-    if (!id) {
+    const foundItemToUpdate = await FoundItemModel.findByIdAndUpdate(
+      id,
+      { foundItem: body },
+      { new: true, runValidators: true }
+    );
+    if (
+      !(await mongoose.models.SubCategory.exists({ _id: body.subCategory }))
+    ) {
       return NextResponse.json(
-        { error: "Id parameter is missing" },
+        { message: "Invalid subCategoryId: sub category does not exist" },
         { status: 400 }
       );
     }
-
-    const updatedFoundItem = await FoundItemModel.findByIdAndUpdate(id, body, {
-      new: true,
-    });
-
-    // const updatedLostItem = await updateLostItemById(id as string, body);
-    if (!updatedFoundItem) {
+    if (!foundItemToUpdate) {
       return NextResponse.json(
-        { error: "found item not found" },
+        { message: "Found item is not found" },
         { status: 404 }
       );
     }
-    return NextResponse.json(updatedFoundItem, { status: 200 });
-  } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to update found item" },
+      {
+        message: "Found item was updated successfully",
+        data: foundItemToUpdate,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: "Error updating found item",
+        error: error,
+      },
       { status: 500 }
     );
   }
@@ -83,26 +96,36 @@ export async function DELETE(
   const { id } = params;
 
   try {
-    await connect();
     if (!id) {
-      return NextResponse.json(
-        { error: "Id parameter is missing" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
-    // const deletedLostItem = await deleteLostItemById(id as string);
-    const deletedFoundItem = await FoundItemModel.deleteOne();
-    if (!deletedFoundItem) {
+    await connect();
+    const foundItemToDelete = await FoundItemModel.findByIdAndDelete(id);
+    if (!foundItemToDelete) {
       return NextResponse.json(
-        { error: "found item not found" },
+        { message: "Found item is not found" },
         { status: 404 }
       );
     }
-    return NextResponse.json(deletedFoundItem, { status: 200 });
-  } catch (error) {
-    console.error(error);
+    // Removes found item ID from the sub category's found item list
+    await mongoose.models.SubCategory.findByIdAndUpdate(
+      foundItemToDelete.foundItem.subCategoryId,
+      { $pull: { "subCategory.foundItems": id } },
+      { new: true }
+    );
     return NextResponse.json(
-      { error: "Failed to delete found item" },
+      {
+        message: "Found item was successfully deleted",
+        data: foundItemToDelete,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: "Error deleting found item",
+        error: error,
+      },
       { status: 500 }
     );
   }

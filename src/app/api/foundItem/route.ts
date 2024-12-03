@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 // import { getLostItems } from "@/app/services/lostItemsService";
 import connect from "@/app/lib/db/mongo";
 import FoundItemModel from "@/app/lib/models/foundItem";
+import mongoose from "mongoose";
 
 // GET all found items
 export async function GET() {
@@ -27,16 +28,21 @@ export async function POST(req: NextRequest) {
   try {
     await connect();
     const body = await req.json();
-    console.log(body);
-    const newFoundItem = await FoundItemModel.create({ foundItem: body });
-
-    // const newLostItem = await createLostItem(body);
-    return NextResponse.json(newFoundItem, { status: 201 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Failed to create found item" },
-      { status: 500 }
+    if (!await mongoose.models.SubCategory.exists({ _id: body.subCategory })) {
+      return NextResponse.json({ message: "Invalid subCategoryId: sub category does not exist" }, { status: 400 });
+    }
+    const newFoundItem = await FoundItemModel.create({ subCategory: body });
+    await mongoose.models.subCategory.findByIdAndUpdate(
+      body.subCategory,
+      { $push: { "subCategory.foundItems": newFoundItem._id } },
+      { new: true }
     );
+    return NextResponse.json({ message: "Found item was created successfully", data: newFoundItem }, { status: 201 });
+  }
+  catch (error) {
+    return NextResponse.json({
+      message: "Error creating found item",
+      error: error
+    }, { status: 500 });
   }
 }
