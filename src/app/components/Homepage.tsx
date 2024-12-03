@@ -1,9 +1,10 @@
-'use client';
+"use client";
 import { useRouter } from "next/navigation";
 import { getCategories } from "../services/categoryService";
 
 const Homepage = () => {
-    const router = useRouter();
+  const router = useRouter();
+
 
     return (
         <>
@@ -15,5 +16,6 @@ const Homepage = () => {
             </div>
         </>)
 }
+
 
 export default Homepage;
