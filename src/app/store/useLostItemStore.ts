@@ -8,7 +8,6 @@ export const useLostItemStore = create<LostItemStore>((set) => ({
     subCategory: "",
     userId:"",
     colorId: "",
-    userId:"",
     circles: [
       {
         center: {
