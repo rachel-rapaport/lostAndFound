@@ -1,5 +1,6 @@
 import connect from "@/app/lib/db/mongo";
 import CategoryModel from "@/app/lib/models/category";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -25,24 +26,17 @@ export async function PUT(request: NextRequest) {
     try {
         const url = new URL(request.url);
         const id = url.pathname.split('/').pop();
-
         if (!id) {
             return NextResponse.json({ message: "ID is missing" }, { status: 400 });
         }
-
+        // Allows updating only the category title
+        const { title } = await request.json();
         await connect();
-        const { title, subCategories } = await request.json();
-
         const categoryToUpdate = await CategoryModel.findByIdAndUpdate(
             id,
-            { category: { title, subCategories } },
+            { "category.title": title },
             { new: true, runValidators: true }
         );
-
-        if (!categoryToUpdate) {
-            return NextResponse.json({ message: "Category is not found" }, { status: 404 });
-        }
-
         return NextResponse.json({ message: "Category was updated successfully", data: categoryToUpdate }, { status: 200 });
     }
     catch (error) {
@@ -65,7 +59,9 @@ export async function DELETE(request: NextRequest) {
         if (!categoryToDelete) {
             return NextResponse.json({ message: "Category is not found" }, { status: 404 });
         }
-        return NextResponse.json({ message: "Category was successfully delete", data: categoryToDelete }, { status: 200 });
+        // Deletes subcategories of the category being deleted
+        await mongoose.models.SubCategory.deleteMany({ categoryId: categoryToDelete._id });
+        return NextResponse.json({ message: "Category was successfully deleted", data: categoryToDelete }, { status: 200 });
     }
     catch (error) {
         return NextResponse.json({
