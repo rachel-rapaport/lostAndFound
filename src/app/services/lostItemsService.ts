@@ -1,70 +1,62 @@
-import LostItemModel from "../lib/models/lostItem";
-import TypePublicTransportModel from "../lib/models/typePublicTransport";
+import axios from "axios";
 import { LostItem } from "../types/lostItem";
 
 // get all lost items
 export const getLostItems = async () => {
-  return await LostItemModel.find()
-    .populate("circles")
-    .populate("publicTransport");
+  try {
+    const response = await axios.get("/api/lostItem",{
+      withCredentials: true,
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting lostItems:", error);
+    throw error;
+  }
 };
 
 
 // get lost item by id
 export const getLostItemById = async (id: string) => {
-  return await LostItemModel.findById(id)
-    .populate("circles")
-    .populate("publicTransport");
+  try {
+    const response = await axios.get(`/api/lostItem/${id}`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting lost Item:", error);
+    throw error;
+  }
 };
 
 // create new lost item
-export const createLostItem = async (lostItemData: LostItem) => {
-  const { publicTransport, ...lostItemRest } = lostItemData;
-  const publicTransportData = await TypePublicTransportModel.create(
-    publicTransport
-  );
-
-  const lostItem = new LostItemModel({
-    ...lostItemRest,
-    publicTransport: publicTransportData._id,
-  });
-
-  return await lostItem.save();
+export const createRecipe = async (lostItem: LostItem) => {
+  try {
+    const response = await axios.post("/api/lostItem", lostItem);
+    return response.data;
+  } catch (error) {
+    console.log("Error creating lostItem:", error);
+    throw error;
+  }
 };
 
 // update lost item by id
-export const updateLostItemById = async (id: string, updateData: LostItem) => {
-  const { publicTransport, ...lostItemRest } = updateData;
-  let publicTransportData = undefined;
-
-  if (publicTransport) {
-    publicTransportData = await TypePublicTransportModel.create(
-      publicTransport
-    );
+export const updateLostItemById = async (id: string, lostItem: LostItem) => {
+  try {
+    const response = await axios.put(`/api/lostItem/${id}`, lostItem);
+    return response.data;
+  } catch (error) {
+    console.log("Error updating lostItem:", error);
+    throw error;
   }
-
-  const updatedLostItem = await LostItemModel.findByIdAndUpdate(
-    id,
-    {
-      ...lostItemRest,
-      publicTransport: publicTransportData
-        ? publicTransportData._id
-        : undefined,
-    },
-    { new: true }
-  )
-    .populate("circles")
-    .populate("publicTransport");
-
-  return updatedLostItem;
 };
 
 // delete lost item by id
 export const deleteLostItemById = async (id: string) => {
-  const deleteLostItem = await LostItemModel.findByIdAndDelete(id);
-  if (!deleteLostItem) {
-    return null;
+  try {
+    const response = await axios.delete(`/api/lostItem/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log("Error deleting lostItem", error);
+    throw error;
   }
-
-  return deleteLostItem;
 };
