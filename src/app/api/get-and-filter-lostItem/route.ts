@@ -1,9 +1,9 @@
 // import connect from "@/app/lib/db/mongo";
 // import LostItemModel from "@/app/lib/models/lostItem";
 // import { log } from "console";
-// import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest) {
 //   try {
 //     await connect();
 //     const foundItem = await request.json();
@@ -50,11 +50,11 @@
 
 //     // הדפסת הפלט לבדיקה
 //     console.log("Filtered lost items:", lostItems);
-
+        return NextResponse.json({});
 //     // החזרת התוצאות
-//     return NextResponse.json({ lostItems });
+    // return NextResponse.json({ lostItems });
 //   } catch (error) {
 //     console.error("Error filtering lost items:", error);
 //     return NextResponse.json({ error: "Error filtering lost items" }, { status: 500 });
 //   }
-// }
+}
