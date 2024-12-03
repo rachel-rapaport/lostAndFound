@@ -20,11 +20,17 @@ export async function GET() {
 export async function POST(request: NextRequest) {
     try {
         await connect();
-        const { title, categoryId } = await request.json();
-        if (!await mongoose.models.Category.exists({ _id: categoryId })) {
+        const body = await request.json();
+        if (!await mongoose.models.Category.exists({ _id: body.categoryId })) {
             return NextResponse.json({ message: "Invalid categoryId: Category does not exist" }, { status: 400 });
         }
-        const newSubCategory = await subCategoryModel.create({ subCategory: { title, categoryId } });
+        const newSubCategory = await subCategoryModel.create({ subCategory: body });
+        // Adds the new subcategory to the selected category's subcategory list
+        await mongoose.models.Category.findByIdAndUpdate(
+            body.categoryId,
+            { $push: { "category.subCategories": newSubCategory._id } },
+            { new: true }
+        );
         return NextResponse.json({ message: "Sub category was created successfully", data: newSubCategory }, { status: 201 });
     }
     catch (error) {

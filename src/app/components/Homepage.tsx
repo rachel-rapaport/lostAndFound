@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from "next/navigation";
+import { getCategories } from "../services/categoryService";
 
 const Homepage = () => {
     const router = useRouter();
@@ -10,6 +11,7 @@ const Homepage = () => {
             <div className="flex w-[20%] mx-auto justify-between flex-grow">
                 <button className="btn" onClick={() => router.push('/report-found')}>מצאתי אבידה</button>
                 <button className="btn" onClick={() => router.push('/###')}>אבד לי משהו</button>
+                <button onClick={getCategories}>get categories</button>
             </div>
         </>)
 }
