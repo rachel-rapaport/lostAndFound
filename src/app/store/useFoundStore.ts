@@ -7,6 +7,7 @@ export const useLostItemStore = create<FoundItemStore>((set) => ({
     _id: "",
     subCategoryId: "",
     colorId: "",
+    uesrId:"",
     postion:{
         latitude:0,
         longitude:0,

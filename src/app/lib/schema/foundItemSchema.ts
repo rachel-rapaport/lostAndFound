@@ -6,6 +6,7 @@ import QuestionSchema from "./questionSchema";
 const FoundItemSchema = new mongoose.Schema({
     subCategoryId: { type: String, required: true },
     colorId: { type: String, required: true },
+    userId:{type: String, required: true },
     postion: {type: PostionSchema, required: true },
     publicTransport: { type: PublicTransportSchema },
     image: { type: String},

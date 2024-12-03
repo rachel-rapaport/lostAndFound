@@ -6,7 +6,8 @@ export interface FoundItem{
     _id: string;
     subCategoryId: string;
     colorId: string;
-    postion: Postion
+    uesrId: string;
+    postion: Postion;
     publicTransport: PublicTransport;
     image: string;
     descripition: string;

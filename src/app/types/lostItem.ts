@@ -5,6 +5,7 @@ export interface LostItem  {
     _id: string;
     subCategory: string;
     colorId: string;
+    userId: string;
     circles: Circle[];
     publicTransport: PublicTransport;
 } 
