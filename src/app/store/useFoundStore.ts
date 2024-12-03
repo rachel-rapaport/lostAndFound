@@ -5,6 +5,7 @@ import { FoundItemStore } from "../types/store/foundItemStore";
 export const useLostItemStore = create<FoundItemStore>((set) => ({
   currentLostItem: {
     _id: "",
+    userId:"",
     subCategoryId: "",
     colorId: "",
     uesrId:"",

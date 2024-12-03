@@ -2,9 +2,9 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
-import LostItemModel from "@/app/lib/models/lostItem";
+import FoundItemModel from "@/app/lib/models/foundItem";
 
-// GET a lost item by id
+// GET a found item by id
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -14,15 +14,15 @@ export async function GET(
   try {
     await connect();
     if (id) {
-      // const lostItem = await getLostItemById(id as string);
-      const lostItem = await LostItemModel.findById(id);
-      if (!lostItem) {
+      // const foundItem = await getFoundItemById(id as string);
+      const foundItem = await FoundItemModel.findById(id);
+      if (!foundItem) {
         return NextResponse.json(
-          { error: "Lost item not found" },
+          { error: "found item not found" },
           { status: 404 }
         );
       }
-      return NextResponse.json(lostItem);
+      return NextResponse.json(foundItem);
     } else {
       return NextResponse.json(
         { error: "Id parameter is missing" },
@@ -32,13 +32,13 @@ export async function GET(
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch lost item" },
+      { error: "Failed to fetch found item" },
       { status: 500 }
     );
   }
 }
 
-// PUT update lost item by id
+// PUT update found item by id
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -54,26 +54,28 @@ export async function PUT(
       );
     }
 
-    const updatedLostItem = await LostItemModel.updateOne({ lostItem: body });
+    const updatedFoundItem = await FoundItemModel.findByIdAndUpdate(id, body, {
+      new: true,
+    });
 
     // const updatedLostItem = await updateLostItemById(id as string, body);
-    if (!updatedLostItem) {
+    if (!updatedFoundItem) {
       return NextResponse.json(
-        { error: "Lost item not found" },
+        { error: "found item not found" },
         { status: 404 }
       );
     }
-    return NextResponse.json(updatedLostItem, { status: 200 });
+    return NextResponse.json(updatedFoundItem, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to update lost item" },
+      { error: "Failed to update found item" },
       { status: 500 }
     );
   }
 }
 
-// DELETE lost item by id
+// DELETE found item by id
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -89,18 +91,18 @@ export async function DELETE(
       );
     }
     // const deletedLostItem = await deleteLostItemById(id as string);
-    const deletedLostItem = await LostItemModel.deleteOne();
-    if (!deletedLostItem) {
+    const deletedFoundItem = await FoundItemModel.deleteOne();
+    if (!deletedFoundItem) {
       return NextResponse.json(
-        { error: "Lost item not found" },
+        { error: "found item not found" },
         { status: 404 }
       );
     }
-    return NextResponse.json(deletedLostItem, { status: 200 });
+    return NextResponse.json(deletedFoundItem, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to delete lost item" },
+      { error: "Failed to delete found item" },
       { status: 500 }
     );
   }

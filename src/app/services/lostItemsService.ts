@@ -9,6 +9,7 @@ export const getLostItems = async () => {
     .populate("publicTransport");
 };
 
+
 // get lost item by id
 export const getLostItemById = async (id: string) => {
   return await LostItemModel.findById(id)

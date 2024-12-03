@@ -7,4 +7,4 @@ const SubCategorySchema = new mongoose.Schema({
     foundItems: { type: mongoose.Schema.Types.ObjectId, ref: "FoundItem" },
 });
 
-  export default SubCategorySchema
+export default SubCategorySchema;

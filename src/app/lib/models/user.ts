@@ -3,7 +3,7 @@ import mongoose, { Model, Schema } from "mongoose";
 import UserSchema from "../schema/userSchema";
 
 const UserSchemaForModel: Schema<UserForSchema> = new Schema({
-    user: { type: UserSchema, required: true },
+    user: { type: UserSchema, required: true, _id: false },
 });
 
 const UserModel: Model<UserForSchema> =

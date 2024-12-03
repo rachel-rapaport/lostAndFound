@@ -6,6 +6,7 @@ export const useLostItemStore = create<LostItemStore>((set) => ({
   currentLostItem: {
     _id: "",
     subCategory: "",
+    userId:"",
     colorId: "",
     userId:"",
     circles: [
