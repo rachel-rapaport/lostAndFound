@@ -57,7 +57,7 @@
 //     return NextResponse.json({ error: "Error filtering lost items" }, { status: 500 });
 //   }
 // }
-export default function handler() {
+export default function GET() {
     // הקוד שלך כאן
 }
 
