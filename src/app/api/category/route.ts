@@ -19,8 +19,8 @@ export async function GET() {
 export async function POST(request: NextRequest) {
     try {
         await connect();
-        const { title } = await request.json();
-        const newCategory = await CategoryModel.create({ category: { title, subCategories: [] } });
+        const body = await request.json();
+        const newCategory = await CategoryModel.create({ category: body });
         return NextResponse.json({ message: "Category was created successfully", data: newCategory }, { status: 201 });
     }
     catch (error) {

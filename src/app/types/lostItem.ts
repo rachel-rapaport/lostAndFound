@@ -1,11 +1,11 @@
 import { Circle } from "./circle";
 import { PublicTransport } from "./publicTransport";
 
-export interface LostItem  {
+export interface LostItem {
     _id: string;
-    subCategory: string;
-    userId:string;
     colorId: string;
+    userId: string;
     circles: Circle[];
     publicTransport: PublicTransport;
+    subCategory: string;
 } 

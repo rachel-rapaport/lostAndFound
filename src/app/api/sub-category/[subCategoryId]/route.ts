@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
         await connect();
         const data = await subCategoryModel.findById(id);
         if (!data) {
-            return NextResponse.json({ message: "subCategory is not found" }, { status: 404 });
+            return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
         }
         return NextResponse.json({ message: "Sub category was successfully fetched", data: data }, { status: 200 });
     }
@@ -30,19 +30,19 @@ export async function PUT(request: NextRequest) {
             return NextResponse.json({ message: "ID is missing" }, { status: 400 })
         }
         await connect();
-        const { title, categoryId } = await request.json();
-        const subCategoryToUpdate = await subCategoryModel.findByIdAndUpdate(id, { subCategory: { title, categoryId } }, { new: true, runValidators: true });
-        if (!await mongoose.models.Category.exists({ _id: categoryId })) {
-            return NextResponse.json({ message: "Invalid categoryId: Category does not exist" }, { status: 400 });
-        }
+        // Allows updating only the sub category title
+        const { title } = await request.json();
+        const subCategoryToUpdate = await subCategoryModel.findByIdAndUpdate(id,
+            { "subCategory.title": title },
+            { new: true, runValidators: true });
         if (!subCategoryToUpdate) {
-            return NextResponse.json({ message: "subCategory is not found" }, { status: 404 });
+            return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
         }
-        return NextResponse.json({ message: "subCategory was updated successfully", data: subCategoryToUpdate }, { status: 200 });
+        return NextResponse.json({ message: "Sub category was updated successfully", data: subCategoryToUpdate }, { status: 200 });
     }
     catch (error) {
         return NextResponse.json({
-            message: "Error updating subCategory",
+            message: "Error updating sub category",
             error: error
         }, { status: 500 });
     }
@@ -58,13 +58,23 @@ export async function DELETE(request: NextRequest) {
         await connect();
         const subCategoryToDelete = await subCategoryModel.findByIdAndDelete(id);
         if (!subCategoryToDelete) {
-            return NextResponse.json({ message: "subCategory is not found" }, { status: 404 });
+            return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
         }
-        return NextResponse.json({ message: "subCategory was successfully delete", data: subCategoryToDelete }, { status: 200 });
+        // Removes sub category ID from the category's subcategory list
+        await mongoose.models.Category.findByIdAndUpdate(
+            subCategoryToDelete.subCategory.categoryId,
+            { $pull: { "category.subCategories": id } },
+            { new: true }
+        );
+        // Deletes found and lost items of the sub category being deleted
+        await mongoose.models.FoundItem.deleteMany({ categoryId: subCategoryToDelete._id });
+        await mongoose.models.LostItem.deleteMany({ categoryId: subCategoryToDelete._id });
+
+        return NextResponse.json({ message: "Sub category was successfully deleted", data: subCategoryToDelete }, { status: 200 });
     }
     catch (error) {
         return NextResponse.json({
-            message: "Error deleting subCategory",
+            message: "Error deleting sub category",
             error: error
         }, { status: 500 });
     }
