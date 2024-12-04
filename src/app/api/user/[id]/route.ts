@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 
+
 // GET a user by id
 export async function GET(
   req: NextRequest,
@@ -15,7 +16,11 @@ export async function GET(
     await connect();
     if (id) {
       // const foundItem = await getFoundItemById(id as string);
-      const user = await UserModel.findById(id);
+      const user = await UserModel.findById(id)
+        .populate("user.lostItems")
+        .populate("user.foundItems")
+        .populate("user.blockedItems");
+        console.log(user);
       if (!user) {
         return NextResponse.json({ error: "user not found" }, { status: 404 });
       }

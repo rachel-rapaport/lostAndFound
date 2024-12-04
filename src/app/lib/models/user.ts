@@ -7,7 +7,7 @@ const UserSchemaForModel: Schema<UserForSchema> = new Schema({
 });
 
 const UserModel: Model<UserForSchema> =
-    mongoose.models.UserForSchema ||
+    mongoose.models.User ||
     mongoose.model<UserForSchema>("User", UserSchemaForModel);
 
 export default UserModel;
