@@ -2,10 +2,10 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
-import UserModel from "@/app/lib/models/user";
+import ColorModel from "@/app/lib/models/color";
 
 
-// GET a user by id
+// GET a color by id
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -16,15 +16,14 @@ export async function GET(
     await connect();
     if (id) {
       // const foundItem = await getFoundItemById(id as string);
-      const user = await UserModel.findById(id)
-        .populate("user.lostItems")
-        .populate("user.foundItems")
-        .populate("user.blockedItems");
-        console.log(user);
-      if (!user) {
-        return NextResponse.json({ error: "user not found" }, { status: 404 });
+      const color = await ColorModel.findById(id);
+      if (!color) {
+        return NextResponse.json(
+          { error: "color not found" },
+          { status: 404 }
+        );
       }
-      return NextResponse.json(user);
+      return NextResponse.json(color);
     } else {
       return NextResponse.json(
         { error: "Id parameter is missing" },
@@ -34,13 +33,13 @@ export async function GET(
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch user" },
+      { error: "Failed to fetch color" },
       { status: 500 }
     );
   }
 }
 
-// PUT update user by id
+// PUT update color by id
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -56,25 +55,28 @@ export async function PUT(
       );
     }
 
-    const updatedUser = await UserModel.findByIdAndUpdate(id, body, {
+    const updatedColor = await ColorModel.findByIdAndUpdate(id, body, {
       new: true,
     });
 
     // const updatedLostItem = await updateLostItemById(id as string, body);
-    if (!updatedUser) {
-      return NextResponse.json({ error: "user not found" }, { status: 404 });
+    if (!updatedColor) {
+      return NextResponse.json(
+        { error: "color not found" },
+        { status: 404 }
+      );
     }
-    return NextResponse.json(updatedUser, { status: 200 });
+    return NextResponse.json(updatedColor, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to update user" },
+      { error: "Failed to update color" },
       { status: 500 }
     );
   }
 }
 
-// DELETE user by id
+// DELETE color by id
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -90,15 +92,18 @@ export async function DELETE(
       );
     }
     // const deletedLostItem = await deleteLostItemById(id as string);
-    const deletedUser = await UserModel.deleteOne();
-    if (!deletedUser) {
-      return NextResponse.json({ error: "user not found" }, { status: 404 });
+    const deletedColor = await ColorModel.deleteOne();
+    if (!deletedColor) {
+      return NextResponse.json(
+        { error: "color not found" },
+        { status: 404 }
+      );
     }
-    return NextResponse.json(deletedUser, { status: 200 });
+    return NextResponse.json(deletedColor, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to delete user" },
+      { error: "Failed to delete color" },
       { status: 500 }
     );
   }

@@ -1,5 +1,5 @@
 import { Document } from "mongoose";
-import { Notification } from "../notification";
+import { Notification } from "../alert";
 
 export interface NotificationForSchema extends Document {
     notification : Notification

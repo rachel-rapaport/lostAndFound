@@ -5,9 +5,9 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     phone: { type: String, required: true },
-    lostItems: { type: [String], required: true },
-    foundItems: { type: [String], required: true },
-    blockedItems: { type: [String], required: true },
+    lostItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "LostItem", required: true }],
+    foundItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FoundItem", required: true }], 
+    blockedItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FoundItem", required: true }],
     notifications: { type: [String], required: true }
 });
 
