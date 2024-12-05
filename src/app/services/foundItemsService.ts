@@ -39,7 +39,7 @@ export const getFoundItemById = async (id: string) => {
 // };
 
 // create new found item
-export const createRecipe = async (foundItem: FoundItem) => {
+export const createFoundItem = async (foundItem: FoundItem) => {
   try {
     const response = await axios.post("/api/foundItem", foundItem);
     return response.data;
