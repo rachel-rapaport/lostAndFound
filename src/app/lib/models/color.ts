@@ -1,13 +1,13 @@
-import { ColorForSchema } from "@/app/types/schema/colorForSchema";
+import { Color } from "@/app/types/props/color";
 import mongoose, { Model, Schema } from "mongoose";
-import ColorSchema from "../schema/colorSchema";
 
-const ColorSchemaForModel: Schema<ColorForSchema> = new Schema({
-    color: { type: ColorSchema, required: true, _id: false },
+const ColorSchema: Schema<Color> = new Schema({
+    name: { type: String, required: true },
+    groupId: { type: Number, required: true },
 });
 
-const ColorModel: Model<ColorForSchema> =
+const ColorModel: Model<Color> =
     mongoose.models.Color ||
-    mongoose.model<ColorForSchema>("Color", ColorSchemaForModel);
+    mongoose.model<Color>("Color", ColorSchema);
 
 export default ColorModel;

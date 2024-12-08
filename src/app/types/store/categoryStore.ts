@@ -1,5 +1,5 @@
-import { Category } from "../category";
-import { SubCategory } from "../subCategory";
+import { Category } from "../props/category";
+import { SubCategory } from "../props/subCategory";
 
 export interface CategoryStore{
     categories: Category[],

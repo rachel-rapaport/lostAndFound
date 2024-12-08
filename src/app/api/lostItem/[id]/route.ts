@@ -1,29 +1,105 @@
-// /app/routes/lostItems/[id].ts
-
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import LostItemModel from "@/app/lib/models/lostItem";
+import SubCategoryModel from "@/app/lib/models/subCategory";
+import UserModel from "@/app/lib/models/user";
+import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 import mongoose from "mongoose";
 
-// GET a lost item by id
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+//get lost item by id
+export async function GET(request: NextRequest) {
+  await connect();
 
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
   try {
-    await connect();
     if (id) {
-      // const lostItem = await getLostItemById(id as string);
-      const lostItem = await LostItemModel.findById(id);
-      if (!lostItem) {
+      //populate data from nested objects
+      const data = await LostItemModel.aggregate([
+        {
+          $match: { _id: new mongoose.Types.ObjectId(id) }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'userId'
+          }
+        },
+        {
+          $unwind: { path: '$userId', preserveNullAndEmptyArrays: true }
+        },
+        {
+          $lookup: {
+            from: 'subcategories',
+            localField: 'subCategoryId',
+            foreignField: '_id',
+            as: 'subCategoryId'
+          }
+        },
+        {
+          $unwind: { path: '$subCategoryId', preserveNullAndEmptyArrays: true }
+        },
+        {
+          $lookup: {
+            from: 'colors',
+            localField: 'colorId',
+            foreignField: '_id',
+            as: 'colorId'
+          }
+        },
+        {
+          $unwind: { path: '$colorId', preserveNullAndEmptyArrays: true }
+        },
+        {
+          $lookup:
+          {
+            from: 'typepublictransports',
+            localField: 'publicTransport.typePublicTransportId',
+            foreignField: '_id',
+            as: 'publicTransportType'
+          }
+        },
+        {
+          $unwind: { path: '$publicTransportType', preserveNullAndEmptyArrays: true },
+        },
+        {
+          $unwind: { path: '$typePublicTransportId', preserveNullAndEmptyArrays: true },
+        },
+        {
+          $project: {
+            _id: 1,
+            'subCategoryId.title': 1,
+            'colorId.name': 1,
+            'userId._id': 1,
+            'userId.fullName': 1,
+            'userId.email': 1,
+            'userId.password': 1,
+            circles: 1,
+            image: 1,
+            publicTransport: {
+              _id: '$publicTransport._id',
+              city: '$publicTransport.city',
+              typePublicTransportId: {
+                _id: '$publicTransportType._id',
+                title: '$publicTransportType.title'
+              },
+              line: '$publicTransport.line'
+            }
+          }
+        }
+      ]);
+      if (!data) {
         return NextResponse.json(
           { error: "Lost item not found" },
           { status: 404 }
         );
       }
-      return NextResponse.json(lostItem);
+      return NextResponse.json(
+        { message: "lostItem were successfully fetched", data: data },
+        { status: 200 }
+      );
     } else {
       return NextResponse.json(
         { error: "Id parameter is missing" },
@@ -39,31 +115,34 @@ export async function GET(
   }
 }
 
-// PUT update lost item by id
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+//update lost item by id
+export async function PUT(request: NextRequest) {
+  await connect();
+
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
   try {
     if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
-    await connect();
-    const body = await req.json();
-    const lostItemToUpdate = await LostItemModel.findByIdAndUpdate(
-      id,
-      { lostItem: body },
-      { new: true, runValidators: true }
-    );
-    if (
-      !(await mongoose.models.SubCategory.exists({ _id: body.subCategory }))
-    ) {
-      return NextResponse.json(
-        { message: "Invalid subCategoryId: sub category does not exist" },
-        { status: 400 }
-      );
+    const body = await request.json();
+    // Validate that the sub-category cat exists in the database
+    if (!await SubCategoryModel.exists({ _id: body.subCategoryId })) {
+      return NextResponse.json({ message: "Invalid subCategoryId: sub category does not exist" }, { status: 400 });
     }
+    // Validate that the user exists in the database
+    if (!await UserModel.exists({ _id: body.userId })) {
+      return NextResponse.json({ message: "Invalid userId: user does not exist" }, { status: 400 });
+    }
+    // Validate that the public transport type exists in the database
+    if (!await TypePublicTransportModel.exists({ _id: body.publicTransport.typePublicTransportId })) {
+      return NextResponse.json({ message: "Invalid userId: user does not exist" }, { status: 400 });
+    }
+
+    const lostItemToUpdate = await LostItemModel.findByIdAndUpdate(id, body,
+      { new: true }
+    );
+
     if (!lostItemToUpdate) {
       return NextResponse.json(
         { message: "Lost item is not found" },
@@ -85,17 +164,32 @@ export async function PUT(
   }
 }
 
-// DELETE lost item by id
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+//delete lost item by id
+export async function DELETE(request: NextRequest) {
+
+  await connect();
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
   try {
     if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
-    await connect();
+    const lostItemToDeleteBefore = await LostItemModel.findById(id)
+    if (lostItemToDeleteBefore) {
+      // Remove the lost item ID from the associated sub-category's lostItems array
+      await SubCategoryModel.findByIdAndUpdate(
+        lostItemToDeleteBefore.subCategoryId,
+        { $pull: { "lostItems": id } },
+        { new: true }
+      );
+      // Remove the lost item ID from the associated user's lostItems array
+      await UserModel.findByIdAndUpdate(
+        lostItemToDeleteBefore.userId,
+        { $pull: { "lostItems": id } },
+        { new: true }
+      );
+    }
+
     const lostItemToDelete = await LostItemModel.findByIdAndDelete(id);
     if (!lostItemToDelete) {
       return NextResponse.json(
@@ -103,12 +197,7 @@ export async function DELETE(
         { status: 404 }
       );
     }
-    // Removes lost item ID from the sub category's lost item list
-    await mongoose.models.SubCategory.findByIdAndUpdate(
-      lostItemToDelete.lostItem.subCategory,
-      { $pull: { "subCategory.lostItems": id } },
-      { new: true }
-    );
+
     return NextResponse.json(
       { message: "Lost item was successfully deleted", data: lostItemToDelete },
       { status: 200 }
