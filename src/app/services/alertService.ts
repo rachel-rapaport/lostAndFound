@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Alert } from "../types/alert";
+import { Alert } from "../types/props/alert";
 
 
 // get all alerts

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Thank } from "../types/thank";
+import { Thank } from "../types/props/thank";
 
 // get all thanks
 export const getThanks = async () => {

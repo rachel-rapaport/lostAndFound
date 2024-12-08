@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SubCategory } from "../types/subCategory";
+import { SubCategory } from "../types/props/subCategory";
 
 // get all subCategorys
 export const getSubCategorys = async () => {
