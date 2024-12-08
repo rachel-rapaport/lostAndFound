@@ -1,12 +1,21 @@
-import { NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from 'next'
 
-
-export async function GET() {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'GET') {
     try {
-        // כאן תוכל להוסיף את הקוד שלך לטיפול בבקשת GET
-        return NextResponse.json({ message: "GET request successful" });
+      // סימולציה של בקשה לנתונים (למשל ממסד נתונים או API חיצוני)
+      const user = {
+        id: 1,
+        name: 'John Doe',
+        email: 'john.doe@example.com'
+      }
+
+      res.status(200).json(user)
     } catch (error) {
-        console.error("Error processing GET request:", error);
-        return NextResponse.json({ error: "Error processing GET request" }, { status: 500 });
+      res.status(500).json({ error: 'Something went wrong' })
     }
+  } else {
+    // אם הפונקציה לא מתאימה לבקשה (למשל אם לא GET)
+    res.status(405).json({ error: 'Method Not Allowed' })
+  }
 }

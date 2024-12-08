@@ -1,13 +1,13 @@
-import { ThankForSchema } from "@/app/types/schema/thankForSchema";
 import mongoose, { Model, Schema } from "mongoose";
-import ThankSchema from "../schema/thankSchema";
+import { Thank } from "@/app/types/props/thank";
 
-const ThankSchemaForModel: Schema<ThankForSchema> = new Schema({
-    thank: { type: ThankSchema, required: true, _id: false },
+const ThankSchema: Schema<Thank> = new Schema({
+    userName: { type: String, required: true },
+    contect: { type: String, required: true },
 });
 
-const ThankModel: Model<ThankForSchema> =
+const ThankModel: Model<Thank> =
     mongoose.models.Thank ||
-    mongoose.model<ThankForSchema>("Thank", ThankSchemaForModel);
+    mongoose.model<Thank>("Thank", ThankSchema);
 
 export default ThankModel;

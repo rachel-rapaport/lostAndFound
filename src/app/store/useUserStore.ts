@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { User } from "../types/user";
+import { User } from "../types/props/user";
 import { UserStore } from "../types/store/usetStore";
 
 const useUserStore=create<UserStore>((set)=>({

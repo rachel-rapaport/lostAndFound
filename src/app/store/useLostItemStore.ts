@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { LostItem } from "../types/lostItem";
+import { LostItem } from "../types/props/lostItem";
 import { LostItemStore } from "../types/store/lostItemStore"; 
 
 export const useLostItemStore = create<LostItemStore>((set) => ({

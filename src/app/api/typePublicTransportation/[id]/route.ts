@@ -1,29 +1,28 @@
-// /app/routes/lostItems/[id].ts
-
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 
+//get publicTransportation by id
+export async function GET(request: NextRequest) {
+  await connect();
 
-// GET a publicTransportation by id
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop();
 
   try {
-    await connect();
     if (id) {
-      // const foundItem = await getFoundItemById(id as string);
       const publicTransportation = await TypePublicTransportModel.findById(id);
+      
       if (!publicTransportation) {
         return NextResponse.json(
           { error: "publicTransportation not found" },
           { status: 404 }
         );
       }
-      return NextResponse.json(publicTransportation);
+      return NextResponse.json(
+        { message: "publicTransportation were successfully fetched", data: publicTransportation },
+        { status: 200 }
+      );
     } else {
       return NextResponse.json(
         { error: "Id parameter is missing" },
@@ -39,14 +38,12 @@ export async function GET(
   }
 }
 
-// PUT update publicTransportation by id
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+//update publicTransportation by id
+export async function PUT(req: NextRequest,{ params }: { params: { id: string } }) {
+  await connect();
+
   const { id } = params;
   try {
-    await connect();
     const body = await req.json();
     if (!id) {
       return NextResponse.json(
@@ -54,12 +51,10 @@ export async function PUT(
         { status: 400 }
       );
     }
-
     const updatedPublicTransportation = await TypePublicTransportModel.findByIdAndUpdate(id, body, {
       new: true,
     });
 
-    // const updatedLostItem = await updateLostItemById(id as string, body);
     if (!updatedPublicTransportation) {
       return NextResponse.json(
         { error: "public transportation not found" },
@@ -76,22 +71,18 @@ export async function PUT(
   }
 }
 
-// DELETE publicTransportation by id
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+//delete publicTransportation by id
+export async function DELETE({ params }: { params: { id: string } }) {
+  await connect();
 
+  const { id } = params;
   try {
-    await connect();
     if (!id) {
       return NextResponse.json(
         { error: "Id parameter is missing" },
         { status: 400 }
       );
     }
-    // const deletedLostItem = await deleteLostItemById(id as string);
     const deletedPublicTransportation = await TypePublicTransportModel.deleteOne();
     if (!deletedPublicTransportation) {
       return NextResponse.json(

@@ -1,4 +1,4 @@
-import { LostItem } from "../lostItem";
+import { LostItem } from "../props/lostItem";
 
 export interface LostItemStore {
   currentLostItem: LostItem | null;

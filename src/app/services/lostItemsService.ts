@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LostItem } from "../types/lostItem";
+import { LostItem } from "../types/props/lostItem";
 
 // get all lost items
 export const getLostItems = async () => {

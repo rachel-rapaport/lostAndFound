@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { Category } from '../types/category';
-import { SubCategory } from '../types/subCategory';
+import { Category } from '../types/props/category';
+import { SubCategory } from '../types/props/subCategory';
 import { CategoryStore } from '../types/store/categoryStore';
 
 
