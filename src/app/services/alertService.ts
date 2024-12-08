@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Alert } from "../types/alert";
 
+
 // get all alerts
 export const getAlerts = async () => {
   try {
