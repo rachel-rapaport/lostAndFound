@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function GET(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     try {
       // סימולציה של בקשה לנתונים (למשל ממסד נתונים או API חיצוני)
