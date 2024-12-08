@@ -4,7 +4,6 @@ import FoundItemModel from "@/app/lib/models/foundItem";
 import SubCategoryModel from "@/app/lib/models/subCategory";
 import UserModel from "@/app/lib/models/user";
 import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
-import mongoose from "mongoose";
 
 //get all found items
 export async function GET() {

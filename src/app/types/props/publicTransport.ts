@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import { TypePublicTransport } from "./typePublicTransport";
 
 export interface PublicTransport {

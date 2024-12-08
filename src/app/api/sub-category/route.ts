@@ -1,7 +1,6 @@
 import connect from "@/app/lib/db/mongo";
 import CategoryModel from "@/app/lib/models/category";
 import SubCategoryModel from "@/app/lib/models/subCategory";
-import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 //get all suc categories
