@@ -1,21 +1,16 @@
-// /app/routes/lostItems/[id].ts
-
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import ColorModel from "@/app/lib/models/color";
 
+//get color by id
+export async function GET(request: NextRequest) {
+  await connect();
 
-// GET a color by id
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
 
   try {
-    await connect();
     if (id) {
-      // const foundItem = await getFoundItemById(id as string);
       const color = await ColorModel.findById(id);
       if (!color) {
         return NextResponse.json(
@@ -23,7 +18,10 @@ export async function GET(
           { status: 404 }
         );
       }
-      return NextResponse.json(color);
+      return NextResponse.json(
+        { message: "color were successfully fetched", data: color },
+        { status: 200 }
+      );
     } else {
       return NextResponse.json(
         { error: "Id parameter is missing" },
@@ -31,7 +29,7 @@ export async function GET(
       );
     }
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return NextResponse.json(
       { error: "Failed to fetch color" },
       { status: 500 }
@@ -39,15 +37,14 @@ export async function GET(
   }
 }
 
-// PUT update color by id
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+//update color by id
+export async function PUT(request: NextRequest) {
+  await connect();
+
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
   try {
-    await connect();
-    const body = await req.json();
+    const body = await request.json();
     if (!id) {
       return NextResponse.json(
         { error: "Id parameter is missing" },
@@ -59,7 +56,6 @@ export async function PUT(
       new: true,
     });
 
-    // const updatedLostItem = await updateLostItemById(id as string, body);
     if (!updatedColor) {
       return NextResponse.json(
         { error: "color not found" },
@@ -76,22 +72,19 @@ export async function PUT(
   }
 }
 
-// DELETE color by id
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+// delete color by id
+export async function DELETE(request: NextRequest) {
+  await connect();
 
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
   try {
-    await connect();
     if (!id) {
       return NextResponse.json(
         { error: "Id parameter is missing" },
         { status: 400 }
       );
     }
-    // const deletedLostItem = await deleteLostItemById(id as string);
     const deletedColor = await ColorModel.deleteOne();
     if (!deletedColor) {
       return NextResponse.json(
@@ -99,6 +92,7 @@ export async function DELETE(
         { status: 404 }
       );
     }
+
     return NextResponse.json(deletedColor, { status: 200 });
   } catch (error) {
     console.error(error);

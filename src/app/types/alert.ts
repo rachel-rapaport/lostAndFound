@@ -4,3 +4,4 @@ export interface Alert{
     userId: string;
     read: boolean;
 } 
+

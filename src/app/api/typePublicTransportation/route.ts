@@ -1,18 +1,17 @@
-// /app/routes/lostItems.ts
-
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 
-
-// GET all public transportations
+//get all public transportations
 export async function GET() {
   try {
     await connect();
-    // const lostItems = await getLostItems();
-    const publicTransportations = await TypePublicTransportModel.find()
 
-    return NextResponse.json(publicTransportations);
+    const publicTransportations = await TypePublicTransportModel.find()
+    return NextResponse.json(
+      { message: "publicTransportations were successfully fetched", data: publicTransportations },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -22,15 +21,14 @@ export async function GET() {
   }
 }
 
-// POST new Public Transportation
+//create new Public Transportation
 export async function POST(req: NextRequest) {
   try {
     await connect();
-    const body = await req.json();
-    console.log(body);
-    const newPublicTransportation = await TypePublicTransportModel.create({ typePublicTransport: body });
 
-    // const newLostItem = await createLostItem(body);
+    const body = await req.json();
+    const newPublicTransportation = await TypePublicTransportModel.create(body);
+
     return NextResponse.json(newPublicTransportation, { status: 201 });
   } catch (error) {
     console.error(error);

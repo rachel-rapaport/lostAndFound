@@ -13,7 +13,7 @@ const Homepage = () => {
         <button className="btn" onClick={() => router.push("/report-found")}>
           מצאתי אבידה
         </button>
-        <button className="btn" onClick={() => router.push("/###")}>
+        <button className="btn" onClick={() => router.push("/report-found")}>
           אבד לי משהו
         </button>
       </div>

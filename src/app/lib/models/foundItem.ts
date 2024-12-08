@@ -1,13 +1,22 @@
 import mongoose, { Model, Schema } from "mongoose"
-import { FoundItemForSchema } from "@/app/types/schema/foundItemForSchema";
-import FoundItemSchema from "../schema/foundItemSchema";
+import { FoundItem } from "@/app/types/props/foundItem";
+import PostionSchema from "../schema/postionSchema";
+import QuestionSchema from "../schema/questionSchema";
+import PublicTransportSchema from "../schema/publicTransportSchema";
 
-const FoundItemSchemaForModel: Schema<FoundItemForSchema> = new Schema({
-    foundItem: { type: FoundItemSchema, required: true, _id: false },
+const FoundItemSchema: Schema<FoundItem> = new Schema({
+    subCategoryId: { type: mongoose.Schema.Types.ObjectId, ref: "SubCatrgoy", required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    colorId: { type: mongoose.Schema.Types.ObjectId, ref: "Color", required: true },
+    postion: { type: PostionSchema , _id: false},
+    publicTransport: { type: PublicTransportSchema , _id: false },
+    image: { type: String },
+    descripition: { type: String },
+    questions: [{ type: QuestionSchema, required: true, _id: false }],
 });
 
-const FoundItemModel: Model<FoundItemForSchema> =
+const FoundItemModel: Model<FoundItem> =
     mongoose.models.FoundItem ||
-    mongoose.model<FoundItemForSchema>("FoundItem", FoundItemSchemaForModel);
+    mongoose.model<FoundItem>("FoundItem", FoundItemSchema);
 
 export default FoundItemModel;

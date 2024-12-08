@@ -1,4 +1,4 @@
-import { User } from "../user";
+import { User } from "../props/user";
 
 export interface UserStore{
     curentUser: User | null;

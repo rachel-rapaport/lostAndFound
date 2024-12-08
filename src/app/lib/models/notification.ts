@@ -1,13 +1,14 @@
-import { NotificationForSchema } from "@/app/types/schema/notificationForSchema";
+import { Alert } from "@/app/types/props/alert";
 import mongoose, { Model, Schema } from "mongoose";
-import NotificationSchema from "../schema/notificationSchema";
 
-const NotificationSchemaForModel: Schema<NotificationForSchema> = new Schema({
-    notification: { type: NotificationSchema, required: true, _id: false },
+const AlertSchema: Schema<Alert> = new Schema({
+    message: { type: String, required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    read: { type: Boolean, required: true },
 });
 
-const NotificationModel: Model<NotificationForSchema> =
-    mongoose.models.Notification ||
-    mongoose.model<NotificationForSchema>("Notification", NotificationSchemaForModel);
+const AlertModel: Model<Alert> =
+    mongoose.models.Alert ||
+    mongoose.model<Alert>("Alert", AlertSchema);
 
-export default NotificationModel;
+export default AlertModel;

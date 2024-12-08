@@ -1,13 +1,19 @@
-import { UserForSchema } from "@/app/types/schema/userForSchema";
+import { User } from "@/app/types/props/user";
 import mongoose, { Model, Schema } from "mongoose";
-import UserSchema from "../schema/userSchema";
 
-const UserSchemaForModel: Schema<UserForSchema> = new Schema({
-    user: { type: UserSchema, required: true, _id: false },
+const UserSchema: Schema<User> = new Schema({
+    fullName: { type: String, required: true },
+    email: { type: String,unique:true, required: true },
+    password: { type: String, required: true },
+    phone: { type: String, required: true },
+    lostItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "LostItem" }],
+    foundItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FounfItem" }],
+    blockedItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FounfItem" }],
+    alerts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Alert" }]
 });
 
-const UserModel: Model<UserForSchema> =
+const UserModel: Model<User> =
     mongoose.models.User ||
-    mongoose.model<UserForSchema>("User", UserSchemaForModel);
+    mongoose.model<User>("User", UserSchema);
 
 export default UserModel;
