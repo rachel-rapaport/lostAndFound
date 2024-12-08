@@ -89,12 +89,13 @@ export async function GET(request: NextRequest) {
 }
 
 //update user by id
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest) {
   await connect();
 
-  const { id } = params;
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
   try {
-    const body = await req.json();
+    const body = await request.json();
     if (!id) {
       return NextResponse.json(
         { error: "Id parameter is missing" },
@@ -119,10 +120,11 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 //delete user by id
-export async function DELETE({ params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest) {
   await connect();
 
-  const { id } = params;
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
 
   try {
     if (!id) {

@@ -116,15 +116,16 @@ export async function GET(request: NextRequest) {
 }
 
 //update lost item by id
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest) {
   await connect();
 
-  const { id } = params;
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
   try {
     if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
-    const body = await req.json();
+    const body = await request.json();
     // Validate that the sub-category cat exists in the database
     if (!await SubCategoryModel.exists({ _id: body.subCategoryId })) {
       return NextResponse.json({ message: "Invalid subCategoryId: sub category does not exist" }, { status: 400 });
@@ -164,10 +165,11 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 //delete lost item by id
-export async function DELETE({ params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest) {
 
   await connect();
-  const { id } = params;
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
   try {
     if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
