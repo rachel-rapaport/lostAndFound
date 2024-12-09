@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
+
     //populate data from nested objects
     const data = await CategoryModel.aggregate([
       {
@@ -31,7 +32,6 @@ export async function GET(request: NextRequest) {
         }
       }
     ]);
-
 
     if (!data) {
       return NextResponse.json(
@@ -63,9 +63,11 @@ export async function PUT(request: NextRequest) {
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
+
     if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
+
     const { title } = await request.json();
     const categoryToUpdate = await CategoryModel.findByIdAndUpdate(
       id,
@@ -95,10 +97,13 @@ export async function DELETE(request: NextRequest) {
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
+
     if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
+
     const categoryToDelete = await CategoryModel.findByIdAndDelete(id);
+    
     if (!categoryToDelete) {
       return NextResponse.json(
         { message: "Category is not found" },
