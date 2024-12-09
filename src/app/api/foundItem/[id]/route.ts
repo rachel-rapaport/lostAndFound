@@ -6,6 +6,7 @@ import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 import UserModel from "@/app/lib/models/user";
 import mongoose from "mongoose";
 
+
 //get found item by id
 export async function GET(request: NextRequest) {
   await connect();

@@ -5,6 +5,7 @@ import SubCategoryModel from "@/app/lib/models/subCategory";
 import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 import UserModel from "@/app/lib/models/user";
 
+
 //get all lost items
 export async function GET() {
   try {
@@ -12,7 +13,6 @@ export async function GET() {
 
     //populate data from nested objects
     const data = await LostItemModel.aggregate([
-
       {
         $lookup: {
           from: 'users',

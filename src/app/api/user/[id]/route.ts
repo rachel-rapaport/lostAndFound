@@ -6,6 +6,7 @@ import LostItemModel from "@/app/lib/models/lostItem";
 import AlertModel from "@/app/lib/models/notification";
 import mongoose from "mongoose";
 
+
 //get user by id
 export async function GET(request: NextRequest) {
   await connect();
@@ -158,7 +159,6 @@ export async function DELETE(request: NextRequest) {
         await AlertModel.findByIdAndDelete(alert._id);
       }
     }
-
 
     return NextResponse.json(deletedUser, { status: 200 });
   } catch (error) {
