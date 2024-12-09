@@ -70,8 +70,11 @@ export async function GET(request: NextRequest) {
         {
           $project: {
             _id: 1,
-            'subCategoryId.title': 1,
-            'colorId.name': 1,
+            subCategoryId:{
+              _id:'$subCategoryId._id',
+              title:'$subCategoryId.title'
+            },
+            'colorId': 1,
             'userId._id': 1,
             'userId.fullName': 1,
             'userId.email': 1,
@@ -135,7 +138,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ message: "Invalid userId: user does not exist" }, { status: 400 });
     }
     // Validate that the public transport type exists in the database
-    if (!await TypePublicTransportModel.exists({ _id: body.publicTransport.typePublicTransportId })) {
+    if (body.publicTransport &&!await TypePublicTransportModel.exists({ _id: body.publicTransport.typePublicTransportId })) {
       return NextResponse.json({ message: "Invalid userId: user does not exist" }, { status: 400 });
     }
 
