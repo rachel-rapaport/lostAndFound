@@ -27,7 +27,7 @@ const LoginForm = () => {
         console.log("No valid token:", error.response?.data?.message);
         router.replace("/login"); // Redirect to login if invalid or missing
       });
-  }, []);
+  }, [router]);
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
