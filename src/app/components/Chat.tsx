@@ -51,7 +51,7 @@ const Chat: React.FC<ChatProps> = ({ roomId }) => {
         onChange={(e) => setNewMessage(e.target.value)} // עדכון תוכן ההודעה
         placeholder="הקלד הודעה"
       />
-      <button onClick={sendMessage}>שלח</button> // כפתור לשליחת הודעה
+      <button onClick={sendMessage}>שלח</button> {/* כפתור לשליחת הודעה */}
     </div>
   );
 };
