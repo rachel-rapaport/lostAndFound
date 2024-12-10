@@ -9,7 +9,9 @@ export const initiateChat = async (currentUser: User, otherUser: User) => {
 
   const roomId = await createChatRoom(String(currentUser._id), String(otherUser._id));
 
+
   const chatRoomLink = `${baseUrl}/chat/${roomId}`;
+
 
   
   //SEND EMAIL
