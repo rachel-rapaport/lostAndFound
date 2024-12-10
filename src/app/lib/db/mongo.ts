@@ -14,7 +14,7 @@ const connect = async () => {
     return;
   }
   try {
-    const db = await mongoose.connect(MONGODB_URI);
+     await mongoose.connect(MONGODB_URI);
     // If readyState is equal to 1, it indicates that the connection is active
     isConnected = db.connection.readyState === 1;
     console.log("MongoDB connected successfully");
