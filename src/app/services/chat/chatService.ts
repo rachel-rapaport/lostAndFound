@@ -2,7 +2,7 @@ import { User } from '@/app/types/props/user';
 import { createChatRoom } from './chatFirebase';
 import axios from 'axios';
 
-const baseUrl = process.env.BASE_URL
+
 
 //initiateChat and send email
 export const initiateChat = async (currentUser: User, otherUser: User) => {
@@ -10,7 +10,7 @@ export const initiateChat = async (currentUser: User, otherUser: User) => {
   const roomId = await createChatRoom(String(currentUser._id), String(otherUser._id));
 
 
-  const chatRoomLink = `${baseUrl}/chat/${roomId}`;
+  const chatRoomLink = `${process.env.BASE_URL}/chat/${roomId}`;
 
 
   
