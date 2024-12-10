@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Color } from "../types/props/color";
+import { Color } from "../../types/props/color";
 
 // get all colors
 export const getColors = async () => {
