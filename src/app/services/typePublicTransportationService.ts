@@ -4,7 +4,7 @@ import { TypePublicTransport } from "../types/props/typePublicTransport";
 // get all types of public transporations
 export const getTypePublicTransportations = async () => {
   try {
-    const response = await axios.get("/api/publicTransportation",{
+    const response = await axios.get("/api/typePublicTransportation",{
       withCredentials: true,
     });
     console.log(response);
@@ -18,7 +18,7 @@ export const getTypePublicTransportations = async () => {
 // get type of public transporation by id
 export const getTypePublicTransportationById = async (id: string) => {
   try {
-    const response = await axios.get(`/api/publicTransportation/${id}`);
+    const response = await axios.get(`/api/typePublicTransportation/${id}`);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -30,7 +30,7 @@ export const getTypePublicTransportationById = async (id: string) => {
 // create new type of public transporation
 export const createTypePublicTransportation = async (typePublicTransportation: TypePublicTransport) => {
   try {
-    const response = await axios.post("/api/publicTransportation", typePublicTransportation);
+    const response = await axios.post("/api/typePublicTransportation", typePublicTransportation);
     return response.data;
   } catch (error) {
     console.log("Error creating type of public transporation:", error);
@@ -41,7 +41,7 @@ export const createTypePublicTransportation = async (typePublicTransportation: T
 // update type of public transporation by id
 export const updateTypePublicTransportationById = async (id: string, typePublicTransportation: TypePublicTransport) => {
   try {
-    const response = await axios.put(`/api/publicTransportation/${id}`, typePublicTransportation);
+    const response = await axios.put(`/api/typePublicTransportation/${id}`, typePublicTransportation);
     return response.data;
   } catch (error) {
     console.log("Error updating type of public transporation:", error);
@@ -53,7 +53,7 @@ export const updateTypePublicTransportationById = async (id: string, typePublicT
 // delete type of public transporation by id
 export const deleteTypePublicTransportationById = async (id: string) => {
   try {
-    const response = await axios.delete(`/api/publicTransportation/${id}`);
+    const response = await axios.delete(`/api/typePublicTransportation/${id}`);
     return response.data;
   } catch (error) {
     console.log("Error deleting type of public transporation", error);

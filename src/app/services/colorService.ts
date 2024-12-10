@@ -30,7 +30,7 @@ export const getColorById = async (id: string) => {
 };
 
 // create new color
-export const createRecipe = async (color: Color) => {
+export const createColor = async (color: Color) => {
   try {
     const response = await axios.post("/api/color", color);
     return response.data;
