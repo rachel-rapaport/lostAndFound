@@ -8,10 +8,6 @@ export async function GET() {
     const d = await fs.readFile(filePath, "utf-8");
     const data = JSON.parse(d);
 
-    // after deployment, change to those line and enter the right vercel url
-    // const response = await fetch('https://your-app-name.vercel.app/cities.json');
-    // const data = await response.json();
-
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(

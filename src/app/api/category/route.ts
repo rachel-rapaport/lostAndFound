@@ -2,7 +2,6 @@ import connect from "@/app/lib/db/mongo";
 import CategoryModel from "@/app/lib/models/category";
 import { NextRequest, NextResponse } from "next/server";
 
-
 //get all category
 export async function GET() {
   try {
