@@ -27,6 +27,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     await connect();
+    
     const body = await req.json();
     const newColor = await ColorModel.create(body);
 

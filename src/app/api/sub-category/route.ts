@@ -3,10 +3,12 @@ import CategoryModel from "@/app/lib/models/category";
 import SubCategoryModel from "@/app/lib/models/subCategory";
 import { NextRequest, NextResponse } from "next/server";
 
+
 //get all suc categories
 export async function GET() {
     try {
         await connect();
+
         //populate data from nested objects
         const data = await SubCategoryModel.aggregate([
             {
@@ -46,8 +48,6 @@ export async function GET() {
                 }
             }
         ]);
-
-
 
         return NextResponse.json(
             { message: "Sub categories were successfully fetched", data: data },

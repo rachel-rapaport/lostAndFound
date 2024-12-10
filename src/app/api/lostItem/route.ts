@@ -5,6 +5,7 @@ import SubCategoryModel from "@/app/lib/models/subCategory";
 import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 import UserModel from "@/app/lib/models/user";
 
+
 //get all lost items
 export async function GET() {
   try {
@@ -12,7 +13,6 @@ export async function GET() {
 
     //populate data from nested objects
     const data = await LostItemModel.aggregate([
-
       {
         $lookup: {
           from: 'users',
@@ -64,8 +64,11 @@ export async function GET() {
       {
         $project: {
           _id: 1,
-          'subCategoryId.title': 1,
-          'colorId.name': 1,
+          subCategoryId:{
+            _id:'$subCategoryId._id',
+            title:'$subCategoryId.title'
+          },
+          'colorId': 1,
           'userId._id': 1,
           'userId.fullName': 1,
           'userId.email': 1,
@@ -113,7 +116,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Invalid userId: user does not exist" }, { status: 400 });
     }
     // Validate that the public transport type exists in the database
-    if (!await TypePublicTransportModel.exists({ _id: body.publicTransport.typePublicTransportId })) {
+    if (body.publicTransport &&!await TypePublicTransportModel.exists({ _id: body.publicTransport.typePublicTransportId })) {
       return NextResponse.json({ message: "Invalid userId: user does not exist" }, { status: 400 });
     }
     const newLostItem = await LostItemModel.create(body);

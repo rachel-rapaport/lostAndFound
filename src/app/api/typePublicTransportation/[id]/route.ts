@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 
+
 //get publicTransportation by id
 export async function GET(request: NextRequest) {
   await connect();
