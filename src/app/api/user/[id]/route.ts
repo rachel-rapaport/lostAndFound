@@ -140,21 +140,21 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "user not found" }, { status: 404 });
     }
     // Deletes found items of the user being deleted
-    if (deletedUser.foundItems.length > 0) {
+    if (deletedUser.foundItems&& deletedUser.foundItems.length > 0) {
       for (const foundItem of deletedUser.foundItems) {
         await FoundItemModel.findByIdAndDelete(foundItem._id);
       }
     }
 
     // Deletes lost items of the user being deleted
-    if (deletedUser.lostItems.length > 0) {
+    if (deletedUser.lostItems&&deletedUser.lostItems.length > 0) {
       for (const lostItem of deletedUser.lostItems) {
         await LostItemModel.findByIdAndDelete(lostItem._id);
       }
     }
 
     // Deletes alerts of the user being deleted
-    if (deletedUser.alerts.length > 0) {
+    if (deletedUser.alerts&&deletedUser.alerts.length > 0) {
       for (const alert of deletedUser.alerts) {
         await AlertModel.findByIdAndDelete(alert._id);
       }

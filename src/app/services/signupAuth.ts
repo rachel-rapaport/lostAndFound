@@ -1,5 +1,4 @@
 import axios from "axios";
-import { User } from "../types/props/user";
 export async function signupAuthenticationCookies(
   email: string,
   phone: string,

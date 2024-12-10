@@ -1,4 +1,3 @@
-import LoginForm from "@/app/components/Login";
 import React from "react";
 
 const page = () => {
