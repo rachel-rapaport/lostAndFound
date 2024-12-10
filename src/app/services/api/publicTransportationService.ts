@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TypePublicTransport } from "../types/props/typePublicTransport";
+import { TypePublicTransport } from "../../types/props/typePublicTransport";
 
 // get all types of public transporations
 export const getTypePublicTransportations = async () => {
