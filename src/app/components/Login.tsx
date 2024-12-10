@@ -14,6 +14,8 @@ const LoginForm = () => {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [resetEmail,setResetEmail] = useState("")
 
   useEffect(() => {
     //  Make an API request to check if the token is valid
@@ -33,6 +35,12 @@ const LoginForm = () => {
     setIsLogin(!isLogin);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLogin) {
@@ -96,7 +104,11 @@ const LoginForm = () => {
       setError("An unexpected error occurred. Please try again.");
     }
   };
-
+  const handleResetPassword = () => {
+    console.log("Password reset email sent to:", email);
+    setResetEmail("")
+    closeModal();
+  };
   return (
     <div className="bg-slate-300 space-y-12 w-full h-[400px] text-black p-8">
       <div className="flex justify-center  space-x-4 mb-6">
@@ -171,10 +183,49 @@ const LoginForm = () => {
             type="password"
           />
         </div>
+        {isLogin?(<>       <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                openModal();
+              }}
+              className="text-blue-500 underline"
+            >
+              שכחת סיסמה?
+            </a></>):(<></>)}
         <button className="w-full bg-green-600 text-white py-2 mt-4 rounded">
           {isLogin ? "התחברות" : "הרשמה"}
         </button>
         {error && <p className="text-red-700 mt-4">{error}</p>}
+
+        {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-md w-1/3 text-center">
+            <h2 className="text-lg font-bold mb-4">שחזור סיסמה</h2>
+            <p className="mb-4">אנא הזן את הדוא"ל שלך לקבלת קישור לאיפוס סיסמה:</p>
+            <input
+              type="email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className="border border-gray-300 rounded w-full p-2 mb-4"
+              placeholder="דוא״ל"
+            />
+            <button
+              onClick={handleResetPassword}
+              className="bg-green-600 text-white px-4 py-2 rounded mr-2"
+            >
+              שלח
+            </button>
+            <button
+              onClick={closeModal}
+              className="bg-red-500 text-white px-4 py-2 rounded"
+            >
+              בטל
+            </button>
+          </div>
+        </div>
+      )}
       </form>
     </div>
   );
