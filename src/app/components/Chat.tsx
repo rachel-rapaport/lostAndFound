@@ -39,7 +39,7 @@ const Chat: React.FC<ChatProps> = ({ roomId }) => {
 
   return (
     <div>
-      <h2>חדר צ'אט עם חדר {roomId}</h2>
+      <h2>חדר צאט עם חדר {roomId}</h2>
       <div>
         {messages.map((msg, index) => (
           <p key={index}>{msg.text}</p> // הצגת כל הודעה

@@ -57,7 +57,7 @@ const Homepage = () => {
           אבד לי משהו
         </button>
       </div>
-      <button className="btn" onClick={handleStartChat}>התחל צ'אט</button>
+      <button className="btn" onClick={handleStartChat}>התחל צאט</button>
     </>
   );
 };
