@@ -8,6 +8,8 @@ import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 
+
+
 //get sub category by id
 export async function GET(request: NextRequest) {
     try {
@@ -59,9 +61,11 @@ export async function GET(request: NextRequest) {
             }
         ]);
 
+
         if (!data) {
             return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
         }
+
 
         return NextResponse.json({ message: "Sub category was successfully fetched", data: data }, { status: 200 });
     }
@@ -79,6 +83,7 @@ export async function PUT(request: NextRequest) {
         const url = new URL(request.url);
         const id = url.pathname.split('/').pop();
 
+
         if (!id) {
             return NextResponse.json({ message: "ID is missing" }, { status: 400 })
         }
@@ -93,6 +98,7 @@ export async function PUT(request: NextRequest) {
         if (!subCategoryToUpdate) {
             return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
         }
+
 
         return NextResponse.json({ message: "Sub category was updated successfully", data: subCategoryToUpdate },
             { status: 200 });
@@ -114,6 +120,7 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ message: "ID is missing" }, { status: 400 })
         }
 
+
         const subCategoryToDeleteBefore = await subCategoryModel.findById(id);
         if (subCategoryToDeleteBefore) {
             // Removes sub category ID from the category's subcategory list
@@ -128,7 +135,7 @@ export async function DELETE(request: NextRequest) {
         if (!subCategoryToDelete) {
             return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
         }
-        
+
         // Deletes found and lost items of the sub category being deleted
         await FoundItemModel.deleteMany({ categoryId: subCategoryToDelete._id });
         await LostItemModel.deleteMany({ categoryId: subCategoryToDelete._id });

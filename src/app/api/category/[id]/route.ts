@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
       }
     ]);
 
+
     if (!data) {
       return NextResponse.json(
         { message: "Category is not found" },
@@ -67,6 +68,7 @@ export async function PUT(request: NextRequest) {
     if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
+
 
     const { title } = await request.json();
     const categoryToUpdate = await CategoryModel.findByIdAndUpdate(
@@ -104,6 +106,7 @@ export async function DELETE(request: NextRequest) {
 
     const categoryToDelete = await CategoryModel.findByIdAndDelete(id);
     
+
     if (!categoryToDelete) {
       return NextResponse.json(
         { message: "Category is not found" },
@@ -130,4 +133,6 @@ export async function DELETE(request: NextRequest) {
       { status: 500 }
     );
   }
+
 }
+

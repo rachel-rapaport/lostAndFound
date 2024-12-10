@@ -12,35 +12,35 @@ export async function GET() {
     const data = await UserModel.aggregate([
       {
         $lookup: {
-          from: 'lostitems',
-          localField: 'lostItems',
-          foreignField: '_id',
-          as: 'lostItemsDetails'
-        }
+          from: "lostitems",
+          localField: "lostItems",
+          foreignField: "_id",
+          as: "lostItemsDetails",
+        },
       },
       {
         $lookup: {
-          from: 'founditems',
-          localField: 'foundItems',
-          foreignField: '_id',
-          as: 'foundItemsDetails'
-        }
+          from: "founditems",
+          localField: "foundItems",
+          foreignField: "_id",
+          as: "foundItemsDetails",
+        },
       },
       {
         $lookup: {
-          from: 'blockeditems',
-          localField: 'blockedItems',
-          foreignField: '_id',
-          as: 'blockedItemsDetails'
-        }
+          from: "blockeditems",
+          localField: "blockedItems",
+          foreignField: "_id",
+          as: "blockedItemsDetails",
+        },
       },
       {
         $lookup: {
-          from: 'alerts',
-          localField: 'alerts',
-          foreignField: '_id',
-          as: 'alertsDetails'
-        }
+          from: "alerts",
+          localField: "alerts",
+          foreignField: "_id",
+          as: "alertsDetails",
+        },
       },
       {
         $project: {
@@ -52,9 +52,9 @@ export async function GET() {
           lostItemsDetails: 1,
           foundItemsDetails: 1,
           blockedItemsDetails: 1,
-          alertsDetails: 1
-        }
-      }
+          alertsDetails: 1,
+        },
+      },
     ]);
     return NextResponse.json(
       { message: "Sub users were successfully fetched", data: data },
@@ -72,6 +72,8 @@ export async function GET() {
 //create new user
 export async function POST(req: NextRequest) {
   try {
+    console.log("post user hi");
+
     await connect();
 
     const body = await req.json();
