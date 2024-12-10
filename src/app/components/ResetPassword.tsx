@@ -1,11 +1,38 @@
+// Form to reset the user account password- get and and upadte
 "use client";
-import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { getUserByEmail, updateUserById } from "../services/userService";
+import { User } from "../types/props/user";
 
 export const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [user, setUser] = useState<User | null>(null);
   const [success, setSuccess] = useState("");
+
+  // email params - dynamic route
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+
+  // get the user by email 
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (email) {
+        try {
+          const response = await getUserByEmail(email);
+          setUser(response);
+        } catch (err) {
+          setError("המשתמש לא נמצא. וודא שהקישור תקין.");
+        }
+      } else {
+        setError("הירשם תחילה לאתר.");
+      }
+    };
+
+    fetchUser();
+  }, [email]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,21 +43,26 @@ export const ResetPassword = () => {
       return;
     }
 
-    if (password.length < 8) {
-      setError("הסיסמה חייבת להיות לפחות 8 תווים.");
+    if (!user || !user._id) {
+      setError("המשתמש לא נמצא או נתוני המשתמש לא חוקיים.");
       return;
     }
 
     try {
-      // Example: Send the password to the server for reset
-      console.log("Resetting password:", password);
+      // Update user password
+      const updatedUser = await updateUserById(user._id.toString(), {
+        ...user,
+        password,
+      });
 
-      // Simulate successful password reset
+      console.log("Updated User:", updatedUser);
+
       setSuccess("הסיסמה עודכנה בהצלחה.");
       setPassword("");
       setConfirmPassword("");
       setError("");
     } catch (err) {
+      console.error("Error updating password:", err);
       setError("שגיאה בעדכון הסיסמה. נסה שוב.");
     }
   };
@@ -40,7 +72,10 @@ export const ResetPassword = () => {
       <h1 className="text-2xl font-bold mb-4 text-center">איפוס סיסמה</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700"
+          >
             סיסמה חדשה:
           </label>
           <input
@@ -54,7 +89,10 @@ export const ResetPassword = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="confirmPassword"
+            className="block text-sm font-medium text-gray-700"
+          >
             אשר סיסמה חדשה:
           </label>
           <input
