@@ -6,9 +6,13 @@ import { database, ref, onValue, push, set } from '../lib/firebase/firebaseConfi
 interface ChatProps {
   roomId: string; // פרופס של roomId שיתקבל מהדף
 }
+interface Message {
+    text: string;
+    timestamp: number;
+  }
 
 const Chat: React.FC<ChatProps> = ({ roomId }) => {
-  const [messages, setMessages] = useState<any[]>([]); // שומר את ההודעות במצב
+  const [messages, setMessages] = useState<Message[]>([]); // שומר את ההודעות במצב
   const [newMessage, setNewMessage] = useState(''); // שומר את ההודעה החדשה
 
   // פוקנציה שמטפלת בהתחברות ל-Firebase ומביאה את ההודעות
