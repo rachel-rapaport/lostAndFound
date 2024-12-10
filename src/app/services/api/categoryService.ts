@@ -1,7 +1,7 @@
 // import axios from "axios"
 
 import axios from "axios";
-import { Category } from "../types/props/category";
+import { Category } from "../../types/props/category";
 
 // export const getCategories = async () => {
 //     try {

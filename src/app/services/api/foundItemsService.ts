@@ -1,4 +1,4 @@
-import { FoundItem } from "../types/props/foundItem";
+import { FoundItem } from "../../types/props/foundItem";
 import axios from "axios";
 
 // get all found items
