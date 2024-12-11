@@ -1,6 +1,4 @@
 "use client";
-import { Types } from "mongoose";
-import { User } from "../types/props/user";
 import { afterFilter } from "../utils/sendToUser";
 import { initiateChat } from "../utils/chat";
 import { sendEmailToAdmin } from "../services/api/sendEmailService";
