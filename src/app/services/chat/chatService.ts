@@ -12,6 +12,7 @@ export const initiateChat = async (currentUser: User, otherUser: User) => {
 
   const chatRoomLink = `${process.env.NEXT_PUBLIC_BASE_URL}/chat/${roomId}`;
 
+
   
   //SEND EMAIL
   const res = await axios.post("/api/send-email",{
