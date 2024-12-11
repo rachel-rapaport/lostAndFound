@@ -12,6 +12,7 @@ export const ResetPassword = () => {
   const [user, setUser] = useState<User | null>(null);
   const [success, setSuccess] = useState("");
 
+
   // email params - dynamic route
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
