@@ -7,10 +7,9 @@ export async function signupAuthenticationCookies(
 ) {
   try {
     // console.log("in service sign up", email, 'password',password, fullName, 'phone',phone);
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
     const response = await axios.post(
-      `${baseUrl}/api/signup`, 
+      '/api/signup', 
       {
         email,
         password,
