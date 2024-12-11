@@ -1,10 +1,9 @@
 import axios from "axios";
 
 export const sendEmailTo = async (resetEmail:string, resetUrl:string) => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 const response = await axios.post(
-    `${baseUrl}/api/send-email`,
+    '/api/send-email',
     {
       to: resetEmail,
       subject: "איפוס סיסמה",

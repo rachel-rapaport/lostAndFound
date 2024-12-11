@@ -3,7 +3,6 @@ export async function loginAuthenticationCookies(
   email: string,
   password: string
 ) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
   try {
     console.log("in login service function");
@@ -11,7 +10,7 @@ export async function loginAuthenticationCookies(
     
     
     const response = await axios.post(
-      `${baseUrl}/api/login`,
+      '/api/login',
       {
         email,
         password,

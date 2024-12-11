@@ -3,8 +3,6 @@ import { createTransport } from 'nodemailer';
 
 export async function POST(request: NextRequest) {
     try {
-        console.log("shiraaaa hauihklf");
-        
         const { to, subject, text, htmlContent } = await request.json();
 
         if (!subject || !text) {

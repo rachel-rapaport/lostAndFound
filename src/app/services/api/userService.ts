@@ -30,6 +30,8 @@ export const getUserById = async (id: string) => {
 // get user by email
 export const getUserByEmail = async (email: string) => {
   try {
+    console.log("in server",email);
+    
     const response = await axios.get(`/api/get-user-by-email/${email}`);
     console.log(response.data.user);
     return response.data.user;

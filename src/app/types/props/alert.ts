@@ -5,4 +5,4 @@ export interface Alert{
     message: string;
     userId: Types.ObjectId;
     read: boolean;
-} 
+}
