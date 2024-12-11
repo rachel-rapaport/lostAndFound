@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
         if (!subject || !text) {
             return NextResponse.json(
-                { error: 'Missing required fields: subject, text' },
+                { error: 'Missing email content' },
                 { status: 400 }
             );
         }
