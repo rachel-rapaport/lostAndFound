@@ -23,6 +23,8 @@ export const ResetPassword: React.FC<ResetPasswordProps> = ({ email }) => {
   useEffect(() => {
     const fetchUser = async () => {
       if (email) {
+        console.log('email',email);
+        
         try {
           const response = await getUserByEmail(email);
           setUser(response);
