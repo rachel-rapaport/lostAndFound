@@ -1,26 +1,13 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { Types } from "mongoose";
 import { User } from "../types/props/user";
 import { afterFilter } from "../utils/sendToUser";
 import { initiateChat } from "../utils/chat";
 import { sendEmailToAdmin } from "../services/api/sendEmailService";
 import { getUserById } from "../services/api/userService";
-import { useState } from "react";
 
 const Homepage = () => {
   // דוגמת אובייקטים של משתמשים
-  const user2: User = {
-    _id: new Types.ObjectId(),
-    fullName: "חיים לוי",
-    email: "yossi@example.com",
-    password: "password123",
-    phone: "0501234567",
-    lostItems: [],
-    foundItems: [],
-    blockedItems: [],
-    alerts: [],
-  };
 
   const handleStartChat = async () => {
     try {

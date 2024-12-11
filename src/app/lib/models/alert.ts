@@ -1,5 +1,4 @@
 import { Alert } from "@/app/types/props/alert";
-import { Category } from "@/app/types/props/category";
 import mongoose, { Model, Schema } from "mongoose"
 
 const AlertSchema: Schema<Alert>= new Schema({

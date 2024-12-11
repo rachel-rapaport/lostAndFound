@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
-import FoundItemModel from "@/app/lib/models/foundItem";
-import SubCategoryModel from "@/app/lib/models/subCategory";
-import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 import UserModel from "@/app/lib/models/user";
-import mongoose from "mongoose";
 import AlertModel from "@/app/lib/models/notification";
 
 
