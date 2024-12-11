@@ -3,23 +3,18 @@ import { createTransport } from 'nodemailer';
 
 export async function POST(request: NextRequest) {
     try {
-        const { to, from, subject, text, htmlContent } = await request.json();
-
-        // Option to send an email from the system to the user, and to send an email from the user to the administrator
-        if (!to && !from) {
-            return NextResponse.json(
-                { error: 'There is no sender or recipient email.' },
-                { status: 400 }
-            );
-        }
+        console.log("shiraaaa hauihklf");
+        
+        const { to, subject, text, htmlContent } = await request.json();
 
         if (!subject || !text) {
             return NextResponse.json(
-                { error: 'Missing required fields: subject, text' },
+                { error: 'Missing email content' },
                 { status: 400 }
             );
         }
 
+        // Sets the service name and authentication details
         const transporter = createTransport({
             service: 'gmail',
             auth: {
@@ -33,7 +28,7 @@ export async function POST(request: NextRequest) {
             to: to || process.env.TO_EMAIL,
             subject,
             text,
-            html:htmlContent
+            html: htmlContent
         };
 
         // Sending the email
