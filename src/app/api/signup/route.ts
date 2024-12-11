@@ -6,9 +6,10 @@ import axios from "axios";
 // import { createUser } from "@/app/services/userService";
 
 export async function POST(request: NextRequest) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
   // Add CORS headers
   const origin = request.headers.get("origin");
-  const allowedOrigins = ["http://localhost:3000"]; 
+  const allowedOrigins = [baseUrl]; 
   if (origin && !allowedOrigins.includes(origin)) {
     return NextResponse.json(
       { message: "Origin not allowed" },
@@ -47,10 +48,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { message: "Email already in use" },
         { status: 400 }
-      );
+      ); 
     }
 
-    const response = await axios.post("http://localhost:3000/api/user", {
+    const response = await axios.post(`${baseUrl}/api/user`, {
       fullName,
       email,
       password,

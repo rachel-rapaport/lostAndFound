@@ -3,10 +3,12 @@ import jwt from "jsonwebtoken";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+
 export async function POST(request: NextRequest) {
   // Add CORS headers
   const origin = request.headers.get("origin");
-  const allowedOrigins = ["http://localhost:3000"]; 
+  const allowedOrigins = [baseUrl]; 
   if (origin && !allowedOrigins.includes(origin)) {
     return NextResponse.json(
       { message: "Origin not allowed" },

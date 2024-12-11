@@ -18,10 +18,12 @@ const LoginForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+
   useEffect(() => {
     //  Make an API request to check if the token is valid
     axios
-      .get("/api/check-token")
+      .get(`${baseUrl}/api/check-token`)
       .then((response) => {
         console.log("Token is valid:", response.data);
         router.replace("/home"); // Redirect to home if valid
@@ -30,7 +32,7 @@ const LoginForm = () => {
         console.log("No valid token:", error.response?.data?.message);
         router.replace("/login"); // Redirect to login if invalid or missing
       });
-  }, [router]);
+  }, [router,baseUrl]);
 
   // Log in / Sign up
   const toggleForm = () => {
@@ -114,7 +116,7 @@ const LoginForm = () => {
 
   // handle email sender modal
   const handleResetPassword = async () => {
-    const resetUrl = `http://localhost:3000/reset-password?email=${encodeURIComponent(
+    const resetUrl = `/reset-password?email=${encodeURIComponent(
       resetEmail
     )}`;
 
@@ -227,7 +229,7 @@ const LoginForm = () => {
             <div className="bg-white p-6 rounded shadow-md w-1/3 text-center">
               <h2 className="text-lg font-bold mb-4">שחזור סיסמה</h2>
               <p className="mb-4">
-                אנא הזן את הדוא"ל שלך לקבלת קישור לאיפוס סיסמה:
+                אנא הזן את הדואר האלקטרוני שלך לקבלת קישור לאיפוס סיסמה:
               </p>
               <input
                 type="email"
