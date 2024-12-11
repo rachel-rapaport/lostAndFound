@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User } from "../types/props/user";
+import { User } from "../../types/props/user";
 
 // get all users
 export const getUsers = async () => {

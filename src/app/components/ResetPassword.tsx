@@ -2,7 +2,7 @@
 "use client";
 // import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { getUserByEmail, updateUserById } from "../services/userService";
+import { getUserByEmail, updateUserById } from "../services/api/userService";
 import { User } from "../types/props/user";
 interface ResetPasswordProps {
   email: string;

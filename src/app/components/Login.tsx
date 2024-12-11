@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { loginAuthenticationCookies } from "../services/loginAuth";
 import { signupAuthenticationCookies } from "../services/signupAuth";
 import { sendEmailTo } from "../services/resetPassword";
+import { verifyToken } from "../services/api/tokenService";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -22,18 +23,21 @@ const LoginForm = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   useEffect(() => {
-    //  Make an API request to check if the token is valid
-    axios
-      .get(`${baseUrl}/api/check-token`)
-      .then((response) => {
-        console.log("Token is valid:", response.data);
-        router.replace("/home"); // Redirect to home if valid
-      })
-      .catch((error) => {
-        console.log("No valid token:", error.response?.data?.message);
+    // Make an API request to check if the token is valid
+    const checkToken = async () => {
+      try {
+        const response = await verifyToken();
+        if (response) {
+          router.replace("/home"); // Redirect to home if valid
+        }
+      } catch (error) {
+        console.log(error);
         router.replace("/login"); // Redirect to login if invalid or missing
-      });
-  }, [router, baseUrl]);
+      }
+    };
+
+    checkToken();
+  }, [router]);
 
   // Log in / Sign up
   const toggleForm = () => {
