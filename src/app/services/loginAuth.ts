@@ -8,7 +8,6 @@ export async function loginAuthenticationCookies(
     console.log("in login service function");
     console.log(email,password);
     
-    
     const response = await axios.post(
       '/api/login',
       {

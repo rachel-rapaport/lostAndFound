@@ -66,10 +66,13 @@ export async function POST(request: NextRequest) {
 
       // Set the token in a cookie
       const headers = new Headers();
+      const isProduction = process.env.NODE_ENV === "production";
       headers.append(
         "Set-Cookie",
-        `token=${token}; path=/; HttpOnly; Secure; SameSite=None`
-      );
+        `token=${token}; path=/; HttpOnly; ${
+          isProduction ? "Secure; SameSite=None" : "SameSite=Lax"
+        }`);
+        
 console.log("in api.login success");
 
       return NextResponse.json(
