@@ -19,7 +19,7 @@ const LoginForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   useEffect(() => {
     //  Make an API request to check if the token is valid
@@ -33,19 +33,19 @@ const LoginForm = () => {
         console.log("No valid token:", error.response?.data?.message);
         router.replace("/login"); // Redirect to login if invalid or missing
       });
-  }, [router,baseUrl]);
+  }, [router, baseUrl]);
 
- // Log in / Sign up
+  // Log in / Sign up
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
-    // send reset password email modal
-    const openModal = () => {
-      setIsModalOpen(true);
-    };
-    const closeModal = () => {
-      setIsModalOpen(false);
-    };
+  // send reset password email modal
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +56,7 @@ const LoginForm = () => {
     }
   };
 
-    // handle sign up
+  // handle sign up
   const signUp = async () => {
     try {
       const response = await signupAuthenticationCookies(
@@ -69,7 +69,6 @@ const LoginForm = () => {
         console.log("sign up succsess");
         clearData();
         router.replace("/home");
-
       } else {
         setError("error");
       }
@@ -96,7 +95,6 @@ const LoginForm = () => {
     }
   };
 
-
   // clear form
   const clearData = () => {
     setFullName("");
@@ -118,15 +116,16 @@ const LoginForm = () => {
 
   // handle email sender modal
   const handleResetPassword = async () => {
-    const resetUrl = `/reset-password?email=${encodeURIComponent(
+    const resetUrl = `${baseUrl}/reset-password?email=${encodeURIComponent(
       resetEmail
     )}`;
 
     const sendEmail = await sendEmailTo(resetEmail, resetUrl);
     console.log(sendEmail);
-      console.log("Password reset email sent to:", email);
-      setResetEmail("");
-      closeModal();
+    console.log("Password reset email sent to:", email);
+    setResetEmail("");
+    closeModal();
+    clearData();
   };
 
   return (
@@ -172,7 +171,7 @@ const LoginForm = () => {
           <label htmlFor="email">דואר אלקטרוני:</label>
           <input
             className="w-full"
-            required
+            required={!isModalOpen}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             id="email"
@@ -220,10 +219,14 @@ const LoginForm = () => {
         ) : (
           <></>
         )}
-        <button className="w-full bg-green-600 text-white py-2 mt-4 rounded">
-          {isLogin ? "התחברות" : "הרשמה"}
-        </button>
-        {error && <p className="text-red-700 mt-4">{error}</p>}
+        {!isModalOpen ? (
+          <>
+            <button className="w-full bg-green-600 text-white py-2 mt-4 rounded">
+              {isLogin ? "התחברות" : "הרשמה"}
+            </button>
+            {error && <p className="text-red-700 mt-4">{error}</p>}
+          </>
+        ) : null}
 
         {/* Modal */}
         {isModalOpen && (

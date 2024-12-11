@@ -4,7 +4,7 @@ import { User } from "../types/props/user";
 // get all users
 export const getUsers = async () => {
   try {
-    const response = await axios.get("/api/user",{
+    const response = await axios.get("/api/user", {
       withCredentials: true,
     });
     console.log(response);
@@ -14,8 +14,6 @@ export const getUsers = async () => {
     throw error;
   }
 };
-
-
 
 // get user by id
 export const getUserById = async (id: string) => {
@@ -62,7 +60,6 @@ export const updateUserById = async (id: string, user: User) => {
     throw error;
   }
 };
-
 
 // delete user by id
 export const deleteUserById = async (id: string) => {
