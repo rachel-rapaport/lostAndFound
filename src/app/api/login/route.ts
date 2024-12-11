@@ -3,16 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 // import connect from "@/app/lib/db/mongo";
 // import UserModel from "@/app/lib/models/user";
 
-
-
 export async function POST(request: NextRequest) {
   console.log("in api/login before");
 
   // Add CORS headers
   const origin = request.headers.get("origin");
   const allowedOrigins = [
-    "https://your-vercel-domain.vercel.app",
-    "http://localhost:3000"
+    "https://https://lost-and-found-sage.vercel.app",
+    "http://localhost:3000",
   ];
   if (origin && !allowedOrigins.includes(origin)) {
     return NextResponse.json(
