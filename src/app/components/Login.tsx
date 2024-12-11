@@ -120,9 +120,8 @@ const LoginForm = () => {
       resetEmail
     )}`;
 
-    const sendEmail = await sendEmailTo(resetEmail, resetUrl);
-    console.log(sendEmail);
-    console.log("Password reset email sent to:", email);
+    await sendEmailTo(resetEmail, resetUrl);
+    console.log("Password reset email sent to:", resetEmail);
     setResetEmail("");
     closeModal();
     clearData();
@@ -159,7 +158,7 @@ const LoginForm = () => {
             <label htmlFor="fullname">שם מלא:</label>
             <input
               className="w-full"
-              required
+              required={!isModalOpen}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               id="username"
@@ -183,7 +182,7 @@ const LoginForm = () => {
             <label htmlFor="phone"> טלפון:</label>
             <input
               className="w-full"
-              required
+              required={!isModalOpen}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               id="phone"
@@ -195,7 +194,7 @@ const LoginForm = () => {
           <label htmlFor="password">סיסמה:</label>
           <input
             className="w-full"
-            required
+            required={!isModalOpen}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             id="password"

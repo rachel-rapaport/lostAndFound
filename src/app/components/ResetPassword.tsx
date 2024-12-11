@@ -1,23 +1,25 @@
 // Form to reset the user account password- get and and upadte
 "use client";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { getUserByEmail, updateUserById } from "../services/userService";
 import { User } from "../types/props/user";
+interface ResetPasswordProps {
+  email: string;
+}
 
-export const ResetPassword = () => {
+export const ResetPassword = ({ email }: ResetPasswordProps) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [success, setSuccess] = useState("");
 
+  // // email params - dynamic route
+  // const searchParams = useSearchParams();
+  // const email = searchParams.get("email");
 
-  // email params - dynamic route
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
-
-  // get the user by email 
+  // get the user by email
   useEffect(() => {
     const fetchUser = async () => {
       if (email) {
@@ -27,7 +29,6 @@ export const ResetPassword = () => {
         } catch (err) {
           setError("המשתמש לא נמצא. וודא שהקישור תקין.");
           console.log(err);
-          
         }
       } else {
         setError("הירשם תחילה לאתר.");
@@ -60,7 +61,7 @@ export const ResetPassword = () => {
 
       console.log("Updated User:", updatedUser);
 
-      setSuccess("הסיסמה עודכנה בהצלחה.");
+      setSuccess("הסיסמה עודכנה בהצלחה. ");
       setPassword("");
       setConfirmPassword("");
       setError("");
