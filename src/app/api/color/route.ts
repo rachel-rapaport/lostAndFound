@@ -14,10 +14,10 @@ export async function GET() {
       { message: "colors were successfully fetched", data: colors },
       { status: 200 }
     );
+
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch colors" },
+      { message: "Failed to fetch colors", error: error },
       { status: 500 }
     );
   }
@@ -27,16 +27,19 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     await connect();
-    
+
     const body = await req.json();
     const newColor = await ColorModel.create(body);
 
     // const newLostItem = await createLostItem(body);
-    return NextResponse.json(newColor, { status: 201 });
-  } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to create color" },
+      { message: "color  was successfully created", data: newColor },
+      { status: 201 }
+    );
+
+  } catch (error) {
+    return NextResponse.json(
+      { message: "failes to create color", error: error },
       { status: 500 }
     );
   }

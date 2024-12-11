@@ -6,7 +6,6 @@ import UserModel from "@/app/lib/models/user";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export async function POST(request: NextRequest) {
-  console.log('in api/login before');
   
   // Add CORS headers
   const origin = request.headers.get("origin");

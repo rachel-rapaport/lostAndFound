@@ -6,11 +6,10 @@ import connect from '@/app/lib/db/mongo';
 import { NextResponse } from 'next/server';
 import CategoryModel from '@/app/lib/models/category';
 
-const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 export async function POST() {
     try {
-
         await connect();
         // Reads the content of the Excel file as a binary buffer for further processing
         const fileBuffer = await axios.get(`${baseUrl}/categories.xlsx`, { responseType: 'arraybuffer' });

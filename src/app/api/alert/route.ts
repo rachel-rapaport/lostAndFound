@@ -10,15 +10,15 @@ export async function GET() {
     await connect();
 
     const data = await AlertModel.find()
-   
+
     return NextResponse.json(
       { message: "alerts were successfully fetched", data: data },
       { status: 200 }
     );
+
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch alerts" },
+      { message: "Failed to fetch alerts", error: error },
       { status: 500 }
     );
   }
@@ -33,7 +33,10 @@ export async function POST(req: NextRequest) {
 
     // Validate that the user exists in the database
     if (!await UserModel.exists({ _id: body.userId })) {
-      return NextResponse.json({ message: "Invalid userId: user does not exist" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Invalid userId: user does not exist" },
+        { status: 400 }
+      );
     }
 
     const newAlert = await AlertModel.create(body);
@@ -45,12 +48,15 @@ export async function POST(req: NextRequest) {
       { new: true }
     );
 
-    return NextResponse.json({ message: "alert was created successfully", data: newAlert }, { status: 201 });
-  }
-  catch (error) {
-    return NextResponse.json({
-      message: "Error creating alert",
-      error: error
-    }, { status: 500 });
+    return NextResponse.json(
+      { message: "alert was created successfully", data: newAlert },
+      { status: 201 }
+    );
+
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error creating alert", error: error },
+      { status: 500 }
+    );
   }
 }

@@ -1,8 +1,10 @@
 import axios from "axios"
 
 export const sendEmailToUser = async (userEmail: string, subject: string, text: string) => {
+    console.log("in server",userEmail);
+    
     try {
-        if (userEmail) {
+        if (!userEmail) {
             throw new Error('There is no recipient email');
         }
         const response = await axios.post('/api/send/email',
@@ -19,7 +21,9 @@ export const sendEmailToUser = async (userEmail: string, subject: string, text: 
             throw new Error('Failed to send email: Received status code');
         }
     }
-    catch {
+    catch(error) {
+        console.log(error);
+        
         throw new Error("Failed to send email. Please try again later.");
     }
 }

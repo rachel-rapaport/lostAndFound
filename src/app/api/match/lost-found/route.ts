@@ -2,10 +2,10 @@ import connect from "@/app/lib/db/mongo";
 import { Circle } from "@/app/types/props/circle";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import { checkIfPointInsideCircle} from "@/app/utils/geolocationUtils";
+import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
 import { FoundItem } from "@/app/types/props/foundItem";
 
-const baseUrl = process.env.BASE_URL || "http://localhost:3000"
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export async function POST(request: NextRequest) {
     try {
@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
             const matchesQuery =
                 String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId) &&
                 String(lostItem.subCategoryId._id) === String(foundItem.subCategoryId._id);
-            if (matchesQuery) {
 
+            if (matchesQuery) {
                 if (lostItem.circles) {
                     //filter by location
                     if (foundItem.postion) {
@@ -44,10 +44,16 @@ export async function POST(request: NextRequest) {
             }
         })
 
-        return NextResponse.json({ foundItems: filteredFoundItems });
+        return NextResponse.json(
+            { message: "the filter was successfully", data: filteredFoundItems },
+            { status: 200 }
+        );
+
     } catch (error) {
-        console.error("Error filtering lost items:", error);
-        return NextResponse.json({ error: "Error filtering lost items" }, { status: 500 });
+        return NextResponse.json(
+            { message: "Error filtering lost items", error: error },
+            { status: 500 }
+        );
     }
 }
 

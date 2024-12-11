@@ -2,11 +2,11 @@
 "use client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { loginAuthenticationCookies } from "../services/api/loginAuth";
 import { signupAuthenticationCookies } from "../services/api/signupAuth";
 import { sendEmailTo } from "../services/api/resetPassword";
-import { verifyToken } from "../services/api/tokenService";
+// import { verifyToken } from "../services/api/tokenService";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -22,22 +22,25 @@ const LoginForm = () => {
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-  useEffect(() => {
-    // Make an API request to check if the token is valid
-    const checkToken = async () => {
-      try {
-        const response = await verifyToken();
-        if (response) {
-          router.replace("/home"); // Redirect to home if valid
-        }
-      } catch (error) {
-        console.log(error);
-        router.replace("/login"); // Redirect to login if invalid or missing
-      }
-    };
+  //את הקוד הזה צריך להעביר לMIDDLEAWRE
+  // useEffect(() => {
+  //   // Make an API request to check if the token is valid
+  //   const checkToken = async () => {
+  //     try {
+  //       const response = await verifyToken();
+  //       if (response) {
+  //         router.replace("/home"); // Redirect to home if valid
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //       router.replace("/login"); // Redirect to login if invalid or missing
+  //     }
+  //   };
+  
 
-    checkToken();
-  }, [router]);
+  //   checkToken();
+  // }, [router]);
+  //עד פה
 
   // Log in / Sign up
   const toggleForm = () => {
@@ -109,6 +112,7 @@ const LoginForm = () => {
   };
 
   // error handler
+  //לא הבנתימה זה עושה
   const handleError = (error: unknown, defaultMessage: string) => {
     if (axios.isAxiosError(error) && error.response?.status === 400) {
       setError(error.response.data.message || defaultMessage);

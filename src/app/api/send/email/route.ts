@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createTransport } from 'nodemailer';
 
 export async function POST(request: NextRequest) {
+    console.log("in api");
     try {
+
+        
+        
         const { to, subject, text, htmlContent } = await request.json();
 
         if (!subject || !text) {

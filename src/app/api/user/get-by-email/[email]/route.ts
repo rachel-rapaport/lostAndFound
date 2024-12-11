@@ -1,18 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import UserModel from "@/app/lib/models/user";
 import connect from "@/app/lib/db/mongo";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { email: string } }
-) {
+export async function GET({ params }: { params: { email: string } }) {
   try {
-    console.log("in api/get user by email");
-    
-    await connect(); // Connect to database
+    await connect();
 
     const { email } = params; // Extract email from dynamic route
-    console.log("in api fter",email);
+
     if (!email) {
       return NextResponse.json(
         { error: "Email parameter is required" },
@@ -24,15 +19,21 @@ export async function GET(
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 404 }
+      );
     }
 
     // Return the user data 
-    return NextResponse.json({ user }, { status: 200 });
-  } catch (error) {
-    console.error("Error finding user:", error);
     return NextResponse.json(
-      { error: "Internal server error", details: error },
+      { message: "use was successfully find by email", data: user },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error finding user", error: error },
       { status: 500 }
     );
   }

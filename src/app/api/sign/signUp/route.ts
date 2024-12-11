@@ -5,11 +5,15 @@ import UserModel from "@/app/lib/models/user";
 import axios from "axios";
 // import { createUser } from "@/app/services/userService";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+const vercelUrl = "https://lost-and-found-sage.vercel.app"; // הכתובת ב-Vercel (שנה לפי הצורך)
+
 export async function POST(request: NextRequest) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+
+
   // Add CORS headers
   const origin = request.headers.get("origin");
-  const allowedOrigins = [baseUrl]; 
+  const allowedOrigins = [baseUrl, vercelUrl];  // הוספתי את Vercel כ-Origin מותר
   if (origin && !allowedOrigins.includes(origin)) {
     return NextResponse.json(
       { message: "Origin not allowed" },
