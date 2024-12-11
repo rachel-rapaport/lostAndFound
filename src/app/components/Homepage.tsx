@@ -24,7 +24,7 @@ const Homepage = () => {
 
   const handleStartChat = async () => {
     try {
-      const my = await getUserById(String("675801ac63851d07680e8ebf"));
+      const my = await getUserById(String("6759e531b82b1951ee236b61"));
       console.log(my.data[0].email);
       const  roomId= await initiateChat(my.data[0]);
       alert("חדר צ'אט נוצר, נשלחה הזמנה במייל!");

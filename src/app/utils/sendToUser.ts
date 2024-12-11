@@ -3,6 +3,7 @@ import { createChatRoom } from '@/app/services/chat/chatFirebase';
 import { sendEmailToUser } from '../services/api/sendEmailService';
 import { Types } from 'mongoose';
 import { createAlert } from '../services/api/alertService';
+import { sendPhoneCall } from '../services/api/phoneCallService';
 
 
 
@@ -57,10 +58,12 @@ ${link}`
     switch (status) {
         case "chat":
             sendEmailToUser(user.email, contentChat.subject, contentChat.text);
+            sendPhoneCall(user.phone,contentChat.text)
             createAlert(String(user._id), contentChat.subject)
             break;
         case "foundItem":
             sendEmailToUser(user.email,contentItem.subject,contentItem.text);
+            sendPhoneCall(user.phone,contentItem.text);
             createAlert(String(user._id), contentItem.subject)
             
     }

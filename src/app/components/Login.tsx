@@ -3,9 +3,9 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { loginAuthenticationCookies } from "../services/loginAuth";
-import { signupAuthenticationCookies } from "../services/signupAuth";
-import { sendEmailTo } from "../services/resetPassword";
+import { loginAuthenticationCookies } from "../services/api/loginAuth";
+import { signupAuthenticationCookies } from "../services/api/signupAuth";
+import { sendEmailTo } from "../services/api/resetPassword";
 import { verifyToken } from "../services/api/tokenService";
 
 const LoginForm = () => {
