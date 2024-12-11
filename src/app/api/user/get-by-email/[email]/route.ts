@@ -1,12 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import UserModel from "@/app/lib/models/user";
 import connect from "@/app/lib/db/mongo";
 
-export async function GET({ params }: { params: { email: string } }) {
+export async function GET(request: NextRequest) {
   try {
     await connect();
 
-    const { email } = params; // Extract email from dynamic route
+    const url = new URL(request.url);
+    const email = url.pathname.split('/').pop();
+    
 
     if (!email) {
       return NextResponse.json(
