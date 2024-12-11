@@ -3,7 +3,7 @@ import { createTransport } from 'nodemailer';
 
 export async function POST(request: NextRequest) {
     try {
-        const { to, from, subject, text } = await request.json();
+        const { to, from, subject, text, htmlContent } = await request.json();
 
         // Option to send an email from the system to the user, and to send an email from the user to the administrator
         if (!to && !from) {
@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
             to: to || process.env.TO_EMAIL,
             subject,
             text,
+            html:htmlContent
         };
 
         // Sending the email
