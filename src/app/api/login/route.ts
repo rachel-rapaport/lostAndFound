@@ -6,6 +6,8 @@ import UserModel from "@/app/lib/models/user";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export async function POST(request: NextRequest) {
+  console.log('in api/login before');
+  
   // Add CORS headers
   const origin = request.headers.get("origin");
   const allowedOrigins = [baseUrl]; 
@@ -68,18 +70,23 @@ export async function POST(request: NextRequest) {
         "Set-Cookie",
         `token=${token}; path=/; HttpOnly; Secure; SameSite=None`
       );
+console.log("in api.login success");
 
       return NextResponse.json(
         { message: "Login successful", token },
         { headers }
       );
     } else {
+      console.log('in api/login invalid credentilas');
+
       return NextResponse.json(
         { message: "Invalid credentials" },
         { status: 401 }
       );
     }
   } else {
+    console.log('in api/login user not exist');
+
     return NextResponse.json(
       { message: "User does not exist" },
       { status: 404 }

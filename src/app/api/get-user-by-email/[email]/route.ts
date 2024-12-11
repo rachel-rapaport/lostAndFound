@@ -7,9 +7,12 @@ export async function GET(
   { params }: { params: { email: string } }
 ) {
   try {
+    console.log("in api/get user by email");
+    
     await connect(); // Connect to database
 
     const { email } = params; // Extract email from dynamic route
+    console.log("in api fter",email);
     if (!email) {
       return NextResponse.json(
         { error: "Email parameter is required" },
