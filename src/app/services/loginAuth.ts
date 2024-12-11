@@ -6,7 +6,7 @@ export async function loginAuthenticationCookies(
 
   try {
     console.log("in login service function");
-    console.log(email,password);
+    console.log("in service",email,password);
     
     const response = await axios.post(
       '/api/login',
