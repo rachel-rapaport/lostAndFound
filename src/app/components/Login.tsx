@@ -118,7 +118,7 @@ const LoginForm = () => {
 
   // handle email sender modal
   const handleResetPassword = async () => {
-    const resetUrl = `/reset-password?email=${encodeURIComponent(
+    const resetUrl = `${baseUrl}/reset-password?email=${encodeURIComponent(
       resetEmail
     )}`;
 
