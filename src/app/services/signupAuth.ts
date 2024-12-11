@@ -37,3 +37,4 @@ export async function signupAuthenticationCookies(
     return false;
   }
 }
+
