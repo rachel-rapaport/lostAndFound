@@ -25,6 +25,8 @@ export const ResetPassword = () => {
           setUser(response);
         } catch (err) {
           setError("המשתמש לא נמצא. וודא שהקישור תקין.");
+          console.log(err);
+          
         }
       } else {
         setError("הירשם תחילה לאתר.");
