@@ -1,9 +1,11 @@
+// Login / sign up form - include gorgot password and token
 "use client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { loginAuthenticationCookies } from "../services/loginAuth";
 import { signupAuthenticationCookies } from "../services/signupAuth";
+import { sendEmailTo } from "../services/resetPassword";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -33,9 +35,17 @@ const LoginForm = () => {
       });
   }, [router,baseUrl]);
 
+ // Log in / Sign up
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
+    // send reset password email modal
+    const openModal = () => {
+      setIsModalOpen(true);
+    };
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +56,7 @@ const LoginForm = () => {
     }
   };
 
+    // handle sign up
   const signUp = async () => {
     try {
       const response = await signupAuthenticationCookies(
@@ -67,6 +78,7 @@ const LoginForm = () => {
     }
   };
 
+  // handle log in
   const login = async () => {
     try {
       const response = await loginAuthenticationCookies(email, password);
@@ -84,6 +96,8 @@ const LoginForm = () => {
     }
   };
 
+
+  // clear form
   const clearData = () => {
     setFullName("");
     setEmail("");
@@ -92,6 +106,7 @@ const LoginForm = () => {
     setIsLogin(false);
   };
 
+  // error handler
   const handleError = (error: unknown, defaultMessage: string) => {
     if (axios.isAxiosError(error) && error.response?.status === 400) {
       setError(error.response.data.message || defaultMessage);
@@ -188,6 +203,23 @@ const LoginForm = () => {
             type="password"
           />
         </div>
+        {isLogin ? (
+          <>
+            {" "}
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                openModal();
+              }}
+              className="text-blue-500 underline"
+            >
+              שכחת סיסמה?
+            </a>
+          </>
+        ) : (
+          <></>
+        )}
         <button className="w-full bg-green-600 text-white py-2 mt-4 rounded">
           {isLogin ? "התחברות" : "הרשמה"}
         </button>
