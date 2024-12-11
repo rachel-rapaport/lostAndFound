@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: { email: string } }
 ) {
   try {
-    console.log("in api");
+    console.log("in api/get user by email");
     
     await connect(); // Connect to database
 
