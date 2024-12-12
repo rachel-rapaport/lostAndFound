@@ -5,10 +5,11 @@ import UserModel from "@/app/lib/models/user";
 import { useAppStore } from "@/app/store/store";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+const vercelUrl = useAppStore((state) => state.vercelUrl);
+
 
 export async function POST(request: NextRequest) {
 
-  const vercelUrl = useAppStore((state) => state.vercelUrl);
   
   // Add CORS headers
   const origin = request.headers.get("origin");
