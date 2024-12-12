@@ -5,8 +5,8 @@ import { sendPhoneCall } from '../services/api/phoneCallService';
 
 
 export const afterFilter = (user: User, status: string, link: string) => {
-    console.log("in after",user);
-    
+    console.log("in after", user);
+
     const contentItem = {
         "subject": "נמצא פריט התואם לאבידה שלך – בדוק אותו!",
         "text":
@@ -33,14 +33,14 @@ ${link}`
     switch (status) {
         case "chat":
             sendEmailToUser(user.email, contentChat.subject, contentChat.text);
-            sendPhoneCall(user.phone,contentChat.text)
+            sendPhoneCall(user.phone, contentChat.text)
             createAlert(String(user._id), contentChat.subject)
             break;
         case "foundItem":
-            sendEmailToUser(user.email,contentItem.subject,contentItem.text);
-            sendPhoneCall(user.phone,contentItem.text);
+            sendEmailToUser(user.email, contentItem.subject, contentItem.text);
+            sendPhoneCall(user.phone, contentItem.text);
             createAlert(String(user._id), contentItem.subject)
-            
+
     }
 
 }
