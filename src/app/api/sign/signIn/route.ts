@@ -6,10 +6,14 @@ import UserModel from "@/app/lib/models/user";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export async function POST(request: NextRequest) {
+
+  const protocol = request.headers.get("x-forwarded-proto") || "http"; // שימוש ב get לקבלת ערך מהכותרת
+  const host = request.headers.get("host"); // גם כאן נשתמש ב get
+  const vercelUrl = `${protocol}://${host}`;
   
   // Add CORS headers
   const origin = request.headers.get("origin");
-  const allowedOrigins = [baseUrl]; 
+  const allowedOrigins = [baseUrl,vercelUrl]; 
   if (origin && !allowedOrigins.includes(origin)) {
     return NextResponse.json(
       { message: "Origin not allowed" },
