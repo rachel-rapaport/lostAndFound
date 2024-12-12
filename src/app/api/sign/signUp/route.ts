@@ -5,7 +5,7 @@ import UserModel from "@/app/lib/models/user";
 import axios from "axios";
 // import { createUser } from "@/app/services/userService";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 // const vercelUrl = "https://lost-and-found-sage.vercel.app"; // הכתובת ב-Vercel (שנה לפי הצורך)
 
 export async function POST(request: NextRequest) {
