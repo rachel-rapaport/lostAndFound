@@ -10,7 +10,7 @@ export async function loginAuthenticationCookies(
     
     
     const response = await axios.post(
-      '/api/login',
+      '/api/sign/signIn',
       {
         email,
         password,
