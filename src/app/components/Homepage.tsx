@@ -3,6 +3,7 @@ import { afterFilter } from "../utils/sendToUser";
 import { initiateChat } from "../utils/chat";
 import { sendEmailToAdmin } from "../services/api/sendEmailService";
 import { getUserById } from "../services/api/userService";
+import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
 
 // import { useEffect } from 'react';
 // import { useAppStore } from "../store/store";
@@ -41,7 +42,7 @@ const Homepage = () => {
       alert("חדר צ'אט נוצר, נשלחה הזמנה במייל!");
       // אפשר להפנות את המשתמש לדף הצ'אט
       
-      const chatRoomLink = `${process.env.NEXT_PUBLIC_BASE_URL}/chat/${roomId}`;
+      const chatRoomLink = `${getVercelUrlWithoutRequest}/chat/${roomId}`;
       afterFilter(my.data[0], "chat", chatRoomLink);
       // window.location.href = `/chat/${roomId}`;
     } catch (error) {
