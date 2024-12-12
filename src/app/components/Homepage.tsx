@@ -4,7 +4,31 @@ import { initiateChat } from "../utils/chat";
 import { sendEmailToAdmin } from "../services/api/sendEmailService";
 import { getUserById } from "../services/api/userService";
 
+import { useEffect } from 'react';
+import { useAppStore } from "../store/store";
+
 const Homepage = () => {
+
+
+  const setVercelUrl = useAppStore((state) => state.setVercelUrl);
+  const isVercelUrlSet = useAppStore((state) => state.isVercelUrlSet);
+
+  useEffect(() => {
+    if (!isVercelUrlSet) {
+      // Only run this on the first load when `vercelUrl` isn't set
+      const protocol = window.location.protocol || "http"; // Fallback to http if protocol isn't available
+      const host = window.location.host; // Use current host (for client-side)
+      const vercelUrl = `${protocol}//${host}`;
+
+      // Set the vercelUrl in Zustand store and persist it
+      setVercelUrl(vercelUrl);
+    }
+  }, [isVercelUrlSet, setVercelUrl]);
+
+
+
+  
+
   // דוגמת אובייקטים של משתמשים
 
   const handleStartChat = async () => {

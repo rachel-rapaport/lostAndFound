@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
+import { useAppStore } from "@/app/store/store";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export async function POST(request: NextRequest) {
 
-  const vercelUrl = globalThis.vercelUrl
-
+  const vercelUrl = useAppStore((state) => state.vercelUrl);
   
   // Add CORS headers
   const origin = request.headers.get("origin");
