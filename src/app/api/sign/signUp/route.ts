@@ -3,15 +3,16 @@ import jwt from "jsonwebtoken";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 import axios from "axios";
-import { useAppStore } from "@/app/store/store";
+// import { useAppStore } from "@/app/store/store";
 // import { createUser } from "@/app/services/userService";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 // const vercelUrl = "https://lost-and-found-sage.vercel.app"; // הכתובת ב-Vercel (שנה לפי הצורך)
 
-const vercelUrl = useAppStore((state) => state.vercelUrl);
 
 export async function POST(request: NextRequest) {
+
+  const vercelUrl = request.headers.get('X-Vercel-Url');
   
   // Add CORS headers
   const origin = request.headers.get("origin");

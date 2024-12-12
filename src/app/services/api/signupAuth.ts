@@ -1,4 +1,7 @@
 import axios from "axios";
+import { useAppStore } from "@/app/store/store";
+
+const vercelUrl = useAppStore.getState().vercelUrl;
 
 export async function signupAuthenticationCookies(
   email: string,
@@ -17,10 +20,12 @@ export async function signupAuthenticationCookies(
         fullName,
         phone,
       } ,
+      
       {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json", 
+          'X-Vercel-Url': vercelUrl,
         },
       }
     );
