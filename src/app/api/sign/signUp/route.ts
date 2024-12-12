@@ -9,9 +9,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 // const vercelUrl = "https://lost-and-found-sage.vercel.app"; // הכתובת ב-Vercel (שנה לפי הצורך)
 
 export async function POST(request: NextRequest) {
-  const protocol = request.headers.get("x-forwarded-proto") || "http"; // שימוש ב get לקבלת ערך מהכותרת
-  const host = request.headers.get("host"); // גם כאן נשתמש ב get
-  const vercelUrl = `${protocol}://${host}`;
+  const vercelUrl = globalThis.vercelUrl
   
 
   // Add CORS headers
