@@ -42,7 +42,7 @@ const Homepage = () => {
       alert("חדר צ'אט נוצר, נשלחה הזמנה במייל!");
       // אפשר להפנות את המשתמש לדף הצ'אט
       
-      const chatRoomLink = `${getVercelUrlWithoutRequest}/chat/${roomId}`;
+      const chatRoomLink = `${getVercelUrlWithoutRequest()}/chat/${roomId}`;
       afterFilter(my.data[0], "chat", chatRoomLink);
       // window.location.href = `/chat/${roomId}`;
     } catch (error) {
