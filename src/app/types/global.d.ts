@@ -1,5 +1,12 @@
+// global.d.ts
+
 declare global {
-    var vercelUrl: string;
+    interface Global {
+      vercelUrl: string;
+    }
+  
+    var vercelUrl: string; // Declaring that vercelUrl is a global variable
   }
   
-  export {};
+  export {}; // To ensure the file is treated as a module
+  
