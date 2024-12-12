@@ -1,7 +1,4 @@
 import axios from "axios";
-import { useAppStore } from "@/app/store/store";
-
-const vercelUrl = useAppStore.getState().vercelUrl;
 export async function loginAuthenticationCookies(
   email: string,
   password: string
@@ -20,10 +17,6 @@ export async function loginAuthenticationCookies(
       },
       {
         withCredentials: true,
-        headers: {
-          'X-Vercel-Url': vercelUrl,  // Add vercelUrl in the header
-         
-        },
       }
     );
 
