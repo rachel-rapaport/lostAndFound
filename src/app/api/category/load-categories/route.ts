@@ -3,12 +3,14 @@ import SubCategoryModel from "@/app/lib/models/subCategory";
 import { Category } from "@/app/types/props/category";
 import axios from "axios";
 import connect from '@/app/lib/db/mongo';
-import { NextResponse } from 'next/server';
 import CategoryModel from '@/app/lib/models/category';
+import { getVercelUrl } from '@/app/utils/vercelUrl';
+import { NextRequest, NextResponse } from 'next/server';
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+export async function POST(request: NextRequest) {
 
-export async function POST() {
+    const vercelUrl = getVercelUrl(request);
+    const baseUrl = vercelUrl || process.env.NEXT_PUBLIC_BASE_URL
     try {
         await connect();
         // Reads the content of the Excel file as a binary buffer for further processing

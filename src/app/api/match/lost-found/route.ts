@@ -4,10 +4,14 @@ import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
 import { FoundItem } from "@/app/types/props/foundItem";
+import { getVercelUrl } from "@/app/utils/vercelUrl";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export async function POST(request: NextRequest) {
+
+    const vercelUrl = getVercelUrl(request);
+    const baseUrl = vercelUrl || process.env.NEXT_PUBLIC_BASE_URL
+    
     try {
         await connect();
 
