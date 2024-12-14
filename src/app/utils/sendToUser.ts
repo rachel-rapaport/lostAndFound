@@ -5,11 +5,10 @@ import { sendPhoneCall } from '../services/api/phoneCallService';
 
 
 export const afterFilter = (user: User, status: string, link: string) => {
-    console.log("in after", user);
-
     const contentItem = {
         "subject": "נמצא פריט התואם לאבידה שלך – בדוק אותו!",
-        "text":
+        "text": "שלום",
+        "htmlContent":
             `היי,
 
 רצינו לעדכן אותך כי מישהו העלה לאתר פריט שמצא, לאחר שבדקנו את הפרטים, נראה שהם תואמים לאבידה שלך.
@@ -19,7 +18,8 @@ ${link}`
     }
     const contentChat = {
         "subject": "מישהו מחכה לך בצ'אט!",
-        "text":
+        "text": "שלום",
+        "htmlContent":
             `היי,
 
 אחד המשתמשים באתרנו איבד פריט הזהה לפריט שמצאת, והוא ענה על הסימנים נכונה.
@@ -32,17 +32,38 @@ ${link}`
 
     switch (status) {
         case "chat":
-            sendEmailToUser(user.email, contentChat.subject, contentChat.text);
+            sendEmailToUser(user.email, contentChat.subject, contentChat.text, contentChat.htmlContent);
             sendPhoneCall(user.phone, contentChat.text)
             createAlert(String(user._id), contentChat.subject)
             break;
         case "foundItem":
-            sendEmailToUser(user.email, contentItem.subject, contentItem.text);
+            sendEmailToUser(user.email, contentItem.subject, contentItem.text, contentItem.htmlContent);
             sendPhoneCall(user.phone, contentItem.text);
             createAlert(String(user._id), contentItem.subject)
 
     }
 
+}
+
+export const resetPassword = (email: string, link: string) => {
+    const content = {
+        "subject": "איפוס סיסמה",
+        "text": "שלום, לאיפוס סיסמה אנא השתמש בקישור שלהלן.",
+        "htmlContent": `
+      <div dir="rtl">
+          <h1>איפוס סיסמה אתר השבת אבידה</h1>
+          <p>לאיפוס סיסמה היכנס לקישור הבא:</p>
+          <p>
+              <a href='${link}'  
+              style='color:blue; text-decoration:underline;'>
+                  איפוס סיסמה
+              </a>
+          </p>
+          </div>
+      `,
+    }
+
+    sendEmailToUser(email, content.subject, content.text, content.htmlContent);
 }
 
 

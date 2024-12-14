@@ -1,8 +1,6 @@
 import axios from "axios"
 
-export const sendEmailToUser = async (userEmail: string, subject: string, text: string) => {
-    console.log("in server",userEmail);
-    
+export const sendEmailToUser = async (userEmail: string, subject: string, text: string, htmlContent: string) => {
     try {
         if (!userEmail) {
             throw new Error('There is no recipient email');
@@ -11,7 +9,7 @@ export const sendEmailToUser = async (userEmail: string, subject: string, text: 
             {
                 to: userEmail, subject, text: `${text}
 בברכה,
-צוות אתר מציאון` })
+צוות אתר מציאון` ,htmlContent})
 
         if (response && response.status === 200) {
             console.log("Email was send successfully");

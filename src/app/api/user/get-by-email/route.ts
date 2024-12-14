@@ -2,23 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import UserModel from "@/app/lib/models/user";
 import connect from "@/app/lib/db/mongo";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     await connect();
 
-    const url = new URL(request.url);
-    const email = url.pathname.split('/').pop();
-    
+    const email = await request.json();
 
-    if (!email) {
-      return NextResponse.json(
-        { error: "Email parameter is required" },
-        { status: 400 }
-      );
-    }
 
     // Query the database for the user
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne(email);
 
     if (!user) {
       return NextResponse.json(

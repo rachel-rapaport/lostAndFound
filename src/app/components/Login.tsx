@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import React, {useState } from "react";
 import { loginAuthenticationCookies } from "../services/api/loginAuth";
 import { signupAuthenticationCookies } from "../services/api/signupAuth";
-import { sendEmailTo } from "../services/api/resetPassword";
+import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
+import { resetPassword } from "../utils/sendToUser";
 // import { verifyToken } from "../services/api/tokenService";
 
 const LoginForm = () => {
@@ -20,7 +21,6 @@ const LoginForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   //את הקוד הזה צריך להעביר לMIDDLEAWRE
   // useEffect(() => {
@@ -124,11 +124,11 @@ const LoginForm = () => {
 
   // handle email sender modal
   const handleResetPassword = async () => {
-    const resetUrl = `${baseUrl}/reset-password?email=${encodeURIComponent(
+    const resetUrl = `${getVercelUrlWithoutRequest()}/reset-password?email=${encodeURIComponent(
       resetEmail
     )}`;
 
-    await sendEmailTo(resetEmail, resetUrl);
+    await resetPassword(resetEmail, resetUrl);
     console.log("Password reset email sent to:", resetEmail);
     setResetEmail("");
     closeModal();
