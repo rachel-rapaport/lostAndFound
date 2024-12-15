@@ -26,6 +26,11 @@ export async function loginAuthenticationCookies(
 
       return true;
     }
+    else if(response.status===200){
+      console.log("User already logged in");
+      return true;
+      
+    }
   } catch (error) {
     console.log("error from service", error);
     return false;
