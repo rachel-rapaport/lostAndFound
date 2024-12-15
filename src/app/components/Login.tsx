@@ -21,27 +21,6 @@ const LoginForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
-
-  //את הקוד הזה צריך להעביר לMIDDLEAWRE
-  // useEffect(() => {
-  //   // Make an API request to check if the token is valid
-  //   const checkToken = async () => {
-  //     try {
-  //       const response = await verifyToken();
-  //       if (response) {
-  //         router.replace("/home"); // Redirect to home if valid
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //       router.replace("/login"); // Redirect to login if invalid or missing
-  //     }
-  //   };
-  
-
-  //   checkToken();
-  // }, [router]);
-  //עד פה
-
   // Log in / Sign up
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -88,7 +67,7 @@ const LoginForm = () => {
   const login = async () => {
     try {
       const response = await loginAuthenticationCookies(email, password);
-      if (response) {
+      if (response?.valueOf) {
         console.log("log in succsess");
         if (router) {
           router.push("/home");

@@ -6,8 +6,7 @@ export async function loginAuthenticationCookies(
 
   try {
     console.log("in login service function");
-    console.log(email,password);
-    
+    console.log("in service",email,password);
     
     const response = await axios.post(
       '/api/sign/signIn',
@@ -26,6 +25,11 @@ export async function loginAuthenticationCookies(
       console.log(response.data.token);
 
       return true;
+    }
+    else if(response.status===200){
+      console.log("User already logged in");
+      return true;
+      
     }
   } catch (error) {
     console.log("error from service", error);

@@ -16,6 +16,7 @@
     "dotenv": "^16.4.7",
     "firebase": "^11.0.2",
     "fs": "^0.0.1-security",
+    "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.2",
     "mongoose-double": "^0.0.1",

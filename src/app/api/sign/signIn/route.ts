@@ -40,11 +40,14 @@ export async function POST(request: NextRequest) {
       // Token already exists, so skip login flow
       return NextResponse.json({
         message: "User already logged in",
-      });
+      }
+    ,{
+      status:200
+    });
 
     } catch (error) {
       return NextResponse.json(
-        { message: "Invalid token", error: error },
+        { message: "Invalid token - ready to create a new user", error: error },
         { status: 401 }
       );
     }
