@@ -13,4 +13,4 @@ export interface User{
     foundItems?: FoundItem[];
     blockedItems?: FoundItem[];
     alerts?: Alert[];
-} 
+}
