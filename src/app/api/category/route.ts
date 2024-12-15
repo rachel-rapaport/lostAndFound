@@ -31,11 +31,10 @@ export async function GET() {
       { message: "Categories were successfully fetched", data: data },
       { status: 200 }
     );
+
   } catch (error) {
-    return NextResponse.json({
-      message: "Error fetching categories",
-      error: error
-    },
+    return NextResponse.json(
+      { message: "Error fetching categories", error: error },
       { status: 500 }
     );
   }
@@ -47,20 +46,16 @@ export async function POST(request: NextRequest) {
     await connect();
 
     const body = await request.json();
-    const newCategory = await CategoryModel.create({
-      title: body.title,
-    });
+    const newCategory = await CategoryModel.create({ title: body.title });
 
     return NextResponse.json(
       { message: "Category was created successfully", data: newCategory },
       { status: 201 }
     );
+
   } catch (error) {
     return NextResponse.json(
-      {
-        message: "Error creating category",
-        error: error,
-      },
+      { message: "Error creating category", error: error },
       { status: 500 }
     );
   }

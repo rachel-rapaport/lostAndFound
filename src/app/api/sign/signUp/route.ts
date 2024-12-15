@@ -3,13 +3,17 @@ import jwt from "jsonwebtoken";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 import axios from "axios";
-// import { createUser } from "@/app/services/userService";
+import { getVercelUrl } from "@/app/utils/vercelUrl";
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 export async function POST(request: NextRequest) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+
+  const vercelUrl = getVercelUrl(request);
+
   // Add CORS headers
   const origin = request.headers.get("origin");
-  const allowedOrigins = [baseUrl]; 
+  const allowedOrigins = [baseUrl, vercelUrl];
   if (origin && !allowedOrigins.includes(origin)) {
     return NextResponse.json(
       { message: "Origin not allowed" },
@@ -28,6 +32,7 @@ export async function POST(request: NextRequest) {
       },
     });
   }
+
   try {
     const { fullName, email, password, phone } = await request.json();
     console.log("in sign up ");
@@ -39,29 +44,24 @@ export async function POST(request: NextRequest) {
     });
 
     await connect();
-    console.log("in sign up api");
 
     const existingUser = await UserModel.findOne({ email });
-    console.log(existingUser, "existuser");
 
     if (existingUser) {
       return NextResponse.json(
         { message: "Email already in use" },
         { status: 400 }
-      ); 
+      );
     }
 
-    const response = await axios.post(`${baseUrl}/api/user`, {
+    await axios.post(`${baseUrl}/api/user`, {
       fullName,
       email,
       password,
       phone,
     });
-    console.log(response);
 
-    const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, { expiresIn: "1h", });
 
     const headers = new Headers();
     headers.append(
@@ -73,10 +73,10 @@ export async function POST(request: NextRequest) {
       { message: "Signup successful", token },
       { headers }
     );
+
   } catch (error) {
-    console.error("Error during signup:", error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Internal server error", error: error },
       { status: 500 }
     );
   }

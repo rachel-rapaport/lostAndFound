@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createTransport } from 'nodemailer';
 
 export async function POST(request: NextRequest) {
-    try {
+    try {        
         const { to, subject, text, htmlContent } = await request.json();
 
         if (!subject || !text) {
@@ -32,10 +32,10 @@ export async function POST(request: NextRequest) {
         // Sending the email
         const info = await transporter.sendMail(mailOptions);
         return NextResponse.json({ success: true, info }, { status: 200 });
+
     } catch (error) {
-        console.error('Error sending email:', error);
         return NextResponse.json(
-            { error: 'Failed to send email', details: error },
+            { message: 'Failed to send email', error: error },
             { status: 500 }
         );
     }

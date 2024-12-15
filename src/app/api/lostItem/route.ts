@@ -64,9 +64,9 @@ export async function GET() {
       {
         $project: {
           _id: 1,
-          subCategoryId:{
-            _id:'$subCategoryId._id',
-            title:'$subCategoryId.title'
+          subCategoryId: {
+            _id: '$subCategoryId._id',
+            title: '$subCategoryId.title'
           },
           'colorId': 1,
           'userId._id': 1,
@@ -92,10 +92,10 @@ export async function GET() {
       { message: "lostItems were successfully fetched", data: data },
       { status: 200 }
     );
+
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch lost items" },
+      { message: "Failed to fetch lost item", error: error },
       { status: 500 }
     );
   }
@@ -107,6 +107,7 @@ export async function POST(req: NextRequest) {
     await connect();
 
     const body = await req.json();
+
     // Validate that the sub-category exists in the database
     if (!await SubCategoryModel.exists({ _id: body.subCategoryId })) {
       return NextResponse.json({ message: "Invalid subCategoryId: sub category does not exist" }, { status: 400 });
@@ -116,9 +117,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Invalid userId: user does not exist" }, { status: 400 });
     }
     // Validate that the public transport type exists in the database
-    if (body.publicTransport &&!await TypePublicTransportModel.exists({ _id: body.publicTransport.typePublicTransportId })) {
+    if (body.publicTransport && !await TypePublicTransportModel.exists({ _id: body.publicTransport.typePublicTransportId })) {
       return NextResponse.json({ message: "Invalid userId: user does not exist" }, { status: 400 });
     }
+
     const newLostItem = await LostItemModel.create(body);
     // Update the sub-category to associate it with the new lost item
     await SubCategoryModel.findByIdAndUpdate(
@@ -132,12 +134,15 @@ export async function POST(req: NextRequest) {
       { $push: { "lostItems": newLostItem._id } },
       { new: true }
     );
-    return NextResponse.json({ message: "Lost item was created successfully", data: newLostItem }, { status: 201 });
+    return NextResponse.json(
+      { message: "Lost item was created successfully", data: newLostItem },
+      { status: 201 }
+    );
   }
   catch (error) {
-    return NextResponse.json({
-      message: "Error creating lost item",
-      error: error
-    }, { status: 500 });
+    return NextResponse.json(
+      { message: "Error creating lost item", error: error },
+      { status: 500 }
+    );
   }
 }

@@ -85,7 +85,9 @@ export async function POST(request: NextRequest) {
         );
     }
     catch (error) {
-        return NextResponse.json({ message: "Error creating sub category", error: error },
-            { status: 500 });
+        return NextResponse.json(
+            { message: "Error creating sub category", error: error },
+            { status: 500 }
+        );
     }
 }

@@ -4,6 +4,7 @@ import twilio from 'twilio';
 export async function POST(request: NextRequest) {
     try {
         const { phone, message } = await request.json();
+
         if (!phone || !message) {
             return NextResponse.json(
                 { message: "Please provide both 'phone' and 'message' fields" },
@@ -24,14 +25,23 @@ export async function POST(request: NextRequest) {
             console.log(`Call SID: ${call.sid}`);
             const callDetails = await client.calls(call.sid).fetch();
             console.log(`Call Status: ${callDetails.status}`);
-            return NextResponse.json({ message: "Call was initiated successfully!", data: callDetails }, { status: 201 });
+            return NextResponse.json(
+                { message: "Call was initiated successfully!", data: callDetails },
+                { status: 201 }
+            );
         }
         else {
             console.error("Failed to create the call");
-            return NextResponse.json({ message: "Failed to create the call" }, { status: 500 });
+            return NextResponse.json(
+                { message: "Failed to create the call" },
+                { status: 500 }
+            );
         }
+
     } catch (error) {
-        console.error("Error occurred while making the call: ", error);
-        return NextResponse.json({ message: "Error occurred while making the call", error: error }, { status: 500 });
+        return NextResponse.json(
+            { message: "Error occurred while making the call", error: error },
+            { status: 500 }
+        );
     }
 }

@@ -13,10 +13,10 @@ export async function GET() {
       { message: "publicTransportations were successfully fetched", data: publicTransportations },
       { status: 200 }
     );
+
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch publicTransportations" },
+      { message: "Failed to fetch publicTransportations", error: error },
       { status: 500 }
     );
   }
@@ -30,11 +30,14 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const newPublicTransportation = await TypePublicTransportModel.create(body);
 
-    return NextResponse.json(newPublicTransportation, { status: 201 });
-  } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to create public Transportation" },
+      { message: "transportation was successfully create", data: newPublicTransportation },
+      { status: 201 }
+    );
+
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to create public Transportation", error: error },
       { status: 500 }
     );
   }
