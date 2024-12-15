@@ -31,25 +31,10 @@ export async function POST(request: NextRequest) {
             );
         }
         else {
-<<<<<<< HEAD
             return NextResponse.json({ message: "Failed to create the call" }, { status: 500 });
-=======
-            console.error("Failed to create the call");
-            return NextResponse.json(
-                { message: "Failed to create the call" },
-                { status: 500 }
-            );
->>>>>>> 93d3807d2de94825cd4bfa7fb3149e8e3a6bee16
         }
 
     } catch (error) {
-<<<<<<< HEAD
         return NextResponse.json({ message: "Error occurred while making the call", error: error }, { status: 500 });
-=======
-        return NextResponse.json(
-            { message: "Error occurred while making the call", error: error },
-            { status: 500 }
-        );
->>>>>>> 93d3807d2de94825cd4bfa7fb3149e8e3a6bee16
     }
 }
