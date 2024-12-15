@@ -8,8 +8,6 @@ import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 
-
-
 //get sub category by id
 export async function GET(request: NextRequest) {
     try {
@@ -17,6 +15,13 @@ export async function GET(request: NextRequest) {
 
         const url = new URL(request.url);
         const id = url.pathname.split('/').pop();
+
+        if (!id) {
+            return NextResponse.json(
+                { message: "ID is missing" },
+                { status: 400 }
+            )
+        }
 
         //populate data from nested objects
         const data = await SubCategoryModel.aggregate([
@@ -63,14 +68,21 @@ export async function GET(request: NextRequest) {
 
 
         if (!data) {
-            return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
+            return NextResponse.json(
+                { message: "Sub category is not found" },
+                { status: 404 }
+            );
         }
 
 
-        return NextResponse.json({ message: "Sub category was successfully fetched", data: data }, { status: 200 });
+        return NextResponse.json(
+            { message: "Sub category was successfully fetched", data: data },
+            { status: 200 }
+        );
     }
     catch (error) {
-        return NextResponse.json({ message: "Error fetching sub category", error: error },
+        return NextResponse.json(
+            { message: "Error fetching sub category", error: error },
             { status: 500 }
         );
     }
@@ -85,27 +97,32 @@ export async function PUT(request: NextRequest) {
 
 
         if (!id) {
-            return NextResponse.json({ message: "ID is missing" }, { status: 400 })
+            return NextResponse.json(
+                { message: "ID is missing" },
+                { status: 400 }
+            )
         }
 
         // Allows updating only the sub category title
         const { title } = await request.json();
 
-        const subCategoryToUpdate = await subCategoryModel.findByIdAndUpdate(id,
-            { "title": title },
-            { new: true, runValidators: true });
+        const subCategoryToUpdate = await subCategoryModel.findByIdAndUpdate(id, { "title": title }, { new: true, runValidators: true });
 
         if (!subCategoryToUpdate) {
             return NextResponse.json({ message: "Sub category is not found" }, { status: 404 });
         }
 
 
-        return NextResponse.json({ message: "Sub category was updated successfully", data: subCategoryToUpdate },
-            { status: 200 });
+        return NextResponse.json(
+            { message: "Sub category was updated successfully", data: subCategoryToUpdate },
+            { status: 200 }
+        );
     }
     catch (error) {
-        return NextResponse.json({ message: "Error updating sub category", error: error },
-            { status: 500 });
+        return NextResponse.json(
+            { message: "Error updating sub category", error: error },
+            { status: 500 }
+        );
     }
 }
 
@@ -117,11 +134,14 @@ export async function DELETE(request: NextRequest) {
         const id = url.pathname.split('/').pop();
 
         if (!id) {
-            return NextResponse.json({ message: "ID is missing" }, { status: 400 })
+            return NextResponse.json(
+                { message: "ID is missing" },
+                { status: 400 }
+            )
         }
 
-
         const subCategoryToDeleteBefore = await subCategoryModel.findById(id);
+
         if (subCategoryToDeleteBefore) {
             // Removes sub category ID from the category's subcategory list
             await CategoryModel.findByIdAndUpdate(
@@ -140,11 +160,15 @@ export async function DELETE(request: NextRequest) {
         await FoundItemModel.deleteMany({ categoryId: subCategoryToDelete._id });
         await LostItemModel.deleteMany({ categoryId: subCategoryToDelete._id });
 
-        return NextResponse.json({ message: "Sub category was successfully deleted", data: subCategoryToDelete },
-            { status: 200 });
+        return NextResponse.json(
+            { message: "Sub category was successfully deleted", data: subCategoryToDelete },
+            { status: 200 }
+        );
     }
     catch (error) {
-        return NextResponse.json({ message: "Error deleting sub category", error: error },
-            { status: 500 });
+        return NextResponse.json(
+            { message: "Error deleting sub category", error: error },
+            { status: 500 }
+        );
     }
 }

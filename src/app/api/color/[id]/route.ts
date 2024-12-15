@@ -5,34 +5,34 @@ import ColorModel from "@/app/lib/models/color";
 
 //get color by id
 export async function GET(request: NextRequest) {
-  await connect();
-
-  const url = new URL(request.url);
-  const id = url.pathname.split("/").pop();
-
   try {
-    if (id) {
-      const color = await ColorModel.findById(id);
-      if (!color) {
-        return NextResponse.json(
-          { error: "color not found" },
-          { status: 404 }
-        );
-      }
+    await connect();
+
+    const url = new URL(request.url);
+    const id = url.pathname.split("/").pop();
+
+    if (!id) {
       return NextResponse.json(
-        { message: "color were successfully fetched", data: color },
-        { status: 200 }
-      );
-    } else {
-      return NextResponse.json(
-        { error: "Id parameter is missing" },
+        { message: "ID is missing" },
         { status: 400 }
+      )
+    }
+    const color = await ColorModel.findById(id);
+
+    if (!color) {
+      return NextResponse.json(
+        { error: "color not found" },
+        { status: 404 }
       );
     }
-  } catch (error) {
-    console.log(error);
     return NextResponse.json(
-      { error: "Failed to fetch color" },
+      { message: "color were successfully fetched", data: color },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to fetch color", error: error },
       { status: 500 }
     );
   }
@@ -40,12 +40,12 @@ export async function GET(request: NextRequest) {
 
 //update color by id
 export async function PUT(request: NextRequest) {
-  await connect();
-
-  const url = new URL(request.url);
-  const id = url.pathname.split("/").pop();
   try {
-    const body = await request.json();
+    await connect();
+
+    const url = new URL(request.url);
+    const id = url.pathname.split("/").pop();
+
     if (!id) {
       return NextResponse.json(
         { error: "Id parameter is missing" },
@@ -53,9 +53,10 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const updatedColor = await ColorModel.findByIdAndUpdate(id, body, {
-      new: true,
-    });
+    const body = await request.json();
+
+
+    const updatedColor = await ColorModel.findByIdAndUpdate(id, body, { new: true, });
 
     if (!updatedColor) {
       return NextResponse.json(
@@ -63,11 +64,14 @@ export async function PUT(request: NextRequest) {
         { status: 404 }
       );
     }
-    return NextResponse.json(updatedColor, { status: 200 });
-  } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to update color" },
+      { message: "color was updated successfully", data: updatedColor },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to update color", error: error },
       { status: 500 }
     );
   }
@@ -75,11 +79,12 @@ export async function PUT(request: NextRequest) {
 
 // delete color by id
 export async function DELETE(request: NextRequest) {
-  await connect();
-
-  const url = new URL(request.url);
-  const id = url.pathname.split("/").pop();
   try {
+    await connect();
+
+    const url = new URL(request.url);
+    const id = url.pathname.split("/").pop();
+
     if (!id) {
       return NextResponse.json(
         { error: "Id parameter is missing" },
@@ -94,11 +99,13 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(deletedColor, { status: 200 });
-  } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to delete color" },
+      { message: "color was successfully deleted", data: deletedColor },
+      { status: 200 });
+
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to delete color", error: error },
       { status: 500 }
     );
   }

@@ -94,10 +94,10 @@ export async function GET() {
       { message: "founditems were successfully fetched", data: data },
       { status: 200 }
     );
+
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch found items" },
+      { message: "Failed to fetch found items", error: error },
       { status: 500 }
     );
   }
@@ -124,6 +124,7 @@ export async function POST(req: NextRequest) {
     }
 
     const newFoundItem = await FoundItemModel.create(body);
+
     // Update the sub-category to associate it with the new found item
     await SubCategoryModel.findByIdAndUpdate(
       body.subCategoryId,
@@ -137,12 +138,15 @@ export async function POST(req: NextRequest) {
       { new: true }
     );
 
-    return NextResponse.json({ message: "Found item was created successfully", data: newFoundItem }, { status: 201 });
+    return NextResponse.json(
+      { message: "Found item was created successfully", data: newFoundItem },
+      { status: 201 }
+    );
   }
   catch (error) {
-    return NextResponse.json({
-      message: "Error creating found item",
-      error: error
-    }, { status: 500 });
+    return NextResponse.json(
+      { message: "Error creating found item", error: error },
+      { status: 500 }
+    );
   }
 }

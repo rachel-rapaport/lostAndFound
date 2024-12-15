@@ -9,7 +9,7 @@ export async function signupAuthenticationCookies(
     // console.log("in service sign up", email, 'password',password, fullName, 'phone',phone);
 
     const response = await axios.post(
-      '/api/signup', 
+      '/api/sign/signUp', 
       {
         email,
         password,
