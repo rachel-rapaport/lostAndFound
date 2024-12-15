@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-.btn {
-    @apply border-[2px] border-solid border-black p-[10px] rounded-md hover:bg-black hover:text-white;
+@layer utilities {
+  .btn {
+    @apply py-3 px-6 min-w-[11vw] rounded-[10px];
+  }
+}
+
+.primary-btn {
+  @apply btn bg-primary text-dark hover:bg-[#F7E8D9] active:bg-[#F3D1AC];
+}
+
+.secondary-btn {
+  @apply btn bg-secondary text-dark hover:bg-[#F6EEE6] active:bg-[#F2E3D3];
+}
+
+.delete-btn {
+  @apply btn bg-[#D26969] text-white hover:bg-[#D88D8D] active:bg-[#B74F4F];
+}
+
+.disabled-btn {
+  @apply btn bg-[#EAEAEA] text-[#B8B8B8] cursor-not-allowed;
 }
