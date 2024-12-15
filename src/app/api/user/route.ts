@@ -56,14 +56,15 @@ export async function GET() {
         },
       },
     ]);
+
     return NextResponse.json(
       { message: "Sub users were successfully fetched", data: data },
       { status: 200 }
     );
+
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch users" },
+      { message: "Failed to fetch users", error: error },
       { status: 500 }
     );
   }
@@ -72,7 +73,6 @@ export async function GET() {
 //create new user
 export async function POST(req: NextRequest) {
   try {
-    console.log("post user hi");
 
     await connect();
 
@@ -83,10 +83,10 @@ export async function POST(req: NextRequest) {
       { message: "users were successfully fetched", data: newUser },
       { status: 200 }
     );
+
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Failed to create user" },
+      { message: "Failed to create users", error: error },
       { status: 500 }
     );
   }

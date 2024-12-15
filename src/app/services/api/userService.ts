@@ -32,9 +32,9 @@ export const getUserByEmail = async (email: string) => {
   try {
     console.log("in server",email);
     
-    const response = await axios.get(`/api/get-user-by-email/${email}`);
-    console.log(response.data.user);
-    return response.data.user;
+    const response = await axios.post('/api/user/get-by-email', {email});
+    console.log(response.data.data);
+    return response.data.data;
   } catch (error) {
     console.error("Error getting user:", error);
     throw error;

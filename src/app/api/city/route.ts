@@ -11,7 +11,7 @@ export async function GET() {
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
-      { error: "Error fetching cities: ", data: error },
+      { massage: "Error fetching cities: ", error: error },
       { status: 500 }
     );
   }
