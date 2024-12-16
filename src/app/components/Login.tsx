@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { loginAuthenticationCookies } from "../services/api/loginAuth";
 import { signupAuthenticationCookies } from "../services/api/signupAuth";
-import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
-import { resetPassword } from "../utils/sendToUser";
 import useUserStore from "@/app/store/userStore";
 import { z } from "zod";
 import { loginSchema, signUpSchema } from "@/app/schemas/loginSchema";
