@@ -1,4 +1,4 @@
-// Login / sign up form - include gorgot password and token
+// Login / sign up form - include forgot password and token
 "use client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -7,8 +7,13 @@ import { loginAuthenticationCookies } from "../services/api/loginAuth";
 import { signupAuthenticationCookies } from "../services/api/signupAuth";
 import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
 import { resetPassword } from "../utils/sendToUser";
-// import { getUserStore } from "@/app/store/userStore";
 import useUserStore from "@/app/store/userStore";
+import { z } from "zod";
+import {
+  loginSchema,
+  signUpSchema,
+  resetPasswordSchema,
+} from "@/app/schemas/loginSchema";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -20,44 +25,63 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalError, setModalError] = useState("");
   const [resetEmail, setResetEmail] = useState("");
   const setUser = useUserStore((state) => state.setUser);
-  const user = useUserStore((state)=>state.user); // Get the store's setUser function
+  const user = useUserStore((state) => state.user);
 
   // Log in / Sign up
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
+
   // send reset password email modal
   const openModal = () => {
     setIsModalOpen(true);
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isLogin) {
-      await login();
-    } else {
-      await signUp();
+    try {
+      const formData = { email, password, fullName, phone };
+      if (isLogin) {
+        const loginData = loginSchema.parse({ email, password });
+        await login(loginData);
+      } else {
+        const signUpData = signUpSchema.parse(formData);
+        await signUp(signUpData);
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setError(error.errors[0].message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
   };
 
   // handle sign up
-  const signUp = async () => {
+  const signUp = async (signUpData: {
+    email: string;
+    password: string;
+    fullName: string;
+    phone: string;
+  }) => {
     try {
       const response = await signupAuthenticationCookies(
-        email,
-        phone,
-        fullName,
-        password
+        signUpData.email,
+        signUpData.phone,
+        signUpData.fullName,
+        signUpData.password
       );
       if (response) {
         console.log("sign up succsess");
         clearData();
-        router.push("/home");
+        router.replace("/home");
       } else {
         setError("error");
       }
@@ -67,9 +91,12 @@ const LoginForm = () => {
   };
 
   // handle log in
-  const login = async () => {
+  const login = async (loginData: { email: string; password: string }) => {
     try {
-      const response = await loginAuthenticationCookies(email, password);
+      const response = await loginAuthenticationCookies(
+        loginData.email,
+        loginData.password
+      );
 
       if (response) {
         if (response.user) {
@@ -106,6 +133,7 @@ const LoginForm = () => {
     setEmail("");
     setPassword("");
     setError("");
+    setPhone("");
     setIsLogin(false);
   };
 
@@ -121,15 +149,24 @@ const LoginForm = () => {
 
   // handle email sender modal
   const handleResetPassword = async () => {
-    const resetUrl = `${getVercelUrlWithoutRequest()}/reset-password?email=${encodeURIComponent(
-      resetEmail
-    )}`;
+    try {
+      const resetData = resetPasswordSchema.parse({ email: resetEmail });
 
-    await resetPassword(resetEmail, resetUrl);
-    console.log("Password reset email sent to:", resetEmail);
-    setResetEmail("");
-    closeModal();
-    clearData();
+      const resetUrl = `${getVercelUrlWithoutRequest()}/reset-password?email=${encodeURIComponent(
+        resetData.email
+      )}`;
+
+      resetPassword(resetData.email, resetUrl);
+      setResetEmail("");
+      closeModal();
+      clearData();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setModalError(error.errors.map((e) => e.message).join(", "));
+      } else {
+        setModalError("An unexpected error occurred.");
+      }
+    }
   };
 
   return (
@@ -179,7 +216,7 @@ const LoginForm = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             id="email"
-            type="email"
+            type="text"
           />
         </div>
         {!isLogin && (
@@ -237,18 +274,23 @@ const LoginForm = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded shadow-md w-1/3 text-center">
               <h2 className="text-lg font-bold mb-4">שחזור סיסמה</h2>
-              <p className="mb-4">
+              <p className="mb-2">
                 אנא הזן את הדואר האלקטרוני שלך לקבלת קישור לאיפוס סיסמה:
               </p>
               <input
-                type="email"
+                type="text"
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
                 className="border border-gray-300 rounded w-full p-2 mb-4"
                 placeholder="דוא״ל"
               />
+              {modalError && <p className="text-red-700 m-2">{modalError}</p>}
               <button
-                onClick={handleResetPassword}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleResetPassword();
+                }}
                 className="bg-green-600 text-white px-4 py-2 rounded mr-2"
               >
                 שלח
