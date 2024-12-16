@@ -3,12 +3,13 @@ import jwt from "jsonwebtoken";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 import { getVercelUrl } from "@/app/utils/vercelUrl";
+// import { getUserStore } from "@/app/store/userStore";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function POST(request: NextRequest) {
-
   const vercelUrl = getVercelUrl(request);
+  // const setUser = getUserStore().setUser;
 
   // Add CORS headers
   const origin = request.headers.get("origin");
@@ -38,13 +39,16 @@ export async function POST(request: NextRequest) {
   if (token) {
     try {
       // Token already exists, so skip login flow
-      return NextResponse.json({
-        message: "User already logged in",
-      }
-    ,{
-      status:200
-    });
+      // console.log("get current user is already connected", getUserStore().user);
 
+      return NextResponse.json(
+        {
+          message: "User already logged in",
+        },
+        {
+          status: 200
+        }
+      );
     } catch (error) {
       return NextResponse.json(
         { message: "Invalid token - ready to create a new user", error: error },
@@ -63,11 +67,9 @@ export async function POST(request: NextRequest) {
 
   if (user) {
     if (email === user.email && password === user.password) {
-      const token = jwt.sign(
-        { email, id: user._id },
-        process.env.JWT_SECRET!,
-        { expiresIn: "1h" }
-      );
+      const token = jwt.sign({ email, id: user._id }, process.env.JWT_SECRET!, {
+        expiresIn: "1h",
+      });
 
       // Set the token in a cookie
       const headers = new Headers();
@@ -76,8 +78,10 @@ export async function POST(request: NextRequest) {
         `token=${token}; path=/; HttpOnly; Secure; SameSite=None`
       );
 
+      // setUser(user);
+      // console.log("get current user in normal login", getUserStore().user);
       return NextResponse.json(
-        { message: "Login successful", token },
+        { message: "Login successful", token,user },
         { headers }
       );
     } else {

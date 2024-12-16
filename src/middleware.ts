@@ -3,46 +3,68 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 export async function middleware(req: NextRequest) {
-  console.log("in middleware");
-
   const { pathname } = req.nextUrl;
   let isAdmin = false;
 
   console.log(`Request to: ${pathname}`);
 
   // Exclude login route and Next.js-specific static files
-  if (pathname === "/login" || pathname.startsWith("/api/")) {
+  if (pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
 
-  console.log("before token");
-  
   // Tokens from cookies
   const token = req.cookies.get("token")?.value;
-  console.log("before is token");
-  
+  // If token exists and user is trying to access the login page, redirect to home
+  if (token && pathname === "/login") {
+    try {
+      // Verify the token
+      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+      await jwtVerify(token, secret); // No need to decode here, just verify
+      console.log("Token is valid, redirecting to /home");
+      return NextResponse.redirect(new URL("/home", req.url));
+    } catch (error) {
+      console.error("Token verification failed:", error);
+    }
+  }
+
+  // If token does not exist and user is trying to access a protected page, redirect to login
+  if (!token && pathname !== "/login") {
+    console.log("No token, redirecting to /login");
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+
   if (token) {
-    console.log("there is a token");
-    
+    if (pathname == "/login") {
+      return NextResponse.redirect(new URL("/home", req.url));
+    }
     try {
       // Verify the token
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       const { payload } = await jwtVerify(token, secret);
       const decoded = payload as { email: string };
-      console.log("decoded-------",decoded);
 
       // Check if the email matches the admin email
       if (decoded.email === "lostandfound.assistance@gmail.com") {
         isAdmin = true;
+      } else {
+        // If not admin, redirect to home page, but avoid infinite redirects
+        if (pathname !== "/home") {
+          return NextResponse.redirect(new URL("/home", req.url));
+        }
       }
     } catch (error) {
       console.error("Invalid token:", error);
+      // Redirect to login page if token is invalid
+      if (pathname !== "/login") {
+        return NextResponse.redirect(new URL("/login", req.url));
+      }
     }
-  }
-
-  // Redirect to login if no token is present
-  if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  } else {
+    // If no token, redirect to login page
+    if (pathname !== "/login") {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
   }
 
   // Restrict access based on the `isAdmin` flag

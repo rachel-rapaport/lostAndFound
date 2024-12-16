@@ -2,12 +2,13 @@
 "use client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { loginAuthenticationCookies } from "../services/api/loginAuth";
 import { signupAuthenticationCookies } from "../services/api/signupAuth";
 import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
 import { resetPassword } from "../utils/sendToUser";
-// import { verifyToken } from "../services/api/tokenService";
+// import { getUserStore } from "@/app/store/userStore";
+import useUserStore from "@/app/store/userStore";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -20,6 +21,8 @@ const LoginForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+  const setUser = useUserStore((state) => state.setUser);
+  const user = useUserStore((state)=>state.user); // Get the store's setUser function
 
   // Log in / Sign up
   const toggleForm = () => {
@@ -54,7 +57,7 @@ const LoginForm = () => {
       if (response) {
         console.log("sign up succsess");
         clearData();
-        router.replace("/home");
+        router.push("/home");
       } else {
         setError("error");
       }
@@ -67,17 +70,33 @@ const LoginForm = () => {
   const login = async () => {
     try {
       const response = await loginAuthenticationCookies(email, password);
-      if (response?.valueOf) {
-        console.log("log in succsess");
-        if (router) {
-          router.push("/home");
+
+      if (response) {
+        if (response.user) {
+          console.log(response.user);
+
+          // the user logged in successfully
+          setUser(response.user); // Update the store with user data
+          console.log("Login success");
+
+          if (router) {
+            router.push("/home");
+          }
+          clearData();
+        } else {
+          // the user is logged in already
+          console.log("State after first login:", user);
+
+          if (router) {
+            router.push("/home");
+          }
         }
-        clearData();
       } else {
-        setError("password or email are wrong");
+        setError("Password or email is incorrect");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setError("An error occurred during login");
     }
   };
 
@@ -91,7 +110,6 @@ const LoginForm = () => {
   };
 
   // error handler
-  //לא הבנתימה זה עושה
   const handleError = (error: unknown, defaultMessage: string) => {
     if (axios.isAxiosError(error) && error.response?.status === 400) {
       setError(error.response.data.message || defaultMessage);
