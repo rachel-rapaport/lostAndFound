@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
         const lostItem = await request.json();
 
-        const foundItemResponse = await axios.get(`${baseUrl}/api/lostItem`);
+        const foundItemResponse = await axios.get(`${baseUrl}/api/foundItem`);
         const foundItems = foundItemResponse.data.data
 
         // Filter the found items based on the lost item properties and geographic matching
