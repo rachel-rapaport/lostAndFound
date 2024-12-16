@@ -9,7 +9,7 @@ export async function middleware(req: NextRequest) {
   console.log(`Request to: ${pathname}`);
 
   // Exclude login route and Next.js-specific static files
-  if (pathname.startsWith("/api/")) {
+  if (pathname.startsWith("/api/") || pathname.startsWith("/reset-password")) {
     return NextResponse.next();
   }
 
