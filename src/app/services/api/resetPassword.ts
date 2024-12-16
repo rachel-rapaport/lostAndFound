@@ -3,7 +3,7 @@ import axios from "axios";
 export const sendEmailTo = async (resetEmail:string, resetUrl:string) => {
 
 const response = await axios.post(
-    '/api/send-email',
+    '/api/send/email',
     {
       to: resetEmail,
       subject: "איפוס סיסמה",
