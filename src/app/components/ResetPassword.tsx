@@ -14,7 +14,7 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
 
 
 
-  const queryFn = email ? () => getUserByEmail(email) : null;
+  // const queryFn = email ? () => getUserByEmail(email) : null;
  
   // get the user by email
   const { data, error, isLoading } = useQuery({
