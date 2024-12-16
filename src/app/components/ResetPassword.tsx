@@ -4,11 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { getUserByEmail, updateUserById } from "../services/api/userService";
 import { User } from "../types/props/user";
+import { resetPasswordSchema } from "../schemas/resetPasswordSchema";
 
 export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMesage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [success, setSuccess] = useState("");
 
@@ -37,12 +38,16 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Validate passwords
-    if (password !== confirmPassword) {
-      setErrorMesage("הסיסמאות אינן תואמות.");
+    const formData = { password, confirmPassword };
+    const validation = resetPasswordSchema.safeParse(formData);
+
+    if (!validation.success) {
+      const errors = validation.error.errors;
+      setErrorMessage(errors[0].message); // Display the first error message
       return;
     }
     if (!user || !user._id) {
-      setErrorMesage("המשתמש לא נמצא או נתוני המשתמש לא חוקיים.");
+      setErrorMessage("המשתמש לא נמצא או נתוני המשתמש לא חוקיים.");
       return;
     }
     try {
@@ -55,10 +60,10 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
       setSuccess("הסיסמה עודכנה בהצלחה. ");
       setPassword("");
       setConfirmPassword("");
-      setErrorMesage("");
+      setErrorMessage("");
     } catch (err) {
       console.error("Error updating password:", err);
-      setErrorMesage("שגיאה בעדכון הסיסמה. נסה שוב.");
+      setErrorMessage("שגיאה בעדכון הסיסמה. נסה שוב.");
     }
   };
 
