@@ -9,15 +9,10 @@ import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
 import { resetPassword } from "../utils/sendToUser";
 import useUserStore from "@/app/store/userStore";
 import { z } from "zod";
-import {
-  loginSchema,
-  signUpSchema,
-  resetPasswordSchema,
-} from "@/app/schemas/loginSchema";
+import { loginSchema, signUpSchema } from "@/app/schemas/loginSchema";
+import PasswordResetModal from "./ModalResetPasswordEmail";
 
 const LoginForm = () => {
-  const router = useRouter();
-
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,10 +20,9 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalError, setModalError] = useState("");
-  const [resetEmail, setResetEmail] = useState("");
   const setUser = useUserStore((state) => state.setUser);
   const user = useUserStore((state) => state.user);
+  const router = useRouter();
 
   // Log in / Sign up
   const toggleForm = () => {
@@ -147,28 +141,6 @@ const LoginForm = () => {
     }
   };
 
-  // handle email sender modal
-  const handleResetPassword = async () => {
-    try {
-      const resetData = resetPasswordSchema.parse({ email: resetEmail });
-
-      const resetUrl = `${getVercelUrlWithoutRequest()}/reset-password?email=${encodeURIComponent(
-        resetData.email
-      )}`;
-
-      resetPassword(resetData.email, resetUrl);
-      setResetEmail("");
-      closeModal();
-      clearData();
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        setModalError(error.errors.map((e) => e.message).join(", "));
-      } else {
-        setModalError("An unexpected error occurred.");
-      }
-    }
-  };
-
   return (
     <div className="bg-slate-300 space-y-12 w-full h-[400px] text-black p-8">
       <div className="flex justify-center  space-x-4 mb-6">
@@ -268,42 +240,7 @@ const LoginForm = () => {
             {error && <p className="text-red-700 mt-4">{error}</p>}
           </>
         ) : null}
-
-        {/* Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-md w-1/3 text-center">
-              <h2 className="text-lg font-bold mb-4">שחזור סיסמה</h2>
-              <p className="mb-2">
-                אנא הזן את הדואר האלקטרוני שלך לקבלת קישור לאיפוס סיסמה:
-              </p>
-              <input
-                type="text"
-                value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-                className="border border-gray-300 rounded w-full p-2 mb-4"
-                placeholder="דוא״ל"
-              />
-              {modalError && <p className="text-red-700 m-2">{modalError}</p>}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleResetPassword();
-                }}
-                className="bg-green-600 text-white px-4 py-2 rounded mr-2"
-              >
-                שלח
-              </button>
-              <button
-                onClick={closeModal}
-                className="bg-red-500 text-white px-4 py-2 rounded"
-              >
-                בטל
-              </button>
-            </div>
-          </div>
-        )}
+        <PasswordResetModal isOpen={isModalOpen} onClose={closeModal} />
       </form>
     </div>
   );
