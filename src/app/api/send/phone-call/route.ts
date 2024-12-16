@@ -31,17 +31,10 @@ export async function POST(request: NextRequest) {
             );
         }
         else {
-            console.error("Failed to create the call");
-            return NextResponse.json(
-                { message: "Failed to create the call" },
-                { status: 500 }
-            );
+            return NextResponse.json({ message: "Failed to create the call" }, { status: 500 });
         }
 
     } catch (error) {
-        return NextResponse.json(
-            { message: "Error occurred while making the call", error: error },
-            { status: 500 }
-        );
+        return NextResponse.json({ message: "Error occurred while making the call", error: error }, { status: 500 });
     }
 }
