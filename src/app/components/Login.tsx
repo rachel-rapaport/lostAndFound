@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { loginAuthenticationCookies } from "../services/api/loginAuth";
 import { signupAuthenticationCookies } from "../services/api/signupAuth";
-import useUserStore from "@/app/store/userStore";
+import userStore from "../store/userStore";
 import { z } from "zod";
 import { loginSchema, signUpSchema } from "@/app/schemas/loginSchema";
 import PasswordResetModal from "./ModalResetPasswordEmail";
@@ -18,8 +18,8 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const setUser = useUserStore((state) => state.setUser);
-  const user = useUserStore((state) => state.user);
+  const setUser = userStore((state) => state.setUser);
+  const user = userStore((state) => state.user);
   const router = useRouter();
 
   // Log in / Sign up
@@ -140,14 +140,14 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="bg-slate-300 space-y-12 w-full h-[400px] text-black p-8">
+    <div className="bg-gray-200 space-y-12 w-full h-[400px] text-black p-8">
       <div className="flex justify-center  space-x-4 mb-6">
         <button
           onClick={toggleForm}
           className={`px-6 py-2 text-xl font-semibold ${
             isLogin
-              ? "bg-green-600 text-white rounded-t-lg"
-              : "bg-transparent text-green-600 border-b-2 border-green-600"
+              ? "bg-[#FADB3F] text-white rounded-t-lg"
+              : "bg-transparent text-[#FADB3F] border-b-2 border-[#FADB3F]"
           }`}
         >
           התחברות
@@ -156,8 +156,8 @@ const LoginForm = () => {
           onClick={toggleForm}
           className={`px-6 py-2 text-xl font-semibold ${
             !isLogin
-              ? "bg-green-600 text-white rounded-t-lg"
-              : "bg-transparent text-green-600 border-b-2 border-green-600"
+              ? "bg-[#FADB3F] text-white rounded-t-lg"
+              : "bg-transparent text-[#FADB3F] border-b-2 border-[#FADB3F]"
           }`}
         >
           הרשמה
@@ -232,7 +232,7 @@ const LoginForm = () => {
         )}
         {!isModalOpen ? (
           <>
-            <button className="w-full bg-green-600 text-white py-2 mt-4 rounded">
+            <button className="w-full bg-[#FADB3F] text-white py-2 mt-4 rounded">
               {isLogin ? "התחברות" : "הרשמה"}
             </button>
             {error && <p className="text-red-700 mt-4">{error}</p>}

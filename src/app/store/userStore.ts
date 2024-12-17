@@ -8,7 +8,7 @@ interface CurrentUserState {
   clearUser: () => void;
 }
 
-const useUserStore = create(
+const userStore = create(
   persist<CurrentUserState>(
     (set) => ({
       user: null,
@@ -27,6 +27,6 @@ const useUserStore = create(
   )
 );
 
-export const getUserStore = () => useUserStore.getState();
+export const getUserStore = () => userStore.getState();
 
-export default useUserStore;
+export default userStore;
