@@ -22,7 +22,7 @@ body {
 }
 
 .secondary-btn {
-  @apply btn bg-secondary text-white hover:bg-[#646B58] active:bg-[#3E4338];
+  @apply btn bg-secondary text-white hover:bg-[#303030] active:bg-secondary;
 }
 
 .delete-btn {
