@@ -24,7 +24,7 @@ export async function signupAuthenticationCookies(
       }
     );
 
-    console.log("response", response);
+    console.log("Full response:", response);    
 
     if (response && response.data && response.data.token) {
       return true;
