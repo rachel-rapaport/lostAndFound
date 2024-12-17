@@ -14,9 +14,7 @@ const userStore = create(
       user: null,
 
       setUser: (user: User) => {
-        console.log("Setting Zustand user:", user);
         set({ user });
-        console.log("user from store", user);
       },
 
       clearUser: () => set({ user: null }),
