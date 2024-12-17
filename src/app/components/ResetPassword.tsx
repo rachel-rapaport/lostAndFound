@@ -17,11 +17,10 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   const [user, setUser] = useState<User | null>(null);
   const [success, setSuccess] = useState("");
 
-
   // get the user by email
   const { data, error, isLoading } = useQuery({
     queryKey: ["user", email], // Query key as an object property
-    queryFn: () => getUserByEmail(email), 
+    queryFn: () => getUserByEmail(email),
     enabled: !!email, // Runs only if email is truth
   });
 
@@ -37,7 +36,7 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
 
   useEffect(() => {
     if (data) {
-      setUser(data); 
+      setUser(data);
     }
   }, [data]);
 
@@ -48,6 +47,7 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   // handle submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     // Validate passwords
     const formData = { password, confirmPassword };
     const validation = resetPasswordSchema.safeParse(formData);
@@ -55,11 +55,16 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
     if (!validation.success) {
       const errors = validation.error.errors;
       setErrorMessage(errors[0].message);
+      setPassword("");
+      setConfirmPassword("");
+      return; // Exit early if validation fails
     }
+
     if (!user || !user._id) {
       setErrorMessage("המשתמש לא נמצא או נתוני המשתמש לא חוקיים.");
       return;
     }
+
     try {
       // Update user password
       const updatedUser = await updateUserById(user._id.toString(), {
