@@ -63,7 +63,8 @@ export const resetPassword = (email: string, link: string) => {
       `,
     }
 
-    sendEmailToUser(email, content.subject, content.text, content.htmlContent);
+     sendEmailToUser(email, content.subject, content.text, content.htmlContent);
+   
 }
 
 

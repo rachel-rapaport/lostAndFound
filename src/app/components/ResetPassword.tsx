@@ -6,6 +6,7 @@ import { getUserByEmail, updateUserById } from "../services/api/userService";
 import { User } from "../types/props/user";
 import { resetPasswordSchema } from "../schemas/resetPasswordSchema";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
 
 export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   const [password, setPassword] = useState("");
@@ -16,6 +17,10 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [success, setSuccess] = useState("");
+
+  const router = useRouter();
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   // get the user by email
   const { data, error, isLoading } = useQuery({
@@ -76,6 +81,10 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
       setPassword("");
       setConfirmPassword("");
       setErrorMessage("");
+      await delay(1500);
+      if (router) {
+        router.push("/login");
+      }
     } catch (err) {
       console.error("Error updating password:", err);
       setErrorMessage("שגיאה בעדכון הסיסמה. נסה שוב.");
