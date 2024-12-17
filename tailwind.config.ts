@@ -10,11 +10,10 @@ const config: Config = {
     extend: {
       fontFamily: {
         fredoka: ['"Fredoka"', 'sans-serif'],
-      },      
+      },
       colors: {
         primary: '#FADB3F',
-        secondary: '#515748',
-        dark: '#27332D',
+        secondary: '#000000',
       },
     },
   },
