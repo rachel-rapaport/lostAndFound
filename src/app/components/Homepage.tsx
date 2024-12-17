@@ -1,18 +1,32 @@
 "use client";
+import { logout } from "../services/api/logoutService";
+// import userStore from "../store/userStore";
 // import { afterFilter } from "../utils/sendToUser";
 // import { initiateChat } from "../utils/chat";
 // import { getUserById } from "../services/api/userService";
 // import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
 // import { sendEmailToAdmin } from "../services/api/sendEmailService";
-import useUserStore from "../store/userStore";
+// import useUserStore from "../store/userStore";
 
 // import { useEffect } from 'react';
 // import { useAppStore } from "../store/store";
 
 const Homepage = () => {
   // const { currentUser } = useUserStore();
-  const clearUser = useUserStore((state) => state.clearUser); // Get the store's setUser function
+  // const clearUser = useUserStore((state) => state.clearUser); // Get the store's setUser function
+  // const handleLogout = () => {
+  //   console.log("in log out");
 
+  //   // Clear token cookie
+  //   const headers = new Headers();
+  //   headers.append(
+  //     "Set-Cookie",
+  //     `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=None`
+  //   );
+  //   // Clear Zustand user state
+  //   userStore.getState().clearUser();
+  //   console.log(userStore.getState().user);
+  // };
   // const setVercelUrl = useAppStore((state) => state.setVercelUrl);
   // const isVercelUrlSet = useAppStore((state) => state.isVercelUrlSet);
 
@@ -67,7 +81,7 @@ const Homepage = () => {
         התחל צאט
       </button> */}
       {/* {currentUser ? <h1>email:{currentUser.email}</h1> : <p>no user</p>} */}
-      <button onClick={clearUser}>log out</button>
+      <button onClick={logout}>log out</button>
     </>
   );
 };

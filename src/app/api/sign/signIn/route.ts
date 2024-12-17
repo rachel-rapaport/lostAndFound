@@ -39,14 +39,12 @@ export async function POST(request: NextRequest) {
   if (token) {
     try {
       // Token already exists, so skip login flow
-      // console.log("get current user is already connected", getUserStore().user);
-
       return NextResponse.json(
         {
           message: "User already logged in",
         },
         {
-          status: 200
+          status: 200,
         }
       );
     } catch (error) {
@@ -73,15 +71,16 @@ export async function POST(request: NextRequest) {
 
       // Set the token in a cookie
       const headers = new Headers();
+      const isProduction = process.env.NODE_ENV === "production";
       headers.append(
         "Set-Cookie",
-        `token=${token}; path=/; HttpOnly; Secure; SameSite=None`
+        `token=${token}; Path=/; HttpOnly; SameSite=${
+          isProduction ? "None" : "Lax"
+        }${isProduction ? "; Secure" : ""}`
       );
 
-      // setUser(user);
-      // console.log("get current user in normal login", getUserStore().user);
       return NextResponse.json(
-        { message: "Login successful", token,user },
+        { message: "Login successful", token, user },
         { headers }
       );
     } else {

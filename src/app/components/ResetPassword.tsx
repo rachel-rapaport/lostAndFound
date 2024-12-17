@@ -5,28 +5,39 @@ import React, { useEffect, useState } from "react";
 import { getUserByEmail, updateUserById } from "../services/api/userService";
 import { User } from "../types/props/user";
 import { resetPasswordSchema } from "../schemas/resetPasswordSchema";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [success, setSuccess] = useState("");
 
 
-
-  // const queryFn = email ? () => getUserByEmail(email) : null;
- 
   // get the user by email
   const { data, error, isLoading } = useQuery({
     queryKey: ["user", email], // Query key as an object property
-    queryFn: () => getUserByEmail(email), // Fetch function
-    enabled: !!email, // Runs only if email is truthy
+    queryFn: () => getUserByEmail(email), 
+    enabled: !!email, // Runs only if email is truth
   });
+
+  // Toggle show/hide password button
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  // Toggle show/hide password button
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   useEffect(() => {
     if (data) {
-      setUser(data); // Assuming `data` is the user object
+      setUser(data); 
     }
   }, [data]);
 
@@ -43,8 +54,7 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
 
     if (!validation.success) {
       const errors = validation.error.errors;
-      setErrorMessage(errors[0].message); // Display the first error message
-      return;
+      setErrorMessage(errors[0].message);
     }
     if (!user || !user._id) {
       setErrorMessage("המשתמש לא נמצא או נתוני המשתמש לא חוקיים.");
@@ -68,48 +78,71 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   };
 
   return (
-    <div className="bg-gray-100 p-8 rounded shadow-lg max-w-md mx-auto mt-20">
-      <h1 className="text-2xl font-bold mb-4 text-center">איפוס סיסמה</h1>
+    <div className="bg-gray-100 p-12 rounded-lg shadow-lg max-w-lg mx-auto mt-20">
+      <h1 className="text-3xl font-bold mb-6 text-center">איפוס סיסמה</h1>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            סיסמה חדשה:
+        <div className="relative w-full flex flex-col gap-2">
+          <label htmlFor="password" className="text-lg font-medium">
+            סיסמה חדשה:{" "}
           </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded p-2"
-            placeholder="הזן סיסמה חדשה"
-            required
-          />
+          <div className="relative flex items-center w-full">
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute left-4 flex items-center text-gray-600 hover:text-gray-800"
+            >
+              {showPassword ? (
+                <EyeSlashIcon className="w-6 h-6" />
+              ) : (
+                <EyeIcon className="w-6 h-6" />
+              )}
+            </button>
+            <input
+              className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg pl-12"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              id="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="הזן סיסמה חדשה"
+            />
+          </div>
         </div>
-        <div className="mb-4">
-          <label
-            htmlFor="confirmPassword"
-            className="block text-sm font-medium text-gray-700"
-          >
+        {/* confirm password: */}
+        <div className="relative w-full flex flex-col gap-2 mb-4">
+          <label htmlFor="confirmPassword" className="text-lg font-medium">
             אשר סיסמה חדשה:
           </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded p-2"
-            placeholder="אשר את הסיסמה"
-            required
-          />
+          <div className="relative flex items-center w-full">
+            <button
+              type="button"
+              onClick={toggleConfirmPasswordVisibility}
+              className="absolute left-4 flex items-center text-gray-600 hover:text-gray-800"
+            >
+              {showConfirmPassword ? (
+                <EyeSlashIcon className="w-6 h-6" />
+              ) : (
+                <EyeIcon className="w-6 h-6" />
+              )}
+            </button>
+            <input
+              className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg pl-12"
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              id="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="אשר את הסיסמה"
+            />
+          </div>
         </div>
-        {errorMessage && <p className="text-red-600 text-sm mb-4">{errorMessage}</p>}
-        {success && <p className="text-green-600 text-sm mb-4">{success}</p>}
+        {errorMessage && (
+          <p className="text-red-600 text-lg mb-6">{errorMessage}</p>
+        )}
+        {success && <p className="text-green-600 text-lg mb-6">{success}</p>}
         <button
           type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+          className="w-full bg-[#FADB3F] text-white py-3 text-lg rounded-lg hover:bg-yellow-500 transition"
         >
           שמור סיסמה
         </button>

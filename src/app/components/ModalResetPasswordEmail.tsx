@@ -37,32 +37,38 @@ const PasswordResetModal: React.FC<PasswordResetModalProps> = ({ isOpen, onClose
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded shadow-md w-1/3 text-center">
-        <h2 className="text-lg font-bold mb-4">שחזור סיסמה</h2>
-        <p className="mb-2">אנא הזן את הדואר האלקטרוני שלך לקבלת קישור לאיפוס סיסמה:</p>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="border border-gray-300 rounded w-full p-2 mb-4"
-          placeholder="דוא״ל"
-        />
-        {error && <p className="text-red-700 m-2">{error}</p>}
+    <div className="bg-gray-200 p-8 rounded-lg shadow-lg w-full max-w-lg text-center">
+      <h2 className="text-3xl font-bold mb-6">שחזור סיסמה</h2>
+      <p className="text-lg mb-4">אנא הזן את הדואר האלקטרוני שלך לקבלת קישור לאיפוס סיסמה:</p>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="border border-gray-400 rounded-lg w-full h-12 px-4 text-lg mb-6"
+        placeholder="דוא״ל"
+      />
+      {error && <p className="text-red-600 text-lg mb-4">{error}</p>}
+      <div className="flex justify-center gap-4">
         <button
           type="button"
           onClick={(e) => {
             e.preventDefault();
             handleResetPassword();
           }}
-          className="bg-green-600 text-white px-4 py-2 rounded mr-2"
+          className="w-1/3 bg-[#FADB3F] text-white py-3 text-lg rounded-lg hover:bg-yellow-500 transition"
         >
           שלח
         </button>
-        <button onClick={onClose} className="bg-red-500 text-white px-4 py-2 rounded">
+        <button
+          onClick={onClose}
+          className="w-1/3 bg-[#515748] text-white py-3 text-lg rounded-lg hover:bg-red-600 transition"
+        >
           בטל
         </button>
       </div>
     </div>
+  </div>
+  
   );
 };
 

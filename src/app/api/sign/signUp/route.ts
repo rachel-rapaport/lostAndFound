@@ -62,19 +62,20 @@ export async function POST(request: NextRequest) {
       password,
       phone,
     });
-    // const user = response.data;
-    // setUser(user);
 
     const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
 
     const headers = new Headers();
+    const isProduction = process.env.NODE_ENV === "production";
+
     headers.append(
       "Set-Cookie",
-      `token=${token}; path=/; HttpOnly: Secure; SameSite=None;`
+      `token=${token}; Path=/; HttpOnly; SameSite=${
+        isProduction ? "None" : "Lax"
+      }${isProduction ? "; Secure" : ""}`
     );
-    // setUser(user);
 
     return NextResponse.json(
       { message: "Signup successful", token },

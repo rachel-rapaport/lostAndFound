@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
+import userStore from "./app/store/userStore";
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -25,6 +26,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/home", req.url));
     } catch (error) {
       console.error("Token verification failed:", error);
+      userStore.getState().clearUser();
     }
   }
 
