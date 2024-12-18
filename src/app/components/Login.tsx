@@ -1,13 +1,16 @@
-// Login / sign up form - include gorgot password and token
+// Login / sign up form - include forgot password and token
 "use client";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, {useState } from "react";
+
+import React, { useState } from "react";
+import axios from "axios";
+import { z } from "zod";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import userStore from "../store/userStore";
 import { loginAuthenticationCookies } from "../services/api/loginAuth";
 import { signupAuthenticationCookies } from "../services/api/signupAuth";
-import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
-import { resetPassword } from "../utils/sendToUser";
-// import { verifyToken } from "../services/api/tokenService";
+import { loginSchema, signUpSchema } from "@/app/schemas/loginSchema";
+import PasswordResetModal from "./ModalResetPasswordEmail";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -15,46 +18,71 @@ const LoginForm = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
+  const setUser = userStore((state) => state.setUser);
 
   // Log in / Sign up
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
-  // send reset password email modal
+
+  // Send reset password email modal
   const openModal = () => {
     setIsModalOpen(true);
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
+  // Toggle show/hide password button
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  // Submit function - zod validation
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isLogin) {
-      await login();
-    } else {
-      await signUp();
+    try {
+      const formData = { email, password, fullName, phone };
+      if (isLogin) {
+        const loginData = loginSchema.parse({ email, password });
+        await login(loginData);
+      } else {
+        const signUpData = signUpSchema.parse(formData);
+        await signUp(signUpData);
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setError(error.errors[0].message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
   };
 
-  // handle sign up
-  const signUp = async () => {
+  // Handle sign up
+  const signUp = async (signUpData: {
+    email: string;
+    password: string;
+    fullName: string;
+    phone: string;
+  }) => {
     try {
       const response = await signupAuthenticationCookies(
-        email,
-        phone,
-        fullName,
-        password
+        signUpData.email,
+        signUpData.phone,
+        signUpData.fullName,
+        signUpData.password
       );
       if (response) {
-        console.log("sign up succsess");
+        console.log("Response:", response);
         clearData();
-        router.replace("/home");
+        router.push("/home");
       } else {
         setError("error");
       }
@@ -63,35 +91,48 @@ const LoginForm = () => {
     }
   };
 
-  // handle log in
-  const login = async () => {
+  // Handle log in
+  const login = async (loginData: { email: string; password: string }) => {
     try {
-      const response = await loginAuthenticationCookies(email, password);
-      if (response?.valueOf) {
-        console.log("log in succsess");
-        if (router) {
-          router.push("/home");
+      const response = await loginAuthenticationCookies(
+        loginData.email,
+        loginData.password
+      );
+
+      if (response) {
+        if (response.user) {
+          // The user logged in successfully
+          setUser(response.user); // Update the store with user data
+          if (router) {
+            router.push("/home");
+          }
+          clearData();
+        } else {
+          // The user is logged in already
+          if (router) {
+            router.push("/home");
+          }
         }
-        clearData();
       } else {
-        setError("password or email are wrong");
+        setError("Password or email is incorrect");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setError("An error occurred during login");
     }
   };
 
-  // clear form
+  // Clear form
   const clearData = () => {
     setFullName("");
     setEmail("");
     setPassword("");
     setError("");
+    setPhone("");
     setIsLogin(false);
   };
 
-  // error handler
-  //לא הבנתימה זה עושה
+  // Error handler
   const handleError = (error: unknown, defaultMessage: string) => {
     if (axios.isAxiosError(error) && error.response?.status === 400) {
       setError(error.response.data.message || defaultMessage);
@@ -101,38 +142,26 @@ const LoginForm = () => {
     }
   };
 
-  // handle email sender modal
-  const handleResetPassword = async () => {
-    const resetUrl = `${getVercelUrlWithoutRequest()}/reset-password?email=${encodeURIComponent(
-      resetEmail
-    )}`;
-
-    await resetPassword(resetEmail, resetUrl);
-    console.log("Password reset email sent to:", resetEmail);
-    setResetEmail("");
-    closeModal();
-    clearData();
-  };
-
   return (
-    <div className="bg-slate-300 space-y-12 w-full h-[400px] text-black p-8">
-      <div className="flex justify-center  space-x-4 mb-6">
+    <div className="bg-gray-200 space-y-16 w-full h-[600px] text-black p-12">
+      <div className="flex justify-center space-x-6 mb-8">
+        {/* Toggle buttons  */}
         <button
           onClick={toggleForm}
-          className={`px-6 py-2 text-xl font-semibold ${
+          className={`px-8 py-3 text-2xl font-semibold ${
             isLogin
-              ? "bg-green-600 text-white rounded-t-lg"
-              : "bg-transparent text-green-600 border-b-2 border-green-600"
+              ? "bg-[#FADB3F] text-white rounded-t-lg "
+              : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
           }`}
         >
           התחברות
         </button>
         <button
           onClick={toggleForm}
-          className={`px-6 py-2 text-xl font-semibold ${
+          className={`px-8 py-3 text-2xl font-semibold ${
             !isLogin
-              ? "bg-green-600 text-white rounded-t-lg"
-              : "bg-transparent text-green-600 border-b-2 border-green-600"
+              ? "bg-[#FADB3F] text-white rounded-t-lg"
+              : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
           }`}
         >
           הרשמה
@@ -141,10 +170,13 @@ const LoginForm = () => {
 
       <form onSubmit={onSubmit}>
         {!isLogin && (
-          <div className="grid w-full items-center gap-1.5">
-            <label htmlFor="fullname">שם מלא:</label>
+          // Full name input
+          <div className="grid w-full items-center gap-2">
+            <label htmlFor="fullname" className="text-lg font-medium">
+              שם מלא:
+            </label>
             <input
-              className="w-full"
+              className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg"
               required={!isModalOpen}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -153,22 +185,28 @@ const LoginForm = () => {
             />
           </div>
         )}
-        <div className="grid w-full items-center gap-1.5">
-          <label htmlFor="email">דואר אלקטרוני:</label>
+        {/* Email input */}
+        <div className="grid w-full items-center gap-2">
+          <label htmlFor="email" className="text-lg font-medium">
+            דואר אלקטרוני:
+          </label>
           <input
-            className="w-full"
+            className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg"
             required={!isModalOpen}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             id="email"
-            type="email"
+            type="text"
           />
         </div>
         {!isLogin && (
-          <div className="grid w-full items-center gap-1.5">
-            <label htmlFor="phone"> טלפון:</label>
+          // Phone input
+          <div className="grid w-full items-center gap-2">
+            <label htmlFor="phone" className="text-lg font-medium">
+              טלפון:
+            </label>
             <input
-              className="w-full"
+              className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg"
               required={!isModalOpen}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -177,73 +215,59 @@ const LoginForm = () => {
             />
           </div>
         )}
-        <div className="grid w-full items-center gap-1.5">
-          <label htmlFor="password">סיסמה:</label>
-          <input
-            className="w-full"
-            required={!isModalOpen}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            id="password"
-            type="password"
-          />
-        </div>
-        {isLogin ? (
-          <>
-            {" "}
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                openModal();
-              }}
-              className="text-blue-500 underline"
+        {/* Password input */}
+        <div className="relative w-full flex flex-col gap-2">
+          <label htmlFor="password" className="text-lg font-medium">
+            סיסמה:
+          </label>
+          <div className="relative flex items-center w-full">
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute left-4 flex items-center text-gray-600 hover:text-gray-800"
             >
-              שכחת סיסמה?
-            </a>
-          </>
-        ) : (
-          <></>
-        )}
-        {!isModalOpen ? (
-          <>
-            <button className="w-full bg-green-600 text-white py-2 mt-4 rounded">
-              {isLogin ? "התחברות" : "הרשמה"}
+              {showPassword ? (
+                <EyeSlashIcon className="w-6 h-6" />
+              ) : (
+                <EyeIcon className="w-6 h-6" />
+              )}
             </button>
-            {error && <p className="text-red-700 mt-4">{error}</p>}
-          </>
+            <input
+              className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg pl-12"
+              required={!isModalOpen}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              id="password"
+              type={showPassword ? "text" : "password"}
+            />
+          </div>
+        </div>
+
+        {/* Forgot password  */}
+        {isLogin ? (
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
+            className="text-blue-600 underline mt-2 inline-block"
+          >
+            שכחת סיסמה?
+          </a>
         ) : null}
 
-        {/* Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-md w-1/3 text-center">
-              <h2 className="text-lg font-bold mb-4">שחזור סיסמה</h2>
-              <p className="mb-4">
-                אנא הזן את הדואר האלקטרוני שלך לקבלת קישור לאיפוס סיסמה:
-              </p>
-              <input
-                type="email"
-                value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-                className="border border-gray-300 rounded w-full p-2 mb-4"
-                placeholder="דוא״ל"
-              />
-              <button
-                onClick={handleResetPassword}
-                className="bg-green-600 text-white px-4 py-2 rounded mr-2"
-              >
-                שלח
-              </button>
-              <button
-                onClick={closeModal}
-                className="bg-red-500 text-white px-4 py-2 rounded"
-              >
-                בטל
-              </button>
-            </div>
-          </div>
+        {/* Submit form button */}
+        {!isModalOpen && (
+          <>
+            <button className="w-full bg-[#FADB3F] text-white py-3 mt-6 text-lg rounded-lg hover:bg-yellow-500 transition">
+              {isLogin ? "התחברות" : "הרשמה"}
+            </button>
+            {error && <p className="text-red-700 mt-4 text-lg">{error}</p>}
+          </>
         )}
+        {/* Modal to input email to reset */}
+        <PasswordResetModal isOpen={isModalOpen} onClose={closeModal} />
       </form>
     </div>
   );

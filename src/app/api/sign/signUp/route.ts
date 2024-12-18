@@ -4,10 +4,12 @@ import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 import axios from "axios";
 import { getVercelUrl } from "@/app/utils/vercelUrl";
+// import { getUserStore } from "@/app/store/userStore";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function POST(request: NextRequest) {
+  // const setUser = getUserStore().setUser;
 
   const vercelUrl = getVercelUrl(request);
 
@@ -61,19 +63,24 @@ export async function POST(request: NextRequest) {
       phone,
     });
 
-    const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, { expiresIn: "1h", });
+    const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
+      expiresIn: "1h",
+    });
 
     const headers = new Headers();
+    const isProduction = process.env.NODE_ENV === "production";
+
     headers.append(
       "Set-Cookie",
-      `token=${token}; path=/; HttpOnly: Secure; SameSite=None;`
+      `token=${token}; Path=/; HttpOnly; SameSite=${
+        isProduction ? "None" : "Lax"
+      }${isProduction ? "; Secure" : ""}`
     );
 
     return NextResponse.json(
       { message: "Signup successful", token },
       { headers }
     );
-
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error", error: error },
