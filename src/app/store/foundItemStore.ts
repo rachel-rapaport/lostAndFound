@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { FoundItemStore } from "../types/store/foundItemStore";
 import { Types } from "mongoose";
 
-export const useFoundItemStore = create<FoundItemStore>((set, get) => ({
+const useFoundItemStore = create<FoundItemStore>((set, get) => ({
     currentFoundItem: null,
 
     setCurrentFoundItem: (foundItem) => {
@@ -82,3 +82,5 @@ export const useFoundItemStore = create<FoundItemStore>((set, get) => ({
             return null;
     }
 }))
+
+export default useFoundItemStore;
