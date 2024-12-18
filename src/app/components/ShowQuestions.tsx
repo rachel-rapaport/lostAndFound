@@ -1,9 +1,17 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFoundItemStore } from '../store/foundItemStore';
 
-const ShowQuestions = () => {
-    const { currentFoundItem } = useFoundItemStore();
+const ShowQuestions = (props: { id: string }) => {
+    const { id } = props;
+    const currentFoundItem = useFoundItemStore((state) => state.currentFoundItem);
+    const setCurrentFoundItem = useFoundItemStore((state) => state.setCurrentFoundItem);
+    const getFilteredFoundItemById = useFoundItemStore((state) => state.getFilteredFoundItemById);
+
+    useEffect(() => {
+        const foundItem = getFilteredFoundItemById(id);
+        setCurrentFoundItem(foundItem);
+    }, [id, setCurrentFoundItem, getFilteredFoundItemById]);
 
     const handleSubmit = () => {
         console.log("submit");

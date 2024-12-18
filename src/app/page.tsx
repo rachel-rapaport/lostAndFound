@@ -1,18 +1,12 @@
 // import Homepage from "./components/Homepage";
-// import ShowQuestions from "./components/ShowQuestions";
+import ShowQuestions from "./components/ShowQuestions";
 
 export default function Home() {
 
   return (
-    <div className="p-[20px]">
-      hello
+    <div className="p-[70px]">
       {/* <Homepage /> */}
-      {/* <ShowQuestions/> */}
-      <button className="primary-btn">button</button>
-      <button className="secondary-btn">button</button>
-      <button className="delete-btn">button</button>
-      <button className="disabled-btn">button</button>
-
-    </div>
+      <ShowQuestions id="675597dd940d164664f8d89d"></ShowQuestions>
+    </div >
   );
 }
