@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       },
       {
         $lookup: {
-          from: 'blockeditems',
+          from: 'founditems',
           localField: 'blockedItems',
           foreignField: '_id',
           as: 'blockedItemsDetails'
@@ -67,10 +67,10 @@ export async function GET(request: NextRequest) {
           email: 1,
           password: 1,
           phone: 1,
-          lostItemsDetails: 1,
-          foundItemsDetails: 1,
-          blockedItemsDetails: 1,
-          alertsDetails: 1
+          lostItems: 1,
+          foundItems: 1,
+          blockedItems: 1,
+          alerts: 1
         }
       }
     ]);

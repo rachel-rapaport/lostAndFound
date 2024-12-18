@@ -51,9 +51,9 @@ export async function middleware(req: NextRequest) {
         isAdmin = true;
       } else {
         // If not admin, redirect to home page, but avoid infinite redirects
-        if (pathname !== "/home") {
-          return NextResponse.redirect(new URL("/home", req.url));
-        }
+        // if (pathname !== "/home") {
+        //   return NextResponse.redirect(new URL("/home", req.url));
+        // }
       }
     } catch (error) {
       console.error("Invalid token:", error);
