@@ -23,7 +23,7 @@ export const useFoundItemStore = create<FoundItemStore>((set) => ({
             _id: new Types.ObjectId("675594a40f7ad3122ddce6d6"),
             name: "אדום",
             groupId: 1,
-            __v: 0
+            hexadecimal: ""
         },
         postion: {
             latitude: 31.7683,
