@@ -29,7 +29,7 @@ export const getLostItemById = async (id: string) => {
 };
 
 // create new lost item
-export const createLostI = async (lostItem: LostItem) => {
+export const createLostItem = async (lostItem: LostItem) => {
   try {
     const response = await axios.post("/api/lostItem", lostItem);
     return response.data;
