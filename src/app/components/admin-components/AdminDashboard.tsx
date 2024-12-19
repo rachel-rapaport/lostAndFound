@@ -4,6 +4,7 @@ import { UsersTable } from "./crud-tables-admin/UsersTable";
 import CategorysTable from "./crud-tables-admin/CategoriesTable";
 import LostItemsTable from "./crud-tables-admin/LostItemsTable";
 import FoundItemsTable from "./crud-tables-admin/FoundItemsTable";
+import { ColorTable } from "./crud-tables-admin/ColorTable";
 
 export const AdminDashboard = () => {
   const [activeTable, setActiveTable] = useState("users");
@@ -16,8 +17,10 @@ export const AdminDashboard = () => {
         return <CategorysTable />;
       case "Lost items":
         return <LostItemsTable />;
-        case "Found items":
+      case "Found items":
         return <FoundItemsTable />;
+      case "Colors":
+        return <ColorTable />;
       default:
         return null;
     }
@@ -74,7 +77,19 @@ export const AdminDashboard = () => {
                     : "hover:bg-[#515748]"
                 }`}
               >
-ניהול חפצים שנמצאו              </button>
+                ניהול חפצים שנמצאו{" "}
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setActiveTable("Colors")}
+                className={`block w-full text-right text-lg font-semibold p-2 rounded 
+                ${
+                  activeTable === "Colors" ? "bg-title" : "hover:bg-[#515748]"
+                }`}
+              >
+                ניהול צבעים{" "}
+              </button>
             </li>
           </ul>
         </nav>

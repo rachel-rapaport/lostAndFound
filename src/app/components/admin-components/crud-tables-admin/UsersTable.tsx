@@ -152,12 +152,7 @@ export const UsersTable = () => {
                         type="text"
                         defaultValue={user.password}
                         className="w-full p-2 border rounded"
-                        onChange={(e) =>
-                          setupdateUser((prev) => ({
-                            ...prev,
-                            password: e.target.value,
-                          }))
-                        }
+                      disabled
                       />
                     </td>
                     <td className="border border-gray-300 px-4 py-2">
@@ -282,7 +277,6 @@ export const UsersTable = () => {
           </tbody>
         </table>
 
-        {/* Mobile view - card layout */}
         <div className="block md:hidden">
           {users.map((user) => (
             <div
