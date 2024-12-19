@@ -5,7 +5,7 @@ import { SubCategory } from "@/app/types/props/subCategory";
 export const createSubCategory = async (subCategory:SubCategory) => {
   try {
     // Check if the category exists
-    const response = await getCategoryById(subCategory.categoryId.toString());
+    const response = await getCategoryById(subCategory.categoryId._id.toString());
     if (!response) {
       throw new Error("Category does not exist");
     }
