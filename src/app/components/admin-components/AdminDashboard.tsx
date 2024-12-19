@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { UsersTable } from "./crud-tables-admin/UsersTable";
 import CategorysTable from "./crud-tables-admin/CategoriesTable";
 import LostItemsTable from "./crud-tables-admin/LostItemsTable";
+import FoundItemsTable from "./crud-tables-admin/FoundItemsTable";
 
 export const AdminDashboard = () => {
   const [activeTable, setActiveTable] = useState("users");
@@ -15,6 +16,8 @@ export const AdminDashboard = () => {
         return <CategorysTable />;
       case "Lost items":
         return <LostItemsTable />;
+        case "Found items":
+        return <FoundItemsTable />;
       default:
         return null;
     }
@@ -60,6 +63,18 @@ export const AdminDashboard = () => {
               >
                 ניהול חפצים שאבדו{" "}
               </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setActiveTable("Found items")}
+                className={`block w-full text-right text-lg font-semibold p-2 rounded 
+                ${
+                  activeTable === "Found items"
+                    ? "bg-title"
+                    : "hover:bg-[#515748]"
+                }`}
+              >
+ניהול חפצים שנמצאו              </button>
             </li>
           </ul>
         </nav>
