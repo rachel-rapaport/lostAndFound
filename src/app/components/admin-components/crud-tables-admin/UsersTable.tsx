@@ -116,7 +116,7 @@ export const UsersTable = () => {
           <tbody>
             {users.map((user) => (
               <tr
-                key={user._id}
+                key={user._id.toString()}
                 className="hover:bg-gray-100 even:bg-gray-50"
               >
                 {isEditing === user._id?.toString() ? (
