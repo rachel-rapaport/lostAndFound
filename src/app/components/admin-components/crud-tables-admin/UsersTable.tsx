@@ -40,7 +40,7 @@ export const UsersTable = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [users]);
 
   const handleDelete = async (id: string) => {
     await deleteUserById(id);
@@ -67,7 +67,7 @@ export const UsersTable = () => {
       const createdUser = await response;
       setUsers([...users, createdUser]);
       setNewUser({
-        _id: new Types.ObjectId(""),
+        _id: new Types.ObjectId(),
         fullName: "",
         email: "",
         password: "",
@@ -116,7 +116,7 @@ export const UsersTable = () => {
           <tbody>
             {users.map((user) => (
               <tr
-                key={user._id?.toString()}
+                key={user._id}
                 className="hover:bg-gray-100 even:bg-gray-50"
               >
                 {isEditing === user._id?.toString() ? (
