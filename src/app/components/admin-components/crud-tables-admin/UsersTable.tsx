@@ -150,9 +150,14 @@ export const UsersTable = () => {
                     <td className="border border-gray-300 px-4 py-2">
                       <input
                         type="text"
-                        defaultValue={user.password}
+                        defaultValue={
+                          user.password
+                            ? user.password[0] +
+                              "*".repeat(user.password.length - 1)
+                            : ""
+                        }
                         className="w-full p-2 border rounded"
-                      disabled
+                        disabled
                       />
                     </td>
                     <td className="border border-gray-300 px-4 py-2">
@@ -195,8 +200,12 @@ export const UsersTable = () => {
                       {user.email}
                     </td>
                     <td className="border border-gray-300 px-4 py-2">
-                      {user.password}
+                      {user.password
+                        ? user.password[0] +
+                          "*".repeat(user.password.length - 1)
+                        : ""}
                     </td>
+
                     <td className="border border-gray-300 px-4 py-2">
                       {user.phone}
                     </td>
@@ -245,7 +254,7 @@ export const UsersTable = () => {
               </td>
               <td className="border border-gray-300 px-4 py-2">
                 <input
-                  type="password"
+                  type="text"
                   placeholder="Password"
                   value={newUser.password || ""}
                   className="w-full p-2 border rounded"
@@ -311,12 +320,7 @@ export const UsersTable = () => {
                     type="text"
                     defaultValue={user.password}
                     className="w-full p-2 border rounded mb-2"
-                    onChange={(e) =>
-                      setupdateUser((prev) => ({
-                        ...prev,
-                        password: e.target.value,
-                      }))
-                    }
+                    disabled
                   />
                   <input
                     type="text"
