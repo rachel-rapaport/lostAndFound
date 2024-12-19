@@ -6,10 +6,12 @@ import _ from 'lodash';
 import { checkAnswers } from '../utils/checkAnswers';
 import { z } from 'zod';
 import userStore from '../store/userStore';
+import { useRouter } from 'next/navigation';
 
 const ShowQuestions = (props: { id: string }) => {
 
     const { id } = props;
+    const router = useRouter();
     const currentUser = userStore((state) => state.user);
     const currentFoundItem = useFoundItemStore((state) => state.currentFoundItem);
     const setCurrentFoundItem = useFoundItemStore((state) => state.setCurrentFoundItem);
@@ -41,7 +43,9 @@ const ShowQuestions = (props: { id: string }) => {
             answerSchema.parse(formData);
             setErrors({});
             const answers = formData.answers;
-            checkAnswers(currentUser, currentFoundItem, answers);
+            checkAnswers(currentUser, currentFoundItem, answers, router);
+            // reset answers
+            setFormData({ answers: [] });
         } catch (err) {
             if (err instanceof z.ZodError) {
                 const fieldErrors: { [key: string]: string } = {};
