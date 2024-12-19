@@ -143,14 +143,14 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="bg-gray-200 space-y-16 w-full h-[600px] text-black p-12">
-      <div className="flex justify-center space-x-6 mb-8">
-        {/* Toggle buttons  */}
+    <div className="bg-gray-200 space-y-16 w-full h-auto text-black p-8 md:p-12">
+      <div className="flex flex-col md:flex-row justify-center md:space-x-6 mb-8">
+        {/* Toggle buttons */}
         <button
           onClick={toggleForm}
-          className={`px-8 py-3 text-2xl font-semibold ${
+          className={`px-8 py-3 text-2xl font-semibold mb-4 md:mb-0 ${
             isLogin
-              ? "bg-[#FADB3F] text-white rounded-t-lg "
+              ? "bg-[#FADB3F] text-white rounded-t-lg"
               : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
           }`}
         >
@@ -243,7 +243,7 @@ const LoginForm = () => {
           </div>
         </div>
 
-        {/* Forgot password  */}
+        {/* Forgot password */}
         {isLogin ? (
           <a
             href="#"
@@ -272,5 +272,4 @@ const LoginForm = () => {
     </div>
   );
 };
-
 export default LoginForm;
