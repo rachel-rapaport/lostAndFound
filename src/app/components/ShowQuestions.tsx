@@ -2,6 +2,8 @@
 import React, { useEffect } from 'react';
 import useFoundItemStore from '../store/foundItemStore';
 import NotMineButton from './NotMineButton';
+import _ from 'lodash';
+import { checkAnswers } from '../utils/checkAnswers';
 
 const ShowQuestions = (props: { id: string }) => {
     const { id } = props;
@@ -16,11 +18,15 @@ const ShowQuestions = (props: { id: string }) => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("submit");
-    }
+        const formData = new FormData(e.currentTarget);
+        // Extract the answer values ​​and converting them to a string
+        const answers = Array.from(formData.values()).map(value => value.toString());
+        const result = checkAnswers(currentFoundItem, answers);
+        console.log("result:", result);
+    };
 
     return (
-        // Assuming that every question, and every answer per question, is unique
+        //  Assume that every question, and every answer per question, is unique
         <div className='flex flex-col w-[50%] mx-auto text-secondary'>
             <h1 className='font-semibold pb-12'>ענה על הסימנים הבאים: </h1>
             <form onSubmit={handleSubmit}>
@@ -31,7 +37,8 @@ const ShowQuestions = (props: { id: string }) => {
                                 <p className='ml-2'>{index + 1}. </p>
                                 <h2 className='font-fredoka'>{question.question}</h2>
                             </span>
-                            {question.answers.map((answer) => (
+                            {/* Changing the order in which answers are displayed */}
+                            {_.shuffle(question.answers).map((answer: string) => (
                                 <div key={answer}>
                                     <span className='flex'>
                                         <input

@@ -64,7 +64,10 @@ const useFoundItemStore = create<FoundItemStore>((set, get) => ({
                     },
                     {
                         "question": "האם האוזניות הן גם אוזניות בלוטוס?",
-                        "answers": ["כן", "לא"]
+                        "answers": [
+                            "כן",
+                            "לא"
+                        ]
                     }
                 ],
                 "descripition": "",
