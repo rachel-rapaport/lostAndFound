@@ -1,15 +1,34 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useFoundItemStore from '../store/foundItemStore';
 import NotMineButton from './NotMineButton';
 import _ from 'lodash';
 import { checkAnswers } from '../utils/checkAnswers';
+import { z } from 'zod';
+import userStore from '../store/userStore';
 
 const ShowQuestions = (props: { id: string }) => {
+
     const { id } = props;
+    const currentUser = userStore((state) => state.user);
     const currentFoundItem = useFoundItemStore((state) => state.currentFoundItem);
     const setCurrentFoundItem = useFoundItemStore((state) => state.setCurrentFoundItem);
     const getFilteredFoundItemById = useFoundItemStore((state) => state.getFilteredFoundItemById);
+    const [shuffledQuestions, setShuffledQuestions] = useState<{ question: string, answers: string[] }[]>([]);
+    const answerSchema = z.object({ answers: z.array(z.string()).min(currentFoundItem?.questions.length || 0, "יש למלא את כל השדות") });
+    const [formData, setFormData] = useState<z.infer<typeof answerSchema>>({ answers: [] });
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+
+    useEffect(() => {
+        if (currentFoundItem) {
+            const shuffled = currentFoundItem.questions.map((question) => ({
+                question: question.question,
+                answers: _.shuffle(question.answers),
+            }));
+            setShuffledQuestions(shuffled);
+        }
+    }, [currentFoundItem]);
 
     useEffect(() => {
         const foundItem = getFilteredFoundItemById(id);
@@ -18,11 +37,34 @@ const ShowQuestions = (props: { id: string }) => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        // Extract the answer values ​​and converting them to a string
-        const answers = Array.from(formData.values()).map(value => value.toString());
-        const result = checkAnswers(currentFoundItem, answers);
-        console.log("result:", result);
+        try {
+            answerSchema.parse(formData);
+            setErrors({});
+            const answers = formData.answers;
+            checkAnswers(currentUser, currentFoundItem, answers);
+        } catch (err) {
+            if (err instanceof z.ZodError) {
+                const fieldErrors: { [key: string]: string } = {};
+                err.errors.forEach((error) => {
+                    const path = error.path[0]?.toString();
+                    if (path) {
+                        fieldErrors[path] = error.message;
+                    }
+                });
+                setErrors(fieldErrors);
+            }
+            else {
+                console.log("error in submitting form:", err);
+            }
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            answers: [...prevData.answers, value],
+        }));
     };
 
     return (
@@ -31,14 +73,14 @@ const ShowQuestions = (props: { id: string }) => {
             <h1 className='font-semibold pb-12'>ענה על הסימנים הבאים: </h1>
             <form onSubmit={handleSubmit}>
                 {
-                    currentFoundItem && currentFoundItem.questions.map((question, index) => (
+                    shuffledQuestions && shuffledQuestions.map((question, index) => (
                         <div key={question.question} className='w-full pb-7'>
                             <span className='flex'>
                                 <p className='ml-2'>{index + 1}. </p>
                                 <h2 className='font-fredoka'>{question.question}</h2>
                             </span>
                             {/* Changing the order in which answers are displayed */}
-                            {_.shuffle(question.answers).map((answer: string) => (
+                            {question.answers.map((answer: string) => (
                                 <div key={answer}>
                                     <span className='flex'>
                                         <input
@@ -47,6 +89,7 @@ const ShowQuestions = (props: { id: string }) => {
                                             id={answer}
                                             value={answer}
                                             className="state"
+                                            onChange={(e) => handleChange(e)}
                                         />
 
                                         <label htmlFor={answer} className='label'>
@@ -64,6 +107,7 @@ const ShowQuestions = (props: { id: string }) => {
                         </div>
                     ))
                 }
+                {errors.answers && <p className='text-red-500 text-sm'>{errors.answers}</p>}
                 <div className="flex justify-between my-20">
                     <NotMineButton />
                     <button type="submit" className="flex justify-between secondary-btn">
