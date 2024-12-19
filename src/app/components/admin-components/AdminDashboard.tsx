@@ -5,6 +5,7 @@ import CategorysTable from "./crud-tables-admin/CategoriesTable";
 import LostItemsTable from "./crud-tables-admin/LostItemsTable";
 import FoundItemsTable from "./crud-tables-admin/FoundItemsTable";
 import { ColorTable } from "./crud-tables-admin/ColorTable";
+import { TypeTransportationTable } from "./crud-tables-admin/TypeTransportationTable";
 
 export const AdminDashboard = () => {
   const [activeTable, setActiveTable] = useState("users");
@@ -21,6 +22,8 @@ export const AdminDashboard = () => {
         return <FoundItemsTable />;
       case "Colors":
         return <ColorTable />;
+      case "Transportation":
+        return <TypeTransportationTable />;
       default:
         return null;
     }
@@ -36,7 +39,7 @@ export const AdminDashboard = () => {
               <button
                 onClick={() => setActiveTable("users")}
                 className={`block w-full text-right text-lg font-semibold p-2 rounded 
-                ${activeTable === "users" ? "bg-title" : "hover:bg-[#515748]"}`}
+    ${activeTable === "users" ? "bg-[#515748]" : "hover:bg-[#515748]"}`}
               >
                 ניהול משתמשים
               </button>
@@ -45,11 +48,7 @@ export const AdminDashboard = () => {
               <button
                 onClick={() => setActiveTable("categories")}
                 className={`block w-full text-right text-lg font-semibold p-2 rounded 
-                ${
-                  activeTable === "categories"
-                    ? "bg-[#515748]"
-                    : "hover:bg-[#515748]"
-                }`}
+    ${activeTable === "categories" ? "bg-[#515748]" : "hover:bg-[#515748]"}`}
               >
                 ניהול קטגוריות
               </button>
@@ -58,11 +57,7 @@ export const AdminDashboard = () => {
               <button
                 onClick={() => setActiveTable("Lost items")}
                 className={`block w-full text-right text-lg font-semibold p-2 rounded 
-                ${
-                  activeTable === "Lost items"
-                    ? "bg-title"
-                    : "hover:bg-[#515748]"
-                }`}
+    ${activeTable === "Lost items" ? "bg-[#515748]" : "hover:bg-[#515748]"}`}
               >
                 ניהול חפצים שאבדו{" "}
               </button>
@@ -71,11 +66,7 @@ export const AdminDashboard = () => {
               <button
                 onClick={() => setActiveTable("Found items")}
                 className={`block w-full text-right text-lg font-semibold p-2 rounded 
-                ${
-                  activeTable === "Found items"
-                    ? "bg-title"
-                    : "hover:bg-[#515748]"
-                }`}
+    ${activeTable === "Found items" ? "bg-[#515748]" : "hover:bg-[#515748]"}`}
               >
                 ניהול חפצים שנמצאו{" "}
               </button>
@@ -84,11 +75,18 @@ export const AdminDashboard = () => {
               <button
                 onClick={() => setActiveTable("Colors")}
                 className={`block w-full text-right text-lg font-semibold p-2 rounded 
-                ${
-                  activeTable === "Colors" ? "bg-title" : "hover:bg-[#515748]"
-                }`}
+    ${activeTable === "Colors" ? "bg-[#515748]" : "hover:bg-[#515748]"}`}
               >
                 ניהול צבעים{" "}
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setActiveTable("Transportation")}
+                className={`block w-full text-right text-lg font-semibold p-2 rounded 
+    ${activeTable === "Transportation" ? "bg-[#515748]" : "hover:bg-[#515748]"}`}
+              >
+                ניהול סוגי תחבורה ציבורית
               </button>
             </li>
           </ul>

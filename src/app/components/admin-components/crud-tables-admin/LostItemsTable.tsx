@@ -62,7 +62,7 @@ const LostItemsTable = () => {
                   {item.userId.email}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {item.colorId.name}
+                  {item.colorId?.name}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   {`${item.circles[0].center.lat} , ${item.circles[0].center.lng}`}

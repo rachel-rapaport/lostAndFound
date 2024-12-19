@@ -78,6 +78,7 @@ export const CategorysTable = () => {
   };
 
   return (
+    
     <div className="p-6">
       <div className="overflow-x-auto">
         <table className="table-auto w-full max-w-4xl mx-auto border-collapse border border-gray-300 hidden md:table">
