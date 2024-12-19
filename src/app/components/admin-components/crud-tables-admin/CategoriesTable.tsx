@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 export const CategorysTable = () => {
   const [categorys, setCategorys] = useState<Category[]>([]);
   const [newCategory, setNewCategory] = useState<Category>({
-    _id: new Types.ObjectId(0),
+    _id: new Types.ObjectId(),
     title: "",
     subCategories: [],
   });
@@ -18,27 +18,29 @@ export const CategorysTable = () => {
   const [openedCategoryId, setOpenedCategoryId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCategorys = async () => {
-      try {
-        const categorysData = await getCategories();
-        if (categorysData) {
-          setCategorys(categorysData);
-        }
-      } catch (error) {
-        console.error("Failed to fetch categorys:", error);
-      }
-    };
-
+   
     fetchCategorys();
   }, []);
+  const fetchCategorys = async () => {
+    try {
+      const categorysData = await getCategories();
+      if (categorysData) {
+        setCategorys(categorysData);
+      }
+    } catch (error) {
+      console.error("Failed to fetch categorys:", error);
+    }
+  };
+
 
   const handleAddCategory = async () => {
     const response = await addCategory(newCategory);
     if (response) {
       const createdCategory = await response;
       setCategorys([...categorys, createdCategory]);
+      fetchCategorys();
       setNewCategory({
-        _id: new Types.ObjectId(""),
+        _id: new Types.ObjectId(),
         title: "",
         subCategories: [],
       });
@@ -46,7 +48,7 @@ export const CategorysTable = () => {
   };
 
   const handleAddSubCategory = (categoryId: string) => {
-    const category = categorys.find((cat) => cat._id.toString() === categoryId);
+    const category = categorys.find((cat) => cat._id === categoryId);
     if (category && newSubCategory) {
       const newSubCategoryObj: SubCategory = {
         _id: new Types.ObjectId(),
@@ -56,7 +58,7 @@ export const CategorysTable = () => {
         foundItems: [],
       };
       createSubCategory({
-        categoryId: category._id.toString(),
+        categoryId: category._id,
         title: newSubCategory,
       });
 
@@ -66,7 +68,7 @@ export const CategorysTable = () => {
       };
 
       const updatedCategories = categorys.map((cat) =>
-        cat._id.toString() === categoryId ? updatedCategory : cat
+        cat._id === categoryId ? updatedCategory : cat
       );
 
       setCategorys(updatedCategories);
@@ -91,10 +93,10 @@ export const CategorysTable = () => {
         </thead>
         <tbody>
           {categorys.map((category) => (
-            <React.Fragment key={category._id.toString()}>
+            <React.Fragment key={category._id}>
               <tr
                 className="hover:bg-gray-100 even:bg-gray-50 cursor-pointer text-md"
-                onClick={() => handleCategoryClick(category._id.toString())}
+                onClick={() => handleCategoryClick(category._id)}
               >
                 <td className="border border-gray-300 px-4 py-3">{category.title}</td>
                 <td className="border border-gray-300 px-4 py-3 text-center"></td>
@@ -105,7 +107,7 @@ export const CategorysTable = () => {
                   <td colSpan={2} className="bg-gray-50 px-4 py-4">
                     <ul className="list-inside list-disc text-sm">
                       {category.subCategories.map((subCategory) => (
-                        <li key={subCategory._id.toString()}>{subCategory.title}</li>
+                        <li key={subCategory._id}>{subCategory.title}</li>
                       ))}
                     </ul>
                     <div className="mt-4 flex space-x-2">
@@ -118,7 +120,7 @@ export const CategorysTable = () => {
                       />
                       <button
                         className="bg-blue-500 text-white px-4 py-2 rounded text-sm"
-                        onClick={() => handleAddSubCategory(category._id.toString())}
+                        onClick={() => handleAddSubCategory(category._id)}
                       >
                         Add
                       </button>
@@ -155,23 +157,23 @@ export const CategorysTable = () => {
       <div className="block md:hidden">
         {categorys.map((category) => (
           <div
-            key={category._id?.toString()}
+            key={category._id}
             className="bg-white shadow-md rounded-lg p-4 mb-4"
           >
             <div
               className="cursor-pointer text-sm"
-              onClick={() => handleCategoryClick(category._id.toString())}
+              onClick={() => handleCategoryClick(category._id)}
             >
               <p>
                 <strong>{category.title}</strong>
               </p>
             </div>
   
-            {openedCategoryId === category._id.toString() && (
+            {openedCategoryId === category._id && (
               <div className="mt-4">
                 <ul className="list-inside list-disc text-sm">
                   {category.subCategories.map((subCategory) => (
-                    <li key={subCategory._id.toString()}>{subCategory.title}</li>
+                    <li key={subCategory._id}>{subCategory.title}</li>
                   ))}
                 </ul>
                 <div className="mt-4 flex space-x-2">
@@ -184,7 +186,8 @@ export const CategorysTable = () => {
                   />
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded text-sm"
-                    onClick={() => handleAddSubCategory(category._id.toString())}
+                    onClick={() => handleAddSubCategory(category._id
+                    )}
                   >
                     Add
                   </button>
