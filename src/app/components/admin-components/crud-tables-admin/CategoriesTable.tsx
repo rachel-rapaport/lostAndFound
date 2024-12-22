@@ -84,10 +84,10 @@ export const CategorysTable = () => {
         <table className="table-auto w-full max-w-4xl mx-auto border-collapse border border-gray-300 hidden md:table">
           <thead className="bg-gray-200">
             <tr>
-              <th className="border border-gray-300 px-4 py-3 text-center">
+              <th className="table-title">
                 Title
               </th>
-              <th className="border border-gray-300 px-4 py-3 text-center">
+              <th className="table-title">
                 Actions
               </th>
             </tr>
@@ -99,10 +99,10 @@ export const CategorysTable = () => {
                   className="hover:bg-gray-100 even:bg-gray-50 cursor-pointer text-md"
                   onClick={() => handleCategoryClick(category)}
                 >
-                  <td className="border border-gray-300 px-4 py-3">
+                  <td className="table-title">
                     {category.title}
                   </td>
-                  <td className="border border-gray-300 px-4 py-3 text-center"></td>
+                  <td className="table-title"></td>
                 </tr>
 
                 {openedCategoryId === category._id && (
@@ -137,7 +137,7 @@ export const CategorysTable = () => {
             ))}
 
             <tr className="bg-gray-50">
-              <td className="border border-gray-300 px-4 py-3">
+              <td className="table-cell">
                 <input
                   type="text"
                   placeholder="New Category"
@@ -148,7 +148,7 @@ export const CategorysTable = () => {
                   }
                 />
               </td>
-              <td className="border border-gray-300 px-4 py-3 text-center">
+              <td className="table-title">
                 <button
                   className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                   onClick={handleAddCategory}

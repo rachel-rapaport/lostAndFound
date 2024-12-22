@@ -27,20 +27,20 @@ export const UsersTable = () => {
     password: "",
     phone: "",
   });
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const usersData = await getUsers();
-        if (usersData) {
-          setUsers(usersData.data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
+  const fetchUsers = async () => {
+    try {
+      const usersData = await getUsers();
+      if (usersData) {
+        setUsers(usersData.data);
       }
-    };
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchUsers();
-  }, [users]);
+  }, []);
 
   const handleDelete = async (id: string) => {
     await deleteUserById(id);
@@ -96,21 +96,11 @@ export const UsersTable = () => {
         <table className="table-auto w-full border-collapse border border-gray-300 hidden md:table">
           <thead className="bg-gray-200">
             <tr>
-              <th className="border border-gray-300 px-4 py-2 text-center">
-                Full Name
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-center">
-                Email
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-center">
-                Password
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-center">
-                Phone
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-center">
-                Actions
-              </th>
+              <th className="table-cell text-center">Full Name</th>
+              <th className="table-cell text-center">Email</th>
+              <th className="table-cell text-center">Password</th>
+              <th className="table-cell text-center">Phone</th>
+              <th className="table-cell text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -121,7 +111,7 @@ export const UsersTable = () => {
               >
                 {isEditing === user._id?.toString() ? (
                   <>
-                    <td className="border border-gray-300 px-4 py-2">
+                    <td className="table-cell">
                       <input
                         type="text"
                         defaultValue={user.fullName}
@@ -134,7 +124,7 @@ export const UsersTable = () => {
                         }
                       />
                     </td>
-                    <td className="border border-gray-300 px-4 py-2">
+                    <td className="table-cell">
                       <input
                         type="email"
                         defaultValue={user.email}
@@ -147,7 +137,7 @@ export const UsersTable = () => {
                         }
                       />
                     </td>
-                    <td className="border border-gray-300 px-4 py-2">
+                    <td className="table-cell">
                       <input
                         type="text"
                         defaultValue={
@@ -160,7 +150,7 @@ export const UsersTable = () => {
                         disabled
                       />
                     </td>
-                    <td className="border border-gray-300 px-4 py-2">
+                    <td className="table-cell">
                       <input
                         type="text"
                         defaultValue={user.phone}
@@ -173,7 +163,7 @@ export const UsersTable = () => {
                         }
                       />
                     </td>
-                    <td className="border border-gray-300 px-4 py-2 text-center">
+                    <td className="table-cell text-center">
                       <button
                         className="px-4 py-2 mr-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                         onClick={() => {
@@ -193,31 +183,25 @@ export const UsersTable = () => {
                   </>
                 ) : (
                   <>
-                    <td className="border border-gray-300 px-4 py-2">
-                      {user.fullName}
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2">
-                      {user.email}
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2">
+                    <td className="table-cell">{user.fullName}</td>
+                    <td className="table-cell">{user.email}</td>
+                    <td className="table-cell">
                       {user.password
                         ? user.password[0] +
                           "*".repeat(user.password.length - 1)
                         : ""}
                     </td>
 
-                    <td className="border border-gray-300 px-4 py-2">
-                      {user.phone}
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2 text-center flex justify-evenly">
+                    <td className="table-cell">{user.phone}</td>
+                    <td className="table-cell text-center justify-evenly">
                       <button
-                        className="px-4 py-2 mr-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                        className="px-4 py-2 mr-2 bg-primary text-white rounded hover:bg-[#FFE35A]"
                         onClick={() => handleIsEditing(user)}
                       >
                         Edit
                       </button>
                       <button
-                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                        className="px-4 py-2 bg-[#CF5151] text-white rounded hover:bg-[#D26F6F]"
                         onClick={() =>
                           user._id && handleDelete(user._id.toString())
                         }
@@ -230,7 +214,7 @@ export const UsersTable = () => {
               </tr>
             ))}
             <tr className="bg-gray-100">
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="table-cell">
                 <input
                   type="text"
                   placeholder="Full Name"
@@ -241,7 +225,7 @@ export const UsersTable = () => {
                   }
                 />
               </td>
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="table-cell">
                 <input
                   type="email"
                   placeholder="Email"
@@ -252,7 +236,7 @@ export const UsersTable = () => {
                   }
                 />
               </td>
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="table-cell">
                 <input
                   type="text"
                   placeholder="Password"
@@ -263,7 +247,7 @@ export const UsersTable = () => {
                   }
                 />
               </td>
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="table-cell">
                 <input
                   type="text"
                   placeholder="Phone"
@@ -274,7 +258,7 @@ export const UsersTable = () => {
                   }
                 />
               </td>
-              <td className="border border-gray-300 px-4 py-2 text-center">
+              <td className="table-cell text-center">
                 <button
                   className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                   onClick={handleAdd}
@@ -367,13 +351,13 @@ export const UsersTable = () => {
                   </p>
                   <div className="flex justify-between mt-2">
                     <button
-                      className="bg-yellow-500 text-white px-4 py-2 rounded"
+                      className="bg-yellow-500 text-white px-3 py-2 rounded"
                       onClick={() => handleIsEditing(user)}
                     >
                       Edit
                     </button>
                     <button
-                      className="bg-red-500 text-white px-4 py-2 rounded"
+                      className="bg-red-500 text-white px-3 py-2 rounded"
                       onClick={() =>
                         user._id && handleDelete(user._id.toString())
                       }
