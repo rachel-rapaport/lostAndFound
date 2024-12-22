@@ -111,7 +111,7 @@ const ShowQuestions = (props: { id: string }) => {
                         </div>
                     ))
                 }
-                {errors.answers && <p className='text-red-500 text-sm'>{errors.answers}</p>}
+                {errors.answers && <p className='error-message'>{errors.answers}</p>}
                 <div className="flex justify-between my-20">
                     <NotMineButton />
                     <button type="submit" className="flex justify-between secondary-btn">
