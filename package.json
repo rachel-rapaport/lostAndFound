@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@react-google-maps/api": "^2.20.3",
     "@tanstack/react-query": "^5.62.7",
     "axios": "^1.7.8",
@@ -19,6 +20,7 @@
     "dotenv": "^16.4.7",
     "firebase": "^11.0.2",
     "fs": "^0.0.1-security",
+    "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.2",
     "mongoose-double": "^0.0.1",
@@ -28,6 +30,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-select": "^5.9.0",
+    "sweetalert2": "^11.15.2",
     "twilio": "^5.3.7",
     "xlsx": "^0.18.5",
     "zod": "^3.24.1",

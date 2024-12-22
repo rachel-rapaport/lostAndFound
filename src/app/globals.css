@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 *,
 body {
-  @apply font-fredoka;
+  @apply  font-fredoka;
 }
+
 
 @layer utilities {
   .btn {
@@ -17,7 +19,11 @@ body {
 
 /* buttons */
 
+
+/* buttons */
+
 .primary-btn {
+  @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
   @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
 }
 
@@ -26,6 +32,7 @@ body {
 }
 
 .delete-btn {
+  @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
   @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
 }
 
@@ -69,5 +76,20 @@ body {
 /* title form */
 .section-title {
   @apply font-semibold text-lg mb-2;
+}
+
+/* error */
+.error-message {
+  @apply text-red-500 text-sm;
+}
+
+/* scroll */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; 
 }
 

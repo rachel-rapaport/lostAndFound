@@ -29,14 +29,12 @@ export const getLostItemById = async (id: string) => {
 };
 
 // create new lost item
-export const createLostI = async (lostItem: LostItem) => {
+export const createLostItem = async (lostItem: LostItem) => {
   try {
     const response = await axios.post("/api/lostItem", lostItem);
-    return response.data;
+    return response.data.data;
   } catch (error) {
-    console.log("Error creating lostItem:", error);
-    throw error;
-  }
+    throw new Error('Error creating lostItem');  }
 };
 
 // update lost item by id

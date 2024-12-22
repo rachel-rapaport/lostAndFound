@@ -1,15 +1,14 @@
+import React, { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getColors } from "@/app/services/api/colorService";
 import colorStore from "@/app/store/colorStore";
 import { Color } from "@/app/types/props/color";
-import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
 
 const ColorSelect: React.FC<{
   onSelect: (selectedColorId: string) => void;
 }> = ({ onSelect }) => {
   const colorsFromStore = colorStore((state) => state.colors);
   const setColors = colorStore((state) => state.setColors);
-
   const {
     data: colors,
     isLoading,
@@ -20,28 +19,27 @@ const ColorSelect: React.FC<{
     enabled: colorsFromStore === null,
   });
 
+  // Update the store with fetched colors if the store doesn't already have them
   useEffect(() => {
     if (colors && colorsFromStore === null) {
       setColors(colors);
     }
   }, [colors, colorsFromStore, setColors]);
 
-  if (isLoading) return <div className="text-center">Loading...</div>;
-  if (error instanceof Error)
-    return (
-      <div className="text-center text-red-500">Error: {error.message}</div>
-    );
+  if (isLoading) return <div>Loading...</div>;
+  if (error instanceof Error) return <div>Error: {error.message}</div>;
   if ((colorsFromStore ?? colors)?.length === 0)
-    return <div className="text-center">No colors available</div>;
+    return <div>No colors available</div>;
 
+  // Determine the colors to display (from store or fetched data)
   const displayColors = colorsFromStore ?? colors;
 
   return (
     <div className="p-4 border-2 border-primary rounded-lg">
-      {/* הוספת המסגרת עם קצוות עגולים */}
       <div className="flex flex-wrap justify-center gap-6 mt-6">
         {displayColors.map((color: Color) => {
-          const isSpecialColor = String(color._id) === "00000000a165f3133be41d3b";
+          const isSpecialColor =
+            String(color._id) === "00000000a165f3133be41d3b";
           return (
             <div
               key={String(color._id)}

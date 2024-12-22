@@ -2,22 +2,12 @@ import React, { useEffect } from "react";
 import Select from "react-select";
 import TypePublicTransportSelect from "./select/TypePublicTransportSelect";
 import CitySelect from "./select/CitySelect";
+import { PublicTransport } from "../types/props/publicTransport";
 
-interface TransportData {
-  typePublicTransportId: string;
-  line: string;
-  city: string;
-}
-
-interface PublicTransportationProps {
-  transportData: TransportData;
-  setTransportData: React.Dispatch<React.SetStateAction<TransportData>>;
-}
-
-const PublicTransportation: React.FC<PublicTransportationProps> = ({
-  transportData,
-  setTransportData,
-}) => {
+const PublicTransportation: React.FC<{
+  transportData: PublicTransport;
+  setTransportData: React.Dispatch<React.SetStateAction<PublicTransport>>;
+}> = ({ transportData, setTransportData }) => {
   const handleTypeSelect = (typeId: string) => {
     setTransportData({
       typePublicTransportId: typeId,
@@ -33,16 +23,18 @@ const PublicTransportation: React.FC<PublicTransportationProps> = ({
     { value: "בת ים", label: "בת ים" },
   ];
 
+  // useEffect to set transport data based on selected public transport type
   useEffect(() => {
     if (transportData.typePublicTransportId === "675597230f7ad3122ddce705") {
-      // רכבלית חיפה
+      //Haifa Cable Car
       setTransportData((prev) => ({
         ...prev,
         line: "רכבלית",
         city: "חיפה",
       }));
-    } else if (transportData.typePublicTransportId === "675597190f7ad3122ddce703") {
-      // רכבת קלה ירושלים
+    } else if (
+      transportData.typePublicTransportId === "675597190f7ad3122ddce703" //Jerusalem Light Rail
+    ) {
       setTransportData((prev) => ({
         ...prev,
         city: "ירושלים",
@@ -50,6 +42,7 @@ const PublicTransportation: React.FC<PublicTransportationProps> = ({
     }
   }, [transportData.typePublicTransportId, setTransportData]);
 
+  // Handler for changing checkpoint (line) selection
   const handleCheckpointChange = (
     selectedOption: string,
     isChecked: boolean
@@ -61,34 +54,30 @@ const PublicTransportation: React.FC<PublicTransportationProps> = ({
   };
 
   return (
-    <div className="space-y-2 text-right mt-2" dir="rtl">
+    <div className="space-y-2 text-right" dir="rtl">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-lg ">סוג תחבורה ציבורית</h3>
       </div>
       <TypePublicTransportSelect onSelect={handleTypeSelect} />
 
-      {transportData.typePublicTransportId === "675596d90f7ad3122ddce6fb" ? ( // אוטובוס עירוני
+      {transportData.typePublicTransportId === "675596d90f7ad3122ddce6fb" ? ( // Urban Bus
         <div className="space-y-2 text-right pt-4">
-        <h3 className="font-semibold text-lg ">סוג תחבורה ציבורית</h3>
+          <h3 className="font-semibold text-lg ">עיר</h3>
           <CitySelect
-            onSelect={(city) =>
-              setTransportData((prev) => ({ ...prev, city }))
-            }
+            onSelect={(city) => setTransportData((prev) => ({ ...prev, city }))}
           />
         </div>
-      ) : transportData.typePublicTransportId === "675596f50f7ad3122ddce6fd" ||
-        transportData.typePublicTransportId === "675597040f7ad3122ddce6ff" ? ( // אוטובוס בין עירוני או רכבת ישראל
+      ) : transportData.typePublicTransportId === "675596f50f7ad3122ddce6fd" || // Intercity Bus
+        transportData.typePublicTransportId === "675597040f7ad3122ddce6ff" ? ( // or Israel Railways
         <div className="space-y-2 pt-4">
-          <h3 className="font-semibold text-lg ">בחר עיר יעד:</h3>
+          <h3 className="font-semibold text-lg ">עיר יעד</h3>
           <CitySelect
-            onSelect={(city) =>
-              setTransportData((prev) => ({ ...prev, city }))
-            }
+            onSelect={(city) => setTransportData((prev) => ({ ...prev, city }))}
           />
         </div>
-      ) : transportData.typePublicTransportId === "675597130f7ad3122ddce701" ? ( // רכבת קלה דנקל
+      ) : transportData.typePublicTransportId === "675597130f7ad3122ddce701" ? ( // DanKal Light Rail
         <div className="space-y-2 pt-4">
-          <h3 className="font-semibold text-lg">בחר עיר:</h3>
+          <h3 className="font-semibold text-lg">עיר</h3>
           <Select
             options={dencalCities}
             onChange={(selectedOption) =>
@@ -99,14 +88,14 @@ const PublicTransportation: React.FC<PublicTransportationProps> = ({
             }
             className="react-select-container"
             classNamePrefix="react-select"
-            placeholder="בחר עיר..."
+            placeholder="בחר עיר"
           />
         </div>
       ) : null}
 
-      {transportData.typePublicTransportId === "675597190f7ad3122ddce703" ? ( // רכבת קלה ירושלים
+      {transportData.typePublicTransportId === "675597190f7ad3122ddce703" ? ( // Jerusalem Light Rail
         <div className="space-y-2 pt-4">
-          <h3 className="font-semibold text-lg">בחר נקודת ציון (סוג הקו):</h3>
+          <h3 className="font-semibold text-lg">יעד</h3>
           <div className="space-y-2">
             {jerusalemCheckpoints.map((checkpoint) => (
               <label key={checkpoint} className="flex items-center gap-x-2">
@@ -123,9 +112,9 @@ const PublicTransportation: React.FC<PublicTransportationProps> = ({
             ))}
           </div>
         </div>
-      ) : transportData.typePublicTransportId === "675597130f7ad3122ddce701" ? ( // רכבת קלה דנקל
+      ) : transportData.typePublicTransportId === "675597130f7ad3122ddce701" ? ( //DanKal Light Rail
         <div className="space-y-2 pt-4">
-          <h3 className="font-semibold text-lg">בחר נקודת ציון (סוג הקו):</h3>
+          <h3 className="font-semibold text-lg">קו</h3>
           <div className="space-y-2">
             {dencalCheckpoints.map((checkpoint) => (
               <label key={checkpoint} className="flex items-center gap-x-2">
@@ -144,11 +133,11 @@ const PublicTransportation: React.FC<PublicTransportationProps> = ({
         </div>
       ) : null}
 
-      {transportData.typePublicTransportId === "675596f50f7ad3122ddce6fd" ||
-      transportData.typePublicTransportId === "675596d90f7ad3122ddce6fb" ||
-      transportData.typePublicTransportId === "675597040f7ad3122ddce6ff" ? ( // תחבורה עם קו רגיל
+      {transportData.typePublicTransportId === "675596f50f7ad3122ddce6fd" || // Intercity Bus
+      transportData.typePublicTransportId === "675596d90f7ad3122ddce6fb" || // Urban Bus
+      transportData.typePublicTransportId === "675597040f7ad3122ddce6ff" ? ( // or Israel Railways
         <div className="space-y-2 pt-4">
-          <h3 className="font-semibold text-lg">מספר קו</h3>
+          <h3 className="font-semibold text-lg">קו</h3>
           <input
             type="text"
             value={transportData.line}
@@ -157,7 +146,7 @@ const PublicTransportation: React.FC<PublicTransportationProps> = ({
             }
             placeholder="הכנס את מספר הקו"
             className="form-input text-right border-2 border-primary rounded-md"
-            />
+          />
         </div>
       ) : null}
     </div>

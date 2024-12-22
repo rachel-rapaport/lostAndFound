@@ -8,7 +8,6 @@ const ColorSchema: Schema<Color> = new Schema({
 });
 
 const ColorModel: Model<Color> =
-    mongoose.models.Color ||
-    mongoose.model<Color>("Color", ColorSchema);
+  mongoose.models.Color || mongoose.model<Color>("Color", ColorSchema);
 
 export default ColorModel;

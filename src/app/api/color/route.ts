@@ -31,7 +31,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const newColor = await ColorModel.create(body);
 
-    // const newLostItem = await createLostItem(body);
     return NextResponse.json(
       { message: "color  was successfully created", data: newColor },
       { status: 201 }

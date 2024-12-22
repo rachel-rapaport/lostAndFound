@@ -9,32 +9,26 @@ export async function signupAuthenticationCookies(
     // console.log("in service sign up", email, 'password',password, fullName, 'phone',phone);
 
     const response = await axios.post(
-      '/api/sign/signUp', 
+      "/api/sign/signUp",
       {
         email,
         password,
         fullName,
         phone,
-      } ,
+      },
       {
         withCredentials: true,
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
         },
       }
     );
-
-    console.log("response", response);
 
     if (response && response.data && response.data.token) {
       return true;
     }
   } catch (error) {
-    console.error(
-      "Error in signupAuthenticationCookies:",
-      error
-    );
+    console.error("Error in signupAuthenticationCookies:", error);
     return false;
   }
 }
-

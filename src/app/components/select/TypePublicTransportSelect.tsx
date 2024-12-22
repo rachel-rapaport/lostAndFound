@@ -1,15 +1,13 @@
-
-import { getTypePublicTransportations } from "@/app/services/api/typePublicTransportationService";
-import typePublicTransportStore from "@/app/store/typePublicTransportStore"
-import { TypePublicTransport } from "@/app/types/props/typePublicTransport";
-import { SelectProps } from "@/app/types/selectProps";
-import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-
+import { useQuery } from "@tanstack/react-query";
+import { getTypePublicTransportations } from "@/app/services/api/typePublicTransportationService";
+import typePublicTransportStore from "@/app/store/typePublicTransportStore";
+import { TypePublicTransport } from "@/app/types/props/typePublicTransport";
+import { SelectProps } from "@/app/types/selectProps";
 
 const TypePublicTransportSelect: React.FC<{
-  onSelect: (selectedCategoryId: string) => void;
+  onSelect: (selectedTypesId: string) => void;
 }> = ({ onSelect }) => {
   const [selectedValue, setSelectedValue] = useState<string>("");
   const typePublicTransportsFromStore = typePublicTransportStore(
@@ -18,7 +16,6 @@ const TypePublicTransportSelect: React.FC<{
   const setTypePublicTransports = typePublicTransportStore(
     (state) => state.setTypePublicTransports
   );
-
   const {
     data: typePublicTransports,
     isLoading,
@@ -29,6 +26,7 @@ const TypePublicTransportSelect: React.FC<{
     enabled: typePublicTransportsFromStore === null,
   });
 
+  // Update the store with fetched type publicTransport if the store doesn't already have them
   useEffect(() => {
     if (typePublicTransports && typePublicTransportsFromStore == null) {
       setTypePublicTransports(typePublicTransports);
@@ -44,21 +42,25 @@ const TypePublicTransportSelect: React.FC<{
   if ((typePublicTransportsFromStore ?? typePublicTransports)?.length === 0)
     return <div>No typePublicTransports available</div>;
 
+  // Handle the change event for the Select component
   const handleChange = (selectedOption: SelectProps | null) => {
     const selectedCategoryId = selectedOption?.value || "";
     setSelectedValue(selectedCategoryId);
     onSelect(selectedCategoryId);
   };
 
+  // Determine the type publicTransport to display (from store or fetched data)
   const displayTypePublicTransport =
     typePublicTransportsFromStore ?? typePublicTransports;
 
-  const typePublicTransportOptions: SelectProps[] = displayTypePublicTransport.map(
-    (typePublicTransport: TypePublicTransport) => ({
-      value: String(typePublicTransport._id),
-      label: typePublicTransport.title,
-    })
-  );
+  // Convert the type publicTransport to the format required by react-select
+  const typePublicTransportOptions: SelectProps[] =
+    displayTypePublicTransport.map(
+      (typePublicTransport: TypePublicTransport) => ({
+        value: String(typePublicTransport._id),
+        label: typePublicTransport.title,
+      })
+    );
 
   return (
     <div>
@@ -69,7 +71,7 @@ const TypePublicTransportSelect: React.FC<{
         )}
         onChange={handleChange}
         placeholder="בחר סוג תחבורה ציבורית"
-        isSearchable={false} 
+        isSearchable={false}
         className="react-select-container"
         classNamePrefix="react-select"
       />

@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <QueryClientProvider client={queryClient}>
-      <html lang="en">
+      <html lang="en" dir='rtl'>
         <body>{children}</body>
       </html>
     </QueryClientProvider>

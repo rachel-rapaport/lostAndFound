@@ -12,8 +12,6 @@ export const getColors = async () => {
   }
 };
 
-
-
 // get color by id
 export const getColorById = async (id: string) => {
   try {
@@ -48,11 +46,14 @@ export const updateColorById = async (id: string, color: Color) => {
   }
 };
 
-
 // delete color by id
 export const deleteColorById = async (id: string) => {
   try {
+    console.log("in delete");
+
     const response = await axios.delete(`/api/color/${id}`);
+    console.log(response.data);
+    
     return response.data;
   } catch (error) {
     console.log("Error deleting color", error);
