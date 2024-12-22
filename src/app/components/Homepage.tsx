@@ -5,8 +5,7 @@ import { sendEmailToAdmin } from "../services/api/sendEmailService";
 import { getUserById } from "../services/api/userService";
 import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
 
-// import { useEffect } from 'react';
-// import { useAppStore } from "../store/store";
+
 
 const Homepage = () => {
 

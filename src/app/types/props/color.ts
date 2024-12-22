@@ -4,4 +4,5 @@ export interface Color{
     _id: Types.ObjectId;
     name: string;
     groupId: number;
+    hexadecimal: string;
 }

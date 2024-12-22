@@ -8,11 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        fredoka: ['"Fredoka"', 'sans-serif'],
+      },
       colors: {
-        background: "#FAF6F0",
-        primary: '#F4DFC8',
-        secondary: '#F4EAE0',
-        dark: '#000000',
+        primary: '#FADB3F',
+        secondary: '#000000',
       },
     },
   },

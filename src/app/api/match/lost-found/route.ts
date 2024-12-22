@@ -1,5 +1,5 @@
 import connect from "@/app/lib/db/mongo";
-import { Circle } from "@/app/types/props/circle";
+import { Circle} from "@/app/types/props/circle";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";

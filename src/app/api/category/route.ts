@@ -19,6 +19,8 @@ export async function GET() {
       },
       {
         $project: {
+          _id: 1,
+          title:1,
           subCategories: {
             _id: 1,
             title: 1

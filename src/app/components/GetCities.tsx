@@ -31,7 +31,7 @@
 //     setFilteredCities(filtered);
 //   };
 //   const handleChange = (name: string, value: string) => {
-//     setFormData((prevData) => {
+//     setFormData((prevData:any) => {
 //       const updatedData = { ...prevData, [name]: value };
 //       return updatedData;
 //     });

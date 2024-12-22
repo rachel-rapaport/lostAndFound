@@ -4,14 +4,11 @@ import { Color } from "../../types/props/color";
 // get all colors
 export const getColors = async () => {
   try {
-    const response = await axios.get("/api/color",{
-      withCredentials: true,
-    });
-    console.log(response);
-    return response.data;
+    const response = await axios.get("/api/color");
+    console.log(response.data.data);
+    return response.data.data;
   } catch (error) {
-    console.error("Error getting colors:", error);
-    throw error;
+    throw new Error("Failed to get colors")
   }
 };
 

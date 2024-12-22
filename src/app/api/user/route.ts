@@ -15,7 +15,7 @@ export async function GET() {
           from: "lostitems",
           localField: "lostItems",
           foreignField: "_id",
-          as: "lostItemsDetails",
+          as: "lostItems",
         },
       },
       {
@@ -23,7 +23,7 @@ export async function GET() {
           from: "founditems",
           localField: "foundItems",
           foreignField: "_id",
-          as: "foundItemsDetails",
+          as: "foundItems",
         },
       },
       {
@@ -31,7 +31,7 @@ export async function GET() {
           from: "blockeditems",
           localField: "blockedItems",
           foreignField: "_id",
-          as: "blockedItemsDetails",
+          as: "blockedItems",
         },
       },
       {
@@ -39,7 +39,7 @@ export async function GET() {
           from: "alerts",
           localField: "alerts",
           foreignField: "_id",
-          as: "alertsDetails",
+          as: "alerts",
         },
       },
       {
@@ -49,10 +49,10 @@ export async function GET() {
           email: 1,
           password: 1,
           phone: 1,
-          lostItemsDetails: 1,
-          foundItemsDetails: 1,
-          blockedItemsDetails: 1,
-          alertsDetails: 1,
+          lostItems: 1,
+          foundItems: 1,
+          blockedItems: 1,
+          alerts: 1,
         },
       },
     ]);
