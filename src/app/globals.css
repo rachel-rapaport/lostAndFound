@@ -71,3 +71,7 @@ input:checked+label .indicator {
 .state:checked~.label .text {
   @apply opacity-100;
 }
+
+.error-message {
+  @apply text-red-500 text-sm;
+}

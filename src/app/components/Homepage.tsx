@@ -10,8 +10,11 @@ import { logout } from "../services/api/logoutService";
 
 // import { useEffect } from 'react';
 // import { useAppStore } from "../store/store";
+import { useRouter } from "next/navigation";
 
 const Homepage = () => {
+  const router = useRouter();
+
   // const { currentUser } = useUserStore();
   // const clearUser = useUserStore((state) => state.clearUser); // Get the store's setUser function
   // const handleLogout = () => {
@@ -82,6 +85,14 @@ const Homepage = () => {
       </button> */}
       {/* {currentUser ? <h1>email:{currentUser.email}</h1> : <p>no user</p>} */}
       <button onClick={logout}>log out</button>
+      <br />
+      <button
+        onClick={() => {
+          router.push("/login");
+        }}
+      >
+        Go to Login
+      </button>
     </>
   );
 };

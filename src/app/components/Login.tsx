@@ -51,6 +51,7 @@ const LoginForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      setPassword(password.replace(/^0/, "+972"));
       const formData = { email, password, fullName, phone };
       if (isLogin) {
         const loginData = loginSchema.parse({ email, password });
