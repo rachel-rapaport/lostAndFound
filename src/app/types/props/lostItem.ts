@@ -7,9 +7,9 @@ import { User } from "./user";
 
 export interface LostItem {
     _id: Types.ObjectId;
-    subCategoryId: SubCategory | string; 
-    colorId: Color | string;  
-    userId: User | string;  
+    subCategoryId: SubCategory; 
+    colorId: Color;  
+    userId: User;  
     circles: Circle[] | null;
     publicTransport: PublicTransport | null;  
 } 

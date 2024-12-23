@@ -1,7 +1,7 @@
 import { TypePublicTransport } from "./typePublicTransport";
 
 export interface PublicTransport {
-    typePublicTransportId: TypePublicTransport | string;
+    typePublicTransportId: TypePublicTransport;
     city: string;
     line: string;
 }

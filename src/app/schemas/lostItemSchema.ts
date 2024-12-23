@@ -1,29 +1,48 @@
 import { z } from "zod";
 
- export const LostItemSchema = z.object({
-  subCategoryId: z.string().nonempty("תת-קטגוריה היא שדה חובה"),
-  colorId: z.string().nonempty("צבע הוא שדה חובה"),
+export const LostItemSchema = z.object({
+  subCategoryId: z
+    .string()
+    .nonempty("יש לבחור תת-קטגוריה"),
+  colorId: z
+    .string()
+    .nonempty("יש לבחור צבע"),
   selectedLocation: z
-  .enum(["map", "transport"])
-  .optional()
-  .refine((value) => value !== null && value !== undefined, {
-    message: "יש לבחור מיקום (מפה או תחבורה ציבורית)",
-  }),
+    .union([z.literal("map"), z.literal("transport"), z.null()])
+    .refine((value) => value !== null, {
+      message: "יש לבחור מיקום",
+    }),
   circles: z
     .array(
       z.object({
-        x: z.number(),
-        y: z.number(),
+        center: z.object({
+          lat: z.number().min(-90).max(90),
+          lng: z.number().min(-180).max(180),
+        }),
+        radius: z.number().positive(),
       })
     )
-    .min(1, "יש לבחור לפחות עיגול אחד במפה")
-    .optional(),
+    .optional()
+    .refine((circles) => circles === undefined || circles.length > 0, {
+      message: "יש לסמן לפחות מעגל אחד במפה",
+    }),
   publicTransport: z
     .object({
-      typePublicTransportId: z.string().nonempty("סוג תחבורה ציבורית הוא שדה חובה"),
-      line: z.string().nonempty("מספר קו הוא שדה חובה"),
-      city: z.string().nonempty("עיר היא שדה חובה"),
+      typePublicTransportId: z
+        .string()
+        .refine(value => value !== "", {
+          message: "יש למלא את כל השדות",
+        }),
+      city: z
+        .string()
+        .refine(value => value !== "", {
+          message: "יש למלא את כל השדות",
+        }),
+      line: z
+        .string()
+        .refine(value => value !== "", {
+          message: "יש למלא את כל השדות",
+        }),
     })
-    .optional(),
+    .optional()
 });
-

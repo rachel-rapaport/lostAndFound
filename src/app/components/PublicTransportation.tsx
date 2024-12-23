@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import Select from "react-select";
 import TypePublicTransportSelect from "./select/TypePublicTransportSelect";
 import CitySelect from "./select/CitySelect";
-import { PublicTransport } from "../types/props/publicTransport";
+import { PublicTransportRequest } from "../types/request/PublicTransportRequest";
 
 const PublicTransportation: React.FC<{
-  transportData: PublicTransport;
-  setTransportData: React.Dispatch<React.SetStateAction<PublicTransport>>;
+  transportData: PublicTransportRequest;
+  setTransportData: React.Dispatch<React.SetStateAction<PublicTransportRequest>>;
 }> = ({ transportData, setTransportData }) => {
   const handleTypeSelect = (typeId: string) => {
     setTransportData({

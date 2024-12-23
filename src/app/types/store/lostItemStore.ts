@@ -1,10 +1,10 @@
-import { LostItem } from "../props/lostItem";
+import { LostItemRequest } from "../request/lostItemRequest";
 
 export interface LostItemStore {
-  currentLostItem: LostItem | null;
+  currentLostItem: LostItemRequest | null;
   // lostItemsList: LostItem[];
 
-  setCurrentLostItem: (lostItem: LostItem | null) => void;
+  setCurrentLostItem: (lostItem: LostItemRequest | null) => void;
   
   // setLostItems:(lostItemsList:LostItem[])=>void;
   // createLostItem: (newItem: LostItem) => void; 

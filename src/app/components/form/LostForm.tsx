@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Types } from "mongoose";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
@@ -12,8 +12,9 @@ import userStore from "../../store/userStore";
 import { createLostItem } from "../../services/api/lostItemService";
 import lostItemStore from "../../store/lostItemStore";
 import Map from "../Map";
-import { PublicTransport } from "@/app/types/props/publicTransport";
 import { LostItemSchema } from "@/app/schemas/lostItemSchema";
+import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
+
 const LostForm = () => {
   const [, setSelectedCategory] = useState<string>("");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
@@ -22,7 +23,7 @@ const LostForm = () => {
     "map" | "transport" | null
   >(null);
   const [circles, setCircles] = useState<Circle[]>([]);
-  const [transportData, setTransportData] = useState<PublicTransport>({
+  const [transportData, setTransportData] = useState<PublicTransportRequest>({
     typePublicTransportId: "",
     line: "",
     city: "",
@@ -32,6 +33,27 @@ const LostForm = () => {
   const setCurrentLostItem = lostItemStore((state) => state.setCurrentLostItem);
   const router = useRouter();
 
+  // useEffect hook to clear errors when fields are updated
+  useEffect(() => {
+    if (selectedColor) {
+      setErrors((prevErrors) => ({ ...prevErrors, colorId: "" }));
+    }
+    if (selectedSubCategory) {
+      setErrors((prevErrors) => ({ ...prevErrors, subCategoryId: "" }));
+    }
+    if (circles.length > 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, circles: "" }));
+    }
+    if (
+      transportData.city != "" &&
+      transportData.line != "" &&
+      transportData.typePublicTransportId != ""
+    ) {
+      setErrors((prevErrors) => ({ ...prevErrors, publicTransport: "" }));
+    }
+  }, [selectedColor, selectedSubCategory, circles, transportData]);
+
+  // Validation function for the lost item form using Zod schema
   const validateLostItem = () => {
     try {
       LostItemSchema.parse({
@@ -39,7 +61,8 @@ const LostForm = () => {
         colorId: selectedColor,
         selectedLocation,
         circles: selectedLocation === "map" ? circles : undefined,
-        publicTransport: selectedLocation === "transport" ? transportData : undefined,
+        publicTransport:
+          selectedLocation === "transport" ? transportData : undefined,
       });
       setErrors({});
       return true;
@@ -57,8 +80,10 @@ const LostForm = () => {
     }
   };
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!validateLostItem()) return;
 
     const lostItem = {
@@ -107,7 +132,9 @@ const LostForm = () => {
               <div>
                 <h3 className="section-title">צבע</h3>
                 <ColorSelect onSelect={setSelectedColor} />
-                {errors.colorId && <p className="error-message">{errors.colorId}</p>}
+                {errors.colorId && (
+                  <p className="error-message">{errors.colorId}</p>
+                )}
               </div>
             </div>
             <div className="lg:w-2/3">
@@ -148,7 +175,12 @@ const LostForm = () => {
                 </>
               )}
               {selectedLocation === "map" && (
-                <Map circles={circles} setCircles={setCircles} />
+                <>
+                  <Map circles={circles} setCircles={setCircles} />
+                  {errors.circles && (
+                    <p className="error-message">{errors.circles}</p>
+                  )}
+                </>
               )}
             </div>
           </div>

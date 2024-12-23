@@ -53,7 +53,7 @@ const Map: React.FC<{
   };
 
   // Toggle the drawing mode between active and inactive
-  const toggleDrawingMode = (event: React.FormEvent) => {
+  const toggleDrawingMode = () => {
     if (drawingManager) {
       if (drawingMode) {
         drawingManager.setDrawingMode(null);

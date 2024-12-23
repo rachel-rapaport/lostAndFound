@@ -65,19 +65,19 @@ const LostItemsTable = () => {
                   {item.colorId?.name}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {`${item.circles[0].center.lat} , ${item.circles[0].center.lng}`}
+                  {`${item.circles&&item.circles[0].center.lat} , ${item.circles&&item.circles[0].center.lng}`}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {item.circles[0].radius}
+                  {item.circles&&item.circles[0].radius}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {item.publicTransport.typePublicTransportId.title}
+                  {item.publicTransport&&item.publicTransport.typePublicTransportId.title}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {item.publicTransport.city}
+                  {item.publicTransport&&item.publicTransport.city}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {item.publicTransport.line}
+                  {item.publicTransport&&item.publicTransport.line}
                 </td>
                 <td className="border border-gray-300 px-4 py-2 text-center">
                   <button

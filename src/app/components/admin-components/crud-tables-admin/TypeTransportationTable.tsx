@@ -1,4 +1,3 @@
-
 import { createTypePublicTransportation, getTypePublicTransportations } from "@/app/services/api/typePublicTransportationService";
 import { TypePublicTransport } from "@/app/types/props/typePublicTransport";
 import { Types } from "mongoose";
