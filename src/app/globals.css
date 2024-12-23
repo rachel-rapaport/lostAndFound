@@ -27,6 +27,7 @@ body {
   @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
 }
 
+
 .secondary-btn {
   @apply btn bg-secondary text-white hover:bg-[#303030] active:bg-secondary;
 }

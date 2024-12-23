@@ -1,11 +1,11 @@
-import Homepage from "@/app/components/Homepage";
+import UserDashboard from "@/app/components/UserDashboard";
 import React from "react";
 
 
 const page = () => {
   return (
     <>
-      <Homepage/>
+    <UserDashboard></UserDashboard>
     </>
   );
 };

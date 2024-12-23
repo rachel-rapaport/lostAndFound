@@ -1,5 +1,4 @@
 "use client";
-import { logout } from "../services/api/logoutService";
 // import userStore from "../store/userStore";
 // import { afterFilter } from "../utils/sendToUser";
 // import { initiateChat } from "../utils/chat";
@@ -84,15 +83,9 @@ const Homepage = () => {
         התחל צאט
       </button> */}
       {/* {currentUser ? <h1>email:{currentUser.email}</h1> : <p>no user</p>} */}
-      <button onClick={logout}>log out</button>
+      {/* <button onClick={logout}>log out</button> */}
       <br />
-      <button
-        onClick={() => {
-          router.push("/login");
-        }}
-      >
-        Go to Login
-      </button>
+
     </>
   );
 };
