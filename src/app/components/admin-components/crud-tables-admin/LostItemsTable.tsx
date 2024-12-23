@@ -8,16 +8,18 @@ import { useState, useEffect } from "react";
 
 const LostItemsTable = () => {
   const [lostItems, setLostItems] = useState<LostItem[]>([]);
-
+  const fetchLostItems = async () => {
+    const response = await getLostItems();
+    setLostItems(response.data);
+  };
   useEffect(() => {
-    const fetchLostItems = async () => {
-      const response = await getLostItems();
-      setLostItems(response.data);
-    };
+  
     fetchLostItems();
-  }, []);
+  }, [lostItems]);
 
   const handleDelete = async (id: string) => {
+    console.log(id);
+    
     const response = await deleteLostItemById(id);
     if (response.ok) {
       setLostItems(lostItems.filter((item) => item._id.toString() !== id));

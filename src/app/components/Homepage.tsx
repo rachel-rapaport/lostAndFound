@@ -75,9 +75,9 @@ const Homepage = () => {
 
   return (
     <>
-      <h1 className="text-center text-[5vh] font-semibold mb-[5vh]">
+      {/* <h1 className="text-center text-[5vh] font-semibold mb-[5vh]">
         אתר מציאון
-      </h1>
+      </h1> */}
       {/* <button onClick={handleClick}>send email</button>
       <button className="btn" onClick={handleStartChat}>
         התחל צאט

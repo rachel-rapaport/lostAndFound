@@ -1,9 +1,27 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import userStore from "../store/userStore";
+import UpdateUserModal from "./UpdateUserInfoModal";
+import { updateUserById } from "../services/api/userService";
+import { Types } from "mongoose";
 
 const UserDashboard: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const currentUser = userStore((state) => state.user);
+  const setUser = userStore((state) => state.setUser);
+  const handleSave = (updatedData: {
+    _id: Types.ObjectId;
+    fullName: string;
+    email: string;
+    password: string;
+    phone: string;
+  }) => {
+    console.log("User updated:", updatedData);
+    updateUserById(currentUser!._id.toString(), updatedData);
+    setUser(updatedData);
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-8">
@@ -24,13 +42,17 @@ const UserDashboard: React.FC = () => {
             <p>
               <strong>סיסמה:</strong> {currentUser?.password}
             </p>
-            <button className="primary-btn px-8 py-2 font-semibold text-black rounded-md hover:primary">
+            <button
+              className="primary-btn px-8 py-2 font-semibold text-black rounded-md hover:primary"
+              onClick={() => {
+                setIsModalOpen(!isModalOpen);
+              }}
+            >
               עריכת הפרטים האישיים
             </button>
           </div>
         </div>
 
-        {/* Items Section */}
         <div className="col-span-2 space-y-6">
           {/* Lost Items Section */}
           <div className="bg-white p-6 rounded-lg shadow-md">
@@ -39,13 +61,13 @@ const UserDashboard: React.FC = () => {
               <div className="space-y-4 mt-4">
                 {currentUser.lostItems.map((item) => (
                   <div
-                    key={item._id.toString()}
+                    key={item._id?.toString()}
                     className="border border-gray-200 p-4 rounded-md"
                   >
                     <h3 className="font-semibold">
-                      {item.subCategoryId.title}
+                      {item.subCategoryId?.title}
                     </h3>
-                    <p className="text-gray-500">{item.colorId.name}</p>
+                    <p className="text-gray-500">{item.colorId?.name}</p>
                   </div>
                 ))}
               </div>
@@ -61,7 +83,7 @@ const UserDashboard: React.FC = () => {
               <div className="space-y-4 mt-4">
                 {currentUser.foundItems.map((item) => (
                   <div
-                    key={item._id.toString()}
+                    key={item._id?.toString()}
                     className="border border-gray-200 p-4 rounded-md"
                   >
                     <h3 className="font-semibold">
@@ -77,6 +99,22 @@ const UserDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      <UpdateUserModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSave}
+        initialUserData={
+          currentUser
+            ? currentUser
+            : {
+                _id: "" as any,
+                fullName: "",
+                email: "",
+                password: "",
+                phone: "",
+              }
+        }
+      />
     </div>
   );
 };
