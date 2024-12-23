@@ -43,11 +43,11 @@ body {
 /* select */
 .react-select__option--is-focused,
 .react-select__option--is-selected {
-  background-color: FADB3F !important;
+  background-color: #FADB3F !important;
 }
 
 .react-select__control {
-  border-color: FADB3F !important;
+  border-color: #FADB3F !important;
   box-shadow: none !important; 
   direction: rtl; 
 }
@@ -69,7 +69,7 @@ body {
 }
 
 .custom-checkbox:checked {
-  background-color: FADB3F;
+  background-color: #FADB3F;
   border-color: #000000;
 }
 
