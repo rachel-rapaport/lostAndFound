@@ -9,10 +9,10 @@
 
 // import { useEffect } from 'react';
 // import { useAppStore } from "../store/store";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 const Homepage = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   // const { currentUser } = useUserStore();
   // const clearUser = useUserStore((state) => state.clearUser); // Get the store's setUser function
