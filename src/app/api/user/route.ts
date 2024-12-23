@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 
-
 //get all users
 export async function GET() {
   try {
@@ -28,7 +27,7 @@ export async function GET() {
       },
       {
         $lookup: {
-          from: "blockeditems",
+          from: "founditems",
           localField: "blockedItems",
           foreignField: "_id",
           as: "blockedItemsDetails",
@@ -49,10 +48,10 @@ export async function GET() {
           email: 1,
           password: 1,
           phone: 1,
-          lostItemsDetails: 1,
-          foundItemsDetails: 1,
-          blockedItemsDetails: 1,
-          alertsDetails: 1,
+          lostItems: 1,
+          foundItems: 1,
+          blockedItems: 1,
+          alerts: 1,
         },
       },
     ]);
@@ -61,7 +60,6 @@ export async function GET() {
       { message: "Sub users were successfully fetched", data: data },
       { status: 200 }
     );
-
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to fetch users", error: error },
@@ -73,7 +71,6 @@ export async function GET() {
 //create new user
 export async function POST(req: NextRequest) {
   try {
-
     await connect();
 
     const body = await req.json();
@@ -83,7 +80,6 @@ export async function POST(req: NextRequest) {
       { message: "users were successfully fetched", data: newUser },
       { status: 200 }
     );
-
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to create users", error: error },
