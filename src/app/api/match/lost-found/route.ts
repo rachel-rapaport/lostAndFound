@@ -1,16 +1,18 @@
-import connect from "@/app/lib/db/mongo";
-import { Circle } from "@/app/types/props/circle";
-import axios from "axios";
+// import connect from "@/app/lib/db/mongo";
+// import { Circle } from "@/app/types/props/circle";
+// import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
-import { FoundItem } from "@/app/types/props/foundItem";
-import { getVercelUrl } from "@/app/utils/vercelUrl";
+// import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
+// import { FoundItem } from "@/app/types/props/foundItem";
+// import { getVercelUrl } from "@/app/utils/vercelUrl";
 
 
 export async function POST(request: NextRequest) {
 
     // const vercelUrl = getVercelUrl(request);
     // const baseUrl = vercelUrl
+    console.log(request);
+    
 
     // try {
     //     await connect();
