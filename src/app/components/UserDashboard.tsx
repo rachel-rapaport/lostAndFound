@@ -17,10 +17,14 @@ const UserDashboard: React.FC = () => {
     password: string;
     phone: string;
   }) => {
-    console.log("User updated:", updatedData);
-    updateUserById(currentUser!._id.toString(), updatedData);
-    setUser(updatedData);
-    setIsModalOpen(false);
+    if (currentUser && currentUser._id) {
+      console.log("User updated:", updatedData);
+      updateUserById(currentUser._id.toString(), updatedData);
+      setUser(updatedData);
+      setIsModalOpen(false);
+    } else {
+      console.error("Current user or user ID is undefined.");
+    }
   };
 
   return (
