@@ -107,13 +107,14 @@ const UserDashboard: React.FC = () => {
           currentUser
             ? currentUser
             : {
-                _id: "" as any,
+                _id: new Types.ObjectId(),
                 fullName: "",
                 email: "",
                 password: "",
                 phone: "",
               }
         }
+        
       />
     </div>
   );
