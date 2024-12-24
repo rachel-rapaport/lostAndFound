@@ -43,7 +43,7 @@ const ShowQuestions = (props: { id: string }) => {
             answerSchema.parse(formData);
             setErrors({});
             const answers = formData.answers;
-            checkAnswers(currentUser, currentFoundItem, answers, router);
+            checkAnswers(currentUser, currentFoundItem, answers, setCurrentFoundItem, router);
             // reset answers
             setFormData({ answers: [] });
         } catch (err) {
@@ -74,7 +74,7 @@ const ShowQuestions = (props: { id: string }) => {
     return (
         //  Assume that every question, and every answer per question, is unique
         <div className='flex flex-col w-[50%] mx-auto text-secondary'>
-            <h1 className='font-semibold pb-12'>ענה על הסימנים הבאים: </h1>
+            <strong className='font-semibold pb-12'>ענה על הסימנים הבאים: </strong>
             <form onSubmit={handleSubmit}>
                 {
                     shuffledQuestions && shuffledQuestions.map((question, index) => (

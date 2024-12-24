@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
     const vercelUrl = getVercelUrl(request);
     const baseUrl = vercelUrl || process.env.NEXT_PUBLIC_BASE_URL
-    
+
     try {
         await connect();
 

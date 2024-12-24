@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body dir="rtl">
+      <body dir="rtl" className="p-[70px] overflow-y-hidden">
         {children}
       </body>
     </html>

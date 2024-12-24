@@ -5,46 +5,45 @@ import { Types } from "mongoose";
 const useFoundItemStore = create<FoundItemStore>((set, get) => ({
     currentFoundItem: null,
 
-    setCurrentFoundItem: (foundItem) => {
-        set({ currentFoundItem: foundItem });
-    },
+    setCurrentFoundItem: (foundItem) =>
+        set({ currentFoundItem: foundItem }),
 
     // filteredFoundItems: null,
     // After connecting, replace the static value of filteredFoundItems with the value returned from api/match/lost-found post request
     filteredFoundItems:
         [
             {
-                "_id": new Types.ObjectId("675597dd940d164664f8d89d"),
+                "_id": new Types.ObjectId("67569d8e8e3789e32a84ad16"),
                 "subCategoryId": {
-                    "_id": new Types.ObjectId("6756e1b48b5ba2d221f44704"),
-                    "title": "אוזניות קשת"
+                    "_id": new Types.ObjectId("6756e20d8b5ba2d221f449a8"),
+                    "title": "כלי מיתר"
                 },
                 "userId": {
-                    "_id": new Types.ObjectId("67519b1b369b6e2d21f756bc"),
-                    "fullName": "John Doe",
-                    "email": "johndoe@example.com",
-                    "password": "password1234",
-                    "phone": "",
+                    "_id": new Types.ObjectId("6759e531b82b1951ee236b61"),
+                    "fullName": "rachel rapaport",
+                    "email": "rachelport283@gmail.com",
+                    "password": "Rr123456789",
+                    "phone": "0501111111"
                 },
                 "colorId": {
-                    "_id": new Types.ObjectId("675594a40f7ad3122ddce6d6"),
-                    "name": "אדום",
+                    "_id": new Types.ObjectId("67645ec520e497da892204bc"),
+                    "name": "ורוד",
                     "groupId": 1,
-                    "hexadecimal": "#DE161D"
+                    "hexadecimal": "#FFC0CB"
                 },
                 "postion": {
-                    "latitude": 32.0729674,
-                    "longitude": 34.8037545
+                    "latitude": 31.7683,
+                    "longitude": 35.2137
                 },
                 "publicTransport": {
                     "typePublicTransportId": {
-                        "_id": new Types.ObjectId("675596d90f7ad3122ddce6fb"),
-                        "title": "אוטובוס עירוני"
+                        "_id": new Types.ObjectId("675597130f7ad3122ddce701"),
+                        "title": "רכבת קלה גוש דן - דנקל"
                     },
-                    "city": "Jerusalem",
-                    "line": "1234"
+                    "city": "בת ים",
+                    "line": "R1"
                 },
-                "image": "https://example22222.com/image.jpg",
+                "image": "https://res.cloudinary.com/dcsowksj2/image/upload/v1734956844/found_item_images/beautiful-girl-summer-park-with-violin_s2x9bl.jpg",
                 "questions": [
                     {
                         "question": "מאיזה חומר עשוי החלק הפנימי של האוזניות?",
@@ -70,8 +69,8 @@ const useFoundItemStore = create<FoundItemStore>((set, get) => ({
                         ]
                     }
                 ],
-                "descripition": "",
-            },
+                "descripition": "כינור 4/4 וקשת נמצאו בפארק בת ים, על ספסל."
+            }
         ],
 
     setFilteredFoundItems: (foundItems) => {

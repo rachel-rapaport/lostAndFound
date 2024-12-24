@@ -2,7 +2,9 @@ import { updateUserById } from "../services/api/userService"
 import { FoundItem } from "../types/props/foundItem";
 import { User } from "../types/props/user";
 
-export const blockItemForUser = async (currentUser: User, foundItemToBlock: FoundItem) => {
+export const blockItemForUser = async (currentUser: User, foundItemToBlock: FoundItem, setCurrentFoundItem: (foundItem: FoundItem | null) => void) => {
+
+    setCurrentFoundItem(null);
 
     const isItemBlocked = currentUser && foundItemToBlock && currentUser.blockedItems && currentUser.blockedItems.some(
         (item) => {

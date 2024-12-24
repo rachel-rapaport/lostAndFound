@@ -1,10 +1,12 @@
-import Homepage from "./components/Homepage";
+// import Homepage from "./components/Homepage";
+import UploadImage from "./components/UploadImage";
 
 export default function Home() {
 
   return (
-    <div className="p-[70px]">
-      <Homepage />
+    <div>
+      {/* <Homepage /> */}
+      <UploadImage />
     </div >
   );
 }

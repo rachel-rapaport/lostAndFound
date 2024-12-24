@@ -9,11 +9,12 @@ const NotMineButton = () => {
 
     const currentUser = userStore((state) => state.user);
     const foundItemToBlock = useFoundItemStore((state) => state.currentFoundItem);
-
+    const setCurrentFoundItem=useFoundItemStore((state)=>state.setCurrentFoundItem);
+    
     const handleNotMine = async () => {
         if (currentUser && foundItemToBlock) {
             try {
-                const response = await blockItemForUser(currentUser, foundItemToBlock);
+                const response = await blockItemForUser(currentUser, foundItemToBlock, setCurrentFoundItem);
                 if (response) {
                     console.log("Block action succeeded:", response);
                 }

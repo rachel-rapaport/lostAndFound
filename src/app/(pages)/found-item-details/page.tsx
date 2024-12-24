@@ -1,9 +1,10 @@
+import ShowDetails from '@/app/components/ShowDetails';
 import React from 'react'
 
 const page = () => {
     return (
         <>
-            <p>בדוק אם זה הפריט שלך</p>
+            <ShowDetails />
         </>
     )
 }
