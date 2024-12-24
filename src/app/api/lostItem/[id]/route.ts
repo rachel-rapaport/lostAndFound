@@ -87,6 +87,7 @@ export async function GET(request: NextRequest) {
           'userId.fullName': 1,
           'userId.email': 1,
           'userId.password': 1,
+          'userId.phone':1,
           circles: 1,
           image: 1,
           publicTransport: {

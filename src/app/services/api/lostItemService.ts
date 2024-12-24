@@ -30,7 +30,8 @@ export const getLostItemById = async (id: string) => {
 export const createLostItem = async (lostItem: LostItemRequest) => {
   try {
     const response = await axios.post("/api/lostItem", lostItem);
-    return response.data.data;
+    console.log(response.data.data[0]);
+    return response.data.data[0];
   } catch {
     throw new Error("Failed to create lostItem");
   }

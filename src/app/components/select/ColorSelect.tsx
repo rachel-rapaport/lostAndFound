@@ -43,7 +43,7 @@ const ColorSelect: React.FC<{
           return (
             <div
               key={String(color._id)}
-              className="flex flex-col items-center cursor-pointer"
+              className="flex flex-col items-center cursor-pointer hover:scale-105 "
               onClick={() => onSelect(String(color._id))}
             >
               {isSpecialColor ? (
