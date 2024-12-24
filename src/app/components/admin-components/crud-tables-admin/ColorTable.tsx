@@ -94,10 +94,10 @@ const handleDelete = async (id: string) => {
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead className="bg-gray-200">
           <tr>
-            <th className="border border-gray-300 px-4 py-2">צבע</th>
-            <th className="border border-gray-300 px-4 py-2">קבוצה</th>
-            <th className="border border-gray-300 px-4 py-2">הקסדצימלי</th>
-            <th className="border border-gray-300 px-4 py-2">Actions</th>
+            <th className="table-cell">צבע</th>
+            <th className="table-cell">קבוצה</th>
+            <th className="table-cell">הקסדצימלי</th>
+            <th className="table-cell">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -108,7 +108,7 @@ const handleDelete = async (id: string) => {
             >
               {isEditing === color._id.toString() ? (
                 <>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="table-cell">
                     <input
                       type="text"
                       value={editColor?.name || ""}
@@ -120,7 +120,7 @@ const handleDelete = async (id: string) => {
                       className="w-full px-2 py-1 border rounded"
                     />
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="table-cell">
                     <input
                       type="number"
                       value={editColor?.groupId || ""}
@@ -134,7 +134,7 @@ const handleDelete = async (id: string) => {
                       className="w-full px-2 py-1 border rounded"
                     />
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="table-cell">
                     <input
                       type="text"
                       value={editColor?.hexadecimal || ""}
@@ -146,7 +146,7 @@ const handleDelete = async (id: string) => {
                       className="w-full px-2 py-1 border rounded"
                     />
                   </td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">
+                  <td className="table-cell text-center">
                     <button
                       className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mr-2"
                       onClick={handleSaveEdit}
@@ -163,24 +163,24 @@ const handleDelete = async (id: string) => {
                 </>
               ) : (
                 <>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="table-cell">
                     {color.name}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="table-cell">
                     {color.groupId}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="table-cell">
                     {color.hexadecimal}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">
+                  <td className="table-cell text-center justify-between">
                     <button
-                      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mr-2"
+                      className="px-3 py-2 bg-primary text-white rounded hover:bg-[#FFE35A]"
                       onClick={() => handleEdit(color)}
                     >
                       Edit
                     </button>
                     <button
-                      className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                      className="px-3 py-2 bg-[#CF5151] text-white rounded hover:bg-[#D26F6F]"
                       onClick={() => handleDelete(color._id.toString())}
                     >
                       Delete
@@ -191,7 +191,7 @@ const handleDelete = async (id: string) => {
             </tr>
           ))}
           <tr>
-            <td className="border border-gray-300 px-4 py-2">
+            <td className="table-cell">
               <input
                 type="text"
                 value={newColor.name}
@@ -202,7 +202,7 @@ const handleDelete = async (id: string) => {
                 className="w-full px-2 py-1 border rounded"
               />
             </td>
-            <td className="border border-gray-300 px-4 py-2">
+            <td className="table-cell">
               <input
                 type="number"
                 value={newColor.groupId || ""}
@@ -216,7 +216,7 @@ const handleDelete = async (id: string) => {
                 className="w-full px-2 py-1 border rounded"
               />
             </td>
-            <td className="border border-gray-300 px-4 py-2">
+            <td className="table-cell">
               <input
                 type="text"
                 value={newColor.hexadecimal}
@@ -227,7 +227,7 @@ const handleDelete = async (id: string) => {
                 className="w-full px-2 py-1 border rounded"
               />
             </td>
-            <td className="border border-gray-300 px-4 py-2 text-center">
+            <td className="table-cell text-center">
               <button
                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                 onClick={handleAdd}

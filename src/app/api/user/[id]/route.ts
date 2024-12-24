@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
@@ -138,10 +139,14 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
 
+
+    console.log("in api delete before connect");
+    
     await connect();
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
+console.log("after exract the id ",id);
 
 
     if (!id) {

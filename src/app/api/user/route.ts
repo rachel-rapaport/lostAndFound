@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 
-
 //get all users
 export async function GET() {
   try {
@@ -61,7 +60,6 @@ export async function GET() {
       { message: "Sub users were successfully fetched", data: data },
       { status: 200 }
     );
-
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to fetch users", error: error },
@@ -73,7 +71,6 @@ export async function GET() {
 //create new user
 export async function POST(req: NextRequest) {
   try {
-
     await connect();
 
     const body = await req.json();
@@ -83,7 +80,6 @@ export async function POST(req: NextRequest) {
       { message: "users were successfully fetched", data: newUser },
       { status: 200 }
     );
-
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to create users", error: error },

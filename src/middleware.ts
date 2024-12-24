@@ -9,67 +9,51 @@ export async function middleware(req: NextRequest) {
 
   console.log(`Request to: ${pathname}`);
 
-  // Exclude login route and Next.js-specific static files
-  if (pathname.startsWith("/api/") || pathname.startsWith("/reset-password")|| pathname.startsWith("foundItems-list")) {
+  // Exclude specific routes and Next.js static files
+  if (pathname.startsWith("/api/") || pathname.startsWith("/reset-password")) {
     return NextResponse.next();
   }
 
-  // Tokens from cookies
   const token = req.cookies.get("token")?.value;
-  // If token exists and user is trying to access the login page, redirect to home
-  if (token && pathname === "/login") {
-    try {
-      // Verify the token
-      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-      await jwtVerify(token, secret); // No need to decode here, just verify
-      console.log("Token is valid, redirecting to /home");
-      return NextResponse.redirect(new URL("/home", req.url));
-    } catch (error) {
-      console.error("Token verification failed:", error);
-      userStore.getState().clearUser();
-    }
-  }
 
-  // If token does not exist and user is trying to access a protected page, redirect to login
-  if (!token && pathname !== "/login") {
-    console.log("No token, redirecting to /login");
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
-
+  // If a token exists, verify its validity
   if (token) {
-    if (pathname === "/login") {
-      return NextResponse.redirect(new URL("/home", req.url));
-    }
     try {
-      // Verify the token
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       const { payload } = await jwtVerify(token, secret);
-      const decoded = payload as { email: string };
 
-      // Check if the email matches the admin email
+      // If valid and user is on the login page, redirect to home
+      if (pathname === "/login") {
+        console.log("Valid token, redirecting to /home");
+        return NextResponse.redirect(new URL("/home", req.url));
+      }
+
+      // Check for admin access
+      const decoded = payload as { email: string };
       if (decoded.email === "lostandfound.assistance@gmail.com") {
         isAdmin = true;
-      } else {
-        // If not admin, redirect to home page, but avoid infinite redirects
-        // if (pathname !== "/home") {
-        //   return NextResponse.redirect(new URL("/home", req.url));
-        // }
       }
     } catch (error) {
       console.error("Invalid token:", error);
-      // Redirect to login page if token is invalid
-      if (pathname !== "/login") {
-        return NextResponse.redirect(new URL("/login", req.url));
-      }
+      // Clear token and redirect to login
+      const res = NextResponse.redirect(new URL("/login", req.url));
+      res.cookies.delete("token");
+      userStore.getState().clearUser();
+      return res;
     }
   } else {
-    // If no token, redirect to login page
+    // If no token and not on the login page, redirect to login
     if (pathname !== "/login") {
+      console.log("No token, redirecting to /login");
       return NextResponse.redirect(new URL("/login", req.url));
     }
   }
+  if (pathname === "/login" && token) {
+    console.log("Token exists, redirecting to /home");
+    return NextResponse.redirect(new URL("/home", req.url));
+  }
 
-  // Restrict access based on the `isAdmin` flag
+  // Restrict access to admin-only pages
   if (pathname.startsWith("/admin") && !isAdmin) {
     return NextResponse.json(
       { message: "Access Denied - Admin only" },
@@ -77,7 +61,6 @@ export async function middleware(req: NextRequest) {
     );
   }
 
-  // Allow access if valid tokens are present
   return NextResponse.next();
 }
 

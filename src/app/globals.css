@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 *,
 body {
-  @apply  font-fredoka;
+  @apply font-fredoka;
+  @apply font-fredoka;
 }
+
 
 
 @layer utilities {
@@ -20,13 +21,16 @@ body {
 
 .primary-btn {
   @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
+  @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
 }
 
+
 .secondary-btn {
-  @apply btn bg-secondary text-white hover:bg-[#646B58] active:bg-[#3E4338];
+  @apply btn bg-secondary text-white hover:bg-[#303030] active:bg-secondary;
 }
 
 .delete-btn {
+  @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
   @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
 }
 
@@ -42,12 +46,12 @@ body {
 
 .react-select__control {
   border-color: #FADB3F !important;
-  box-shadow: none !important; 
-  direction: rtl; 
+  box-shadow: none !important;
+  direction: rtl;
 }
 
 .react-select__menu {
-  direction: rtl; 
+  direction: rtl;
 }
 
 
@@ -55,9 +59,9 @@ body {
 .custom-checkbox {
   width: 20px;
   height: 20px;
-  border: 2px solid #000000; 
+  border: 2px solid #000000;
   border-radius: 4px;
-  appearance: none; 
+  appearance: none;
   cursor: pointer;
   display: inline-block;
 }
@@ -84,7 +88,41 @@ body {
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none; 
+  display: none;
+}
+
+/* select */
+.react-select__option--is-focused,
+.react-select__option--is-selected {
+  background-color: FADB3F !important;
+}
+
+.react-select__control {
+  border-color: FADB3F !important;
+  box-shadow: none !important;
+  direction: rtl;
+}
+
+/* error */
+.error-message {
+  @apply text-red-500 text-sm;
+}
+
+input:checked+label .indicator {
+  @apply block;
+}
+
+.state:checked~.label .text {
+  @apply opacity-100;
+}
+
+/* contact to admin */
+.contact-input {
+  @apply bg-inherit text-white border-b-[1px] pt-4 pb-1 border-b-white;
+}
+
+.contact-input:focus {
+  @apply outline-none ring-0;
 }
 
 /* show questions */
@@ -104,11 +142,11 @@ body {
   @apply w-4 h-4 hidden rounded-full bg-primary;
 }
 
-.state:checked ~ .label .indicator::after {
+.state:checked~.label .indicator::after {
   @apply opacity-100 transition-opacity transition-transform duration-200 opacity-100 hover:opacity-50 ease-linear hover:ease-out transform hover:scale-105;
 }
 
-.state:focus ~ .label .text {
+.state:focus~.label .text {
   @apply opacity-100 transform translate-x-[8px];
 }
 
@@ -116,19 +154,10 @@ body {
   @apply opacity-100 scale-105;
 }
 
-input:checked + label .indicator {
+input:checked+label .indicator {
   @apply block;
 }
 
-.state:checked ~ .label .text {
+.state:checked~.label .text {
   @apply opacity-100;
-}
-
-/* contact to admin */
-.contact-input{
-  @apply bg-inherit text-white border-b-[1px] pt-4 pb-1 border-b-white;
-}
-
-.contact-input:focus {
-  @apply outline-none ring-0;
 }

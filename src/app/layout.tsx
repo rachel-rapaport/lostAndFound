@@ -1,7 +1,9 @@
 "use client";
+"use client";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import Header from "./components/Header";
 
 const LayoutContent: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -24,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <LayoutContent>
-      {" "}
+    <Header></Header>
       {children}
     </LayoutContent>
   );

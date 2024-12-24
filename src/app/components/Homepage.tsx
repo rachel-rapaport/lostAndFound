@@ -1,5 +1,4 @@
 "use client";
-import { logout } from "../services/api/logoutService";
 // import userStore from "../store/userStore";
 // import { afterFilter } from "../utils/sendToUser";
 // import { initiateChat } from "../utils/chat";
@@ -11,6 +10,8 @@ import { logout } from "../services/api/logoutService";
 
 
 const Homepage = () => {
+  // const router = useRouter();
+
   // const { currentUser } = useUserStore();
   // const clearUser = useUserStore((state) => state.clearUser); // Get the store's setUser function
   // const handleLogout = () => {
@@ -72,15 +73,17 @@ const Homepage = () => {
 
   return (
     <>
-      <h1 className="text-center text-[5vh] font-semibold mb-[5vh]">
+      {/* <h1 className="text-center text-[5vh] font-semibold mb-[5vh]">
         אתר מציאון
-      </h1>
+      </h1> */}
       {/* <button onClick={handleClick}>send email</button>
       <button className="btn" onClick={handleStartChat}>
         התחל צאט
       </button> */}
       {/* {currentUser ? <h1>email:{currentUser.email}</h1> : <p>no user</p>} */}
-      <button onClick={logout}>log out</button>
+      {/* <button onClick={logout}>log out</button> */}
+      <br />
+
     </>
   );
 };
