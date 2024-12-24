@@ -10,7 +10,7 @@ import { getVercelUrl } from "@/app/utils/vercelUrl";
 export async function POST(request: NextRequest) {
 
     const vercelUrl = getVercelUrl(request);
-    const baseUrl = vercelUrl || process.env.NEXT_PUBLIC_BASE_URL
+    const baseUrl = vercelUrl
 
     try {
         await connect();
