@@ -10,7 +10,7 @@ const LayoutContent: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <html lang="en" dir="rtl">
+      <html lang="en" dir="rtl" >
         <body>{children}</body>
       </html>
     </QueryClientProvider>

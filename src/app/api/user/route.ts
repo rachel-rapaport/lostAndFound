@@ -28,7 +28,7 @@ export async function GET() {
       },
       {
         $lookup: {
-          from: "blockeditems",
+          from: "founditems",
           localField: "blockedItems",
           foreignField: "_id",
           as: "blockedItems",

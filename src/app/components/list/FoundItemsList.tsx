@@ -4,9 +4,11 @@ import lostItemStore from '@/app/store/lostItemStore';
 import { matchLostFound } from '@/app/services/api/matchService';
 import Card from './Card';
 import { FoundItem } from '@/app/types/props/foundItem';
+import useFoundItemStore from '@/app/store/foundItemStore';
 
 const FoundItemsList = () => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);
+  const setFilteredFoundItems = useFoundItemStore((state)=> state.setFilteredFoundItems)
   const [foundItemsList, setFoundItemsList] = useState<FoundItem[]>([]);
 
   useEffect(() => {
@@ -17,6 +19,7 @@ const FoundItemsList = () => {
           console.log("found",found);
           
           setFoundItemsList(found);
+          setFilteredFoundItems(found)
         } catch (error) {
           console.error("Error fetching found items:", error);
         }
