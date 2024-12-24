@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
         );
 
     } catch (error) {
+        console.log(error.message);
         return NextResponse.json(
             { message: "Error filtering lost items", error: error.message },
             { status: 500 }
