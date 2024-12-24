@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import lostItemStore from '@/app/store/lostItemStore';
 import { matchLostFound } from '@/app/services/api/matchService';
-// import Card from './Card';
+import Card from './Card';
 import { FoundItem } from '@/app/types/props/foundItem';
 
 const FoundItemsList = () => {
@@ -14,7 +14,7 @@ const FoundItemsList = () => {
       if (currentLostItem) {
         try {
           const found = await matchLostFound(currentLostItem);
-          console.log("data found",found);
+          console.log("found",found);
           
           setFoundItemsList(found);
         } catch (error) {
@@ -28,13 +28,13 @@ const FoundItemsList = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* {foundItemsList && foundItemsList.map((item: FoundItem, index: number) => (
+      {foundItemsList && foundItemsList.map((item: FoundItem, index: number) => (
         <Card
           key={String(item._id)}
           counter={index}
           id={String(item._id)}
         />
-      ))} */}
+      ))}
     </div>
   );
 };

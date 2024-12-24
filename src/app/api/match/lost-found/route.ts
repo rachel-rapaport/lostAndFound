@@ -4,15 +4,13 @@
 import { NextRequest, NextResponse } from "next/server";
 // import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
 // import { FoundItem } from "@/app/types/props/foundItem";
-// import { getVercelUrl } from "@/app/utils/vercelUrl";
+import { getVercelUrl } from "@/app/utils/vercelUrl";
 
 
 export async function POST(request: NextRequest) {
 
-    // const vercelUrl = getVercelUrl(request);
-    // const baseUrl = vercelUrl
-    console.log(request);
-    
+    const vercelUrl = getVercelUrl(request);
+    const baseUrl = vercelUrl
 
     // try {
     //     await connect();
@@ -63,7 +61,7 @@ export async function POST(request: NextRequest) {
     //     );
     // }
     return NextResponse.json(
-        { message: "the filter was successfully", data: "data" },
+        { message: "the filter was successfully", data: baseUrl },
         { status: 200 }
     );
 }
