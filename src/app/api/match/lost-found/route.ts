@@ -100,6 +100,8 @@ export async function POST(request: NextRequest) {
         // const foundItemResponse = await axios.get(`${baseUrl}/api/foundItem`);
         // const foundItems = foundItemResponse.data.data
 
+        
+
         // Filter the found items based on the lost item properties and geographic matching
         const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
             //filter by category and color.
@@ -117,12 +119,13 @@ export async function POST(request: NextRequest) {
                     }
                 } else {
                     //filter by public transport
-                    const pt = foundItem.publicTransport;
-                    return (
+                    const pt = foundItem.publicTransport;                    
+                    return (                        
                         pt &&
-                        pt.typePublicTransportId._id === lostItem.publicTransport.typePublicTransportId._id &&
+                        String(pt.typePublicTransportId._id) === lostItem.publicTransport.typePublicTransportId._id &&
                         pt.city === lostItem.publicTransport.city &&
                         pt.line === lostItem.publicTransport.line
+                        
                     );
                 }
             }
