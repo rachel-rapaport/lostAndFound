@@ -40,7 +40,7 @@ export const UsersTable = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, []);// no dependency
 
   const handleDelete = async (id: string) => {
     await deleteUserById(id);
