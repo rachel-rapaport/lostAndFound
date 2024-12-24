@@ -25,11 +25,15 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
   initialUserData,
 }) => {
   const [formData, setFormData] = useState({
-    _id: initialUserData._id,
+    _id: initialUserData._id as Types.ObjectId,
     fullName: initialUserData.fullName,
     email: initialUserData.email,
     password: "",
     phone: initialUserData.phone,
+    alerts: initialUserData.alerts,
+    blockedItems: initialUserData.blockedItems,
+    foundItems: initialUserData.foundItems,
+    lostItems: initialUserData.lostItems,
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});

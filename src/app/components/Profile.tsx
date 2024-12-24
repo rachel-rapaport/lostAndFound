@@ -29,6 +29,10 @@ export const Profile = () => {
         email: "",
         password: "",
         phone: "",
+        alerts:[],
+        blockedItems:[],
+        foundItems:[],
+        lostItems:[]
       });
       console.log("Logging out...");
     } else {
