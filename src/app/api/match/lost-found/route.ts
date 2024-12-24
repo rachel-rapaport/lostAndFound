@@ -1,5 +1,5 @@
 import connect from "@/app/lib/db/mongo";
-import { Circle} from "@/app/types/props/circle";
+import { Circle } from "@/app/types/props/circle";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
     const vercelUrl = getVercelUrl(request);
     const baseUrl = vercelUrl || process.env.NEXT_PUBLIC_BASE_URL
-    
+
     try {
         await connect();
 
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 
     } catch (error) {
         return NextResponse.json(
-            { message: "Error filtering lost items", error: error },
+            { message: "Error filtering lost items", error: error.message },
             { status: 500 }
         );
     }
