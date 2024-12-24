@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { User } from "../types/props/user";
-import { signUpSchema } from "../schemas/loginSchema";
+import { signUpSchema } from "../schemas/loginSchemaZod";
 import { Types } from "mongoose";
 
 interface UpdateUserModalProps {
@@ -24,7 +24,6 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
   onSave,
   initialUserData,
 }) => {
-
   const [formData, setFormData] = useState({
     _id: initialUserData._id,
     fullName: initialUserData.fullName,
@@ -63,9 +62,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
 
   if (!isOpen) return null;
 
-
   return (
-    
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-lg">
         <h2 className="text-xl font-bold mb-4">עדכון פרטי משתמש</h2>
