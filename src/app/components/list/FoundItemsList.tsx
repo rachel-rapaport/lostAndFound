@@ -14,6 +14,8 @@ const FoundItemsList = () => {
       if (currentLostItem) {
         try {
           const found = await matchLostFound(currentLostItem);
+          console.log(found);
+          
           setFoundItemsList(found);
         } catch (error) {
           console.error("Error fetching found items:", error);
