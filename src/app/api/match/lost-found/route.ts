@@ -8,8 +8,8 @@ import { getVercelUrl } from "@/app/utils/vercelUrl";
 
 
 export async function POST(request: NextRequest) {
-
-    const vercelUrl = getVercelUrl(request);
+    const data = await request.json()
+    const vercelUrl = getVercelUrl(data);
     const baseUrl = vercelUrl
 
     try {
