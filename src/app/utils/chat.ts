@@ -1,25 +1,17 @@
-import { Types } from "mongoose";
 import { User } from "../types/props/user";
 import { createChatRoom } from "../services/chat/chatFirebase";
+import userStore from "../store/userStore";
 
 export const initiateChat = async (otherUser: User) => {
-    console.log("in initiateChat");
+    console.log("innn");
     
-    const user1: User = {
-        _id: new Types.ObjectId(),
-        fullName: 'יוסי כהן',
-        email: 'yossi@example.com',
-        password: 'password123',
-        phone: '0501234567',
-        lostItems: [],
-        foundItems: [],
-        blockedItems: [],
-        alerts: []
-    };
+    const {user} = userStore.getState();
 
-    const roomId = await createChatRoom(String(user1._id), String(otherUser._id));
+    console.log("user",user);
+    
+
+    const roomId = await createChatRoom(String(user&&user._id), String(otherUser._id));
     console.log("roomUd",roomId);
     
-
     return  roomId;
 }
