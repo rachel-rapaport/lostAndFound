@@ -1,11 +1,10 @@
 "use client";
 import React, { useEffect } from "react";
 import userStore from "../store/userStore";
-import { getAlertById, updateAlertById } from "../services/api/alertService";
+import { updateAlertById } from "../services/api/alertService";
 import { Alert } from "../types/props/alert";
 
 export const Alerts = () => {
-  const currentUser = userStore((state) => state.user);
   const alerts = userStore((state) => state.alerts);
   const setAlerts = userStore((state) => state.setAlerts);
   const getAlerts = userStore((state) => state.getAlerts);
