@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getColors } from "@/app/services/api/colorService";
 import colorStore from "@/app/store/colorStore";
 import { Color } from "@/app/types/props/color";
+import Image from "next/image";
 
 const ColorSelect: React.FC<{
   onSelect: (selectedColorId: string) => void;
@@ -47,9 +48,11 @@ const ColorSelect: React.FC<{
               onClick={() => onSelect(String(color._id))}
             >
               {isSpecialColor ? (
-                <img
+                <Image
+                  width={500}
+                  height={500}
                   src={
-                    "https://e7.pngegg.com/pngimages/539/970/png-clipart-color-wheel-complementary-colors-primary-color-magenta-colours-miscellaneous-purple.png"
+                    "https://res.cloudinary.com/dcsowksj2/image/upload/v1735118707/png-clipart-color-wheel-complementary-colors-primary-color-magenta-colours-miscellaneous-purple_bfvoue.png"
                   }
                   alt={color.name}
                   className="w-12 h-12 rounded-full border-black border object-cover "

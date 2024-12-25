@@ -8,7 +8,7 @@ import useFoundItemStore from '@/app/store/foundItemStore';
 
 const FoundItemsList = () => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);
-  const setFilteredFoundItems = useFoundItemStore((state)=> state.setFilteredFoundItems)
+  const setFilteredFoundItems = useFoundItemStore((state) => state.setFilteredFoundItems)
   const [foundItemsList, setFoundItemsList] = useState<FoundItem[]>([]);
 
   useEffect(() => {
@@ -16,8 +16,8 @@ const FoundItemsList = () => {
       if (currentLostItem) {
         try {
           const found = await matchLostFound(currentLostItem);
-          console.log("found",found);
-          
+          console.log("found", found);
+
           setFoundItemsList(found);
           setFilteredFoundItems(found)
         } catch (error) {
@@ -27,7 +27,7 @@ const FoundItemsList = () => {
     };
 
     fetchFoundItems();
-  }, [currentLostItem]);
+  }, [currentLostItem, setFilteredFoundItems]);
 
   return (
     <div className="flex flex-col gap-4">
