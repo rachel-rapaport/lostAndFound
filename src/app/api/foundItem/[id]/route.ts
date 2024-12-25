@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     //populate data from nested objects
     const data = await FoundItemModel.aggregate([
       {
-        $match: { _id: new mongoose.Types.ObjectId(id) } // התאמה לפי ה-ID של הפריט
+        $match: { _id: new mongoose.Types.ObjectId(id) } 
       },
       {
         $lookup: {
@@ -87,6 +87,7 @@ export async function GET(request: NextRequest) {
           'userId.fullName': 1,
           'userId.email': 1,
           'userId.password': 1,
+          'userId.phone':1,
           postion: 1,
           image: 1,
           descripition: 1,

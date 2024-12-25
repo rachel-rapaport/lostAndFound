@@ -92,75 +92,78 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   };
 
   return (
-    <div className="bg-gray-100 p-12 rounded-lg shadow-lg max-w-lg mx-auto mt-20">
-      <h1 className="text-3xl font-bold mb-6 text-center">איפוס סיסמה</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="relative w-full flex flex-col gap-2">
-          <label htmlFor="password" className="text-lg font-medium">
-            סיסמה חדשה:{" "}
-          </label>
-          <div className="relative flex items-center w-full">
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute left-4 flex items-center text-gray-600 hover:text-gray-800"
-            >
-              {showPassword ? (
-                <EyeSlashIcon className="w-6 h-6" />
-              ) : (
-                <EyeIcon className="w-6 h-6" />
-              )}
-            </button>
-            <input
-              className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg pl-12"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="הזן סיסמה חדשה"
-            />
-          </div>
+    <div className="bg-gray-100 p-8 sm:p-12 rounded-lg shadow-lg max-w-lg mx-auto mt-20">
+    <h1 className="text-3xl font-bold mb-6 text-center">איפוס סיסמה</h1>
+    <form onSubmit={handleSubmit}>
+      <div className="relative w-full flex flex-col gap-2">
+        <label htmlFor="password" className="text-lg font-medium">
+          סיסמה חדשה:
+        </label>
+        <div className="relative flex items-center w-full">
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute left-4 flex items-center text-gray-600 hover:text-gray-800"
+          >
+            {showPassword ? (
+              <EyeSlashIcon className="w-6 h-6" />
+            ) : (
+              <EyeIcon className="w-6 h-6" />
+            )}
+          </button>
+          <input
+            className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg pl-12"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="הזן סיסמה חדשה"
+          />
         </div>
-        {/* confirm password: */}
-        <div className="relative w-full flex flex-col gap-2 mb-4">
-          <label htmlFor="confirmPassword" className="text-lg font-medium">
-            אשר סיסמה חדשה:
-          </label>
-          <div className="relative flex items-center w-full">
-            <button
-              type="button"
-              onClick={toggleConfirmPasswordVisibility}
-              className="absolute left-4 flex items-center text-gray-600 hover:text-gray-800"
-            >
-              {showConfirmPassword ? (
-                <EyeSlashIcon className="w-6 h-6" />
-              ) : (
-                <EyeIcon className="w-6 h-6" />
-              )}
-            </button>
-            <input
-              className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg pl-12"
-              required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              id="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="אשר את הסיסמה"
-            />
-          </div>
+      </div>
+  
+      {/* Confirm password */}
+      <div className="relative w-full flex flex-col gap-2 mb-4">
+        <label htmlFor="confirmPassword" className="text-lg font-medium">
+          אשר סיסמה חדשה:
+        </label>
+        <div className="relative flex items-center w-full">
+          <button
+            type="button"
+            onClick={toggleConfirmPasswordVisibility}
+            className="absolute left-4 flex items-center text-gray-600 hover:text-gray-800"
+          >
+            {showConfirmPassword ? (
+              <EyeSlashIcon className="w-6 h-6" />
+            ) : (
+              <EyeIcon className="w-6 h-6" />
+            )}
+          </button>
+          <input
+            className="w-full h-12 px-4 border border-gray-400 rounded-lg text-lg pl-12"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            id="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="אשר את הסיסמה"
+          />
         </div>
-        {errorMessage && (
-          <p className="text-red-600 text-lg mb-6">{errorMessage}</p>
-        )}
-        {success && <p className="text-green-600 text-lg mb-6">{success}</p>}
-        <button
-          type="submit"
-          className="w-full bg-[#FADB3F] text-white py-3 text-lg rounded-lg hover:bg-yellow-500 transition"
-        >
-          שמור סיסמה
-        </button>
-      </form>
-    </div>
-  );
-};
+      </div>
+  
+      {errorMessage && (
+        <p className="text-red-600 text-lg mb-6">{errorMessage}</p>
+      )}
+      {success && <p className="text-green-600 text-lg mb-6">{success}</p>}
+  
+      <button
+        type="submit"
+        className="w-full bg-[#FADB3F] text-white py-3 text-lg rounded-lg hover:bg-yellow-500 transition"
+      >
+        שמור סיסמה
+      </button>
+    </form>
+  </div>
+  )}
+  export default ResetPassword;  

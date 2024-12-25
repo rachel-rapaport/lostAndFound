@@ -6,7 +6,10 @@
 *,
 body {
   @apply font-fredoka;
+  @apply font-fredoka;
 }
+
+
 
 @layer utilities {
   .btn {
@@ -18,7 +21,9 @@ body {
 
 .primary-btn {
   @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
+  @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
 }
+
 
 .secondary-btn {
   @apply btn bg-secondary text-white hover:bg-[#303030] active:bg-secondary;
@@ -26,15 +31,105 @@ body {
 
 .delete-btn {
   @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
+  @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
 }
 
 .disabled-btn {
   @apply btn bg-[#EAEAEA] text-[#B8B8B8] cursor-not-allowed font-fredoka;
 }
 
+<<<<<<< HEAD
 .error-message {
   @apply text-red-500 text-sm;
 }
+=======
+/* select */
+.react-select__option--is-focused,
+.react-select__option--is-selected {
+  background-color: #FADB3F !important;
+}
+
+.react-select__control {
+  border-color: #FADB3F !important;
+  box-shadow: none !important;
+  direction: rtl;
+}
+
+.react-select__menu {
+  direction: rtl;
+}
+
+
+/* checkbox */
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  appearance: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.custom-checkbox:checked {
+  background-color: #FADB3F;
+  border-color: #000000;
+}
+
+/* title form */
+.section-title {
+  @apply font-semibold text-lg mb-2;
+}
+
+/* error */
+.error-message {
+  @apply text-red-500 text-sm;
+}
+
+/* scroll */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* select */
+.react-select__option--is-focused,
+.react-select__option--is-selected {
+  background-color: FADB3F !important;
+}
+
+.react-select__control {
+  border-color: FADB3F !important;
+  box-shadow: none !important;
+  direction: rtl;
+}
+
+/* error */
+.error-message {
+  @apply text-red-500 text-sm;
+}
+
+input:checked+label .indicator {
+  @apply block;
+}
+
+.state:checked~.label .text {
+  @apply opacity-100;
+}
+
+/* contact to admin */
+.contact-input {
+  @apply bg-inherit text-white border-b-[1px] pt-4 pb-1 border-b-white;
+}
+
+.contact-input:focus {
+  @apply outline-none ring-0;
+}
+>>>>>>> f57b359384ab81bff56610eaf86407bb6d19f8a6
 
 /* show questions */
 .state {

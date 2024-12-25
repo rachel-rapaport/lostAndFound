@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest) {
           from: 'lostitems',
           localField: 'lostItems',
           foreignField: '_id',
-          as: 'lostItemsDetails'
+          as: 'lostItems'
         }
       },
       {
@@ -41,7 +42,7 @@ export async function GET(request: NextRequest) {
           from: 'founditems',
           localField: 'foundItems',
           foreignField: '_id',
-          as: 'foundItemsDetails'
+          as: 'foundItems'
         }
       },
       {
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
           from: 'founditems',
           localField: 'blockedItems',
           foreignField: '_id',
-          as: 'blockedItemsDetails'
+          as: 'blockedItems'
         }
       },
       {
@@ -57,7 +58,7 @@ export async function GET(request: NextRequest) {
           from: 'alerts',
           localField: 'alerts',
           foreignField: '_id',
-          as: 'alertsDetails'
+          as: 'alerts'
         }
       },
       {
@@ -138,10 +139,14 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
 
+
+    console.log("in api delete before connect");
+    
     await connect();
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
+console.log("after exract the id ",id);
 
 
     if (!id) {

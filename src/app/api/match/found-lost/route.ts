@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
         const foundItem = await request.json();
 
-        const lostItemsResponse = await axios.get(`${baseUrl}/api/lostItem`);
+        const lostItemsResponse = await axios.get(`${baseUrl}/api/foundItem`);
         const lostItems = lostItemsResponse.data.data
 
         // Filter the lost items based on the found item properties and geographic matching
@@ -53,8 +53,9 @@ export async function POST(request: NextRequest) {
         );
 
     } catch (error) {
+        console.log(error.message);
         return NextResponse.json(
-            { message: "Error filtering lost items", error: error },
+            { message: "Error filtering lost items", error: error.message },
             { status: 500 }
         );
     }

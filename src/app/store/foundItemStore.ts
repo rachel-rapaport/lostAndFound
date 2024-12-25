@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { FoundItemStore } from "../types/store/foundItemStore";
+<<<<<<< HEAD
 import { Types } from "mongoose";
 
 const useFoundItemStore = create<FoundItemStore>((set, get) => ({
@@ -83,6 +84,25 @@ const useFoundItemStore = create<FoundItemStore>((set, get) => ({
         else
             return null;
     }
+=======
+import { FoundItem } from "../types/props/foundItem";
+
+ const useFoundItemStore = create<FoundItemStore>((set,get) => ({
+    currentFoundItem: null,
+    setCurrentFoundItem: (foundItem: FoundItem | null) => {
+      set({ currentFoundItem: foundItem });
+    },
+    filteredFoundItems: null,
+    setFilteredFoundItems: (foundItems: FoundItem[]) => {
+      set({ filteredFoundItems: foundItems });
+    },
+    getFilteredFoundItemById: (id: string) => {
+      const foundItem = get().filteredFoundItems?.find(
+        (item) => item._id.toString() === id
+      );
+      return foundItem || null; // Return found item or null
+    },
+>>>>>>> f57b359384ab81bff56610eaf86407bb6d19f8a6
 }))
 
 export default useFoundItemStore;

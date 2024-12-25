@@ -8,7 +8,10 @@ export async function GET() {
     const d = await fs.readFile(filePath, "utf-8");
     const data = JSON.parse(d);
 
-    return NextResponse.json(data);
+    return NextResponse.json(
+      { message: "cities were successfully fetched", data: data },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json(
       { massage: "Error fetching cities: ", error: error },

@@ -1,6 +1,11 @@
 import React from "react";
+import { AdminDashboard } from "../../components/admin-components/AdminDashboard";
 
 const page = () => {
-  return <div>Admin only</div>;
+  return (
+    <>
+      <AdminDashboard></AdminDashboard>
+    </>
+  );
 };
 export default page;
