@@ -8,7 +8,6 @@ const connect = async () => {
   if (isConnected) {
     // If there is already connection to MongoDB - prevents another connection
     console.log("Already connected to MongoDB");
-    return;
   }
   try {
     const db = await mongoose.connect(MONGODB_URI);

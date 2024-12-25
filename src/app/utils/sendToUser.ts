@@ -34,12 +34,12 @@ ${link}`
         case "chat":
             sendEmailToUser(user.email, contentChat.subject, contentChat.text, contentChat.htmlContent);
             sendPhoneCall(user.phone, contentChat.text)
-            createAlert(String(user._id), contentChat.subject)
+            createAlert(String(user._id), `contentChat.subject ${link}`)
             break;
         case "foundItem":
             sendEmailToUser(user.email, contentItem.subject, contentItem.text, contentItem.htmlContent);
             sendPhoneCall(user.phone, contentItem.text);
-            createAlert(String(user._id), contentItem.subject)
+            createAlert(String(user._id), `contentItem.subject ${link}`)
 
     }
 
