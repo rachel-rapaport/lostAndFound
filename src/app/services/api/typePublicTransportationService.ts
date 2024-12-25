@@ -4,14 +4,11 @@ import { TypePublicTransport } from "../../types/props/typePublicTransport";
 // get all types of public transporations
 export const getTypePublicTransportations = async () => {
   try {
-    const response = await axios.get("/api/typePublicTransportation",{
-      withCredentials: true,
-    });
-    console.log(response);
-    return response.data;
-  } catch (error) {
-    console.error("Error getting types of public transporations:", error);
-    throw error;
+    const response = await axios.get("/api/typePublicTransportation");
+    console.log(response.data.data);
+    return response.data.data;
+  } catch {
+    throw new Error("Failed to get type public transport")
   }
 };
 

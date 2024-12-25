@@ -1,7 +1,7 @@
 import {
   deleteLostItemById,
   getLostItems,
-} from "@/app/services/api/lostItemsService";
+} from "@/app/services/api/lostItemService";
 import { LostItem } from "@/app/types/props/lostItem";
 
 import { useState, useEffect } from "react";
@@ -64,47 +64,20 @@ const LostItemsTable = () => {
                 <td className="table-cell">
                   {item.colorId?.name}
                 </td>
-                <td
-                  className={`table-cell ${
-                    item.circles?.[0]?.center?.lat &&
-                    item.circles?.[0]?.center?.lng
-                      ? ""
-                      : "bg-gray-200"
-                  }`}
-                >
-                  {`${item.circles?.[0]?.center?.lat || "-"} , ${
-                    item.circles?.[0]?.center?.lng || "-"
-                  }`}
+                <td className="border border-gray-300 px-4 py-2">
+                  {`${item.circles&&item.circles[0].center.lat} , ${item.circles&&item.circles[0].center.lng}`}
                 </td>
-                <td
-                  className={`table-cell ${
-                    item.circles?.[0]?.radius ? "" : "bg-gray-200"
-                  }`}
-                >
-                  {item.circles?.[0]?.radius || "-"}
+                <td className="border border-gray-300 px-4 py-2">
+                  {item.circles&&item.circles[0].radius}
                 </td>
-                <td
-                  className={`table-cell ${
-                    item.publicTransport?.typePublicTransportId?.title
-                      ? ""
-                      : "bg-gray-200"
-                  }`}
-                >
-                  {item.publicTransport?.typePublicTransportId?.title || "-"}
+                <td className="border border-gray-300 px-4 py-2">
+                  {item.publicTransport&&item.publicTransport.typePublicTransportId.title}
                 </td>
-                <td
-                  className={`table-cell ${
-                    item.publicTransport?.city ? "" : "bg-gray-200"
-                  }`}
-                >
-                  {item.publicTransport?.city || "-"}
+                <td className="border border-gray-300 px-4 py-2">
+                  {item.publicTransport&&item.publicTransport.city}
                 </td>
-                <td
-                  className={`table-cell ${
-                    item.publicTransport?.line ? "" : "bg-gray-200"
-                  }`}
-                >
-                  {item.publicTransport?.line || "-"}
+                <td className="border border-gray-300 px-4 py-2">
+                  {item.publicTransport&&item.publicTransport.line}
                 </td>
 
                 <td className="table-cell text-center">

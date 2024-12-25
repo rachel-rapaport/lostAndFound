@@ -1,256 +1,156 @@
-// "use client";
-// import React, { useState } from "react";
+import React, { useEffect } from "react";
+import Select from "react-select";
+import TypePublicTransportSelect from "./select/TypePublicTransportSelect";
+import CitySelect from "./select/CitySelect";
+import { PublicTransportRequest } from "../types/request/PublicTransportRequest";
 
-// import PublicTransportationProps from "../types/publicTransportationProps"
+const PublicTransportation: React.FC<{
+  transportData: PublicTransportRequest;
+  setTransportData: React.Dispatch<React.SetStateAction<PublicTransportRequest>>;
+}> = ({ transportData, setTransportData }) => {
+  const handleTypeSelect = (typeId: string) => {
+    setTransportData({
+      typePublicTransportId: typeId,
+      line: "",
+      city: "",
+    });
+  };
 
+  const jerusalemCheckpoints = ["הר הרצל", "חיל האוויר"];
+  const dencalCheckpoints = ["R1", "R2", "R3"];
+  const dencalCities = [
+    { value: "פתח תקווה", label: "פתח תקווה" },
+    { value: "בת ים", label: "בת ים" },
+  ];
 
-// const PublicTransportation: React.FC<PublicTransportationProps> = ({
-//     formData,
-//     setFormData,
-//   }) => {
-//   const [checkboxState, setCheckboxState] = useState({
-//     isBus: false,
-//     isCityBus: false,
-//     isOutBus: false,
-//     isRail: false,
-//     isJlm: false,
-//     isTlv: false,
-//     isTrain: false,
-//     isCablecar: false,
-//   });
+  // useEffect to set transport data based on selected public transport type
+  useEffect(() => {
+    if (transportData.typePublicTransportId === "675597230f7ad3122ddce705") {
+      //Haifa Cable Car
+      setTransportData((prev) => ({
+        ...prev,
+        line: "רכבלית",
+        city: "חיפה",
+      }));
+    } else if (
+      transportData.typePublicTransportId === "675597190f7ad3122ddce703" //Jerusalem Light Rail
+    ) {
+      setTransportData((prev) => ({
+        ...prev,
+        city: "ירושלים",
+      }));
+    }
+  }, [transportData.typePublicTransportId, setTransportData]);
 
+  // Handler for changing checkpoint (line) selection
+  const handleCheckpointChange = (
+    selectedOption: string,
+    isChecked: boolean
+  ) => {
+    setTransportData((prev) => ({
+      ...prev,
+      line: isChecked ? selectedOption : "",
+    }));
+  };
 
-//   const cities = ["pt", "tlv", "jlm"];
+  return (
+    <div className="space-y-2 text-right" dir="rtl">
+      <div className="flex justify-between items-center">
+        <h3 className="font-semibold text-lg ">סוג תחבורה ציבורית</h3>
+      </div>
+      <TypePublicTransportSelect onSelect={handleTypeSelect} />
 
-//   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, checked } = e.target;
-//     if (["isBus", "isTrain", "isRail", "isCablecar"].includes(name)) {
-//       // Only allow one of these to be true at a time
-//       setCheckboxState((prevState) => ({
-//         ...prevState,
-//         isBus: name === "isBus" ? checked : false,
-//         isTrain: name === "isTrain" ? checked : false,
-//         isRail: name === "isRail" ? checked : false,
-//         isCablecar: name === "isCablecar" ? checked : false,
-//         [name]: checked,
-//       }));
-//     }
-//     if (["isCityBus", "isOutBus", "isJlm", "isTlv"].includes(name)) {
-//       // Only allow one of these to be true at a time
-//       setCheckboxState((prevState) => ({
-//         ...prevState,
-//         isCityBus: name === "isCityBus" ? checked : false,
-//         isOutBus: name === "isOutBus" ? checked : false,
-//         isJlm: name === "isJlm" ? checked : false,
-//         isTlv: name === "isTlv" ? checked : false,
-//         [name]: checked,
-//       }));
-//     }
-//   };
+      {transportData.typePublicTransportId === "675596d90f7ad3122ddce6fb" ? ( // Urban Bus
+        <div className="space-y-2 text-right pt-4">
+          <h3 className="font-semibold text-lg ">עיר</h3>
+          <CitySelect
+            onSelect={(city) => setTransportData((prev) => ({ ...prev, city }))}
+          />
+        </div>
+      ) : transportData.typePublicTransportId === "675596f50f7ad3122ddce6fd" || // Intercity Bus
+        transportData.typePublicTransportId === "675597040f7ad3122ddce6ff" ? ( // or Israel Railways
+        <div className="space-y-2 pt-4">
+          <h3 className="font-semibold text-lg ">עיר יעד</h3>
+          <CitySelect
+            onSelect={(city) => setTransportData((prev) => ({ ...prev, city }))}
+          />
+        </div>
+      ) : transportData.typePublicTransportId === "675597130f7ad3122ddce701" ? ( // DanKal Light Rail
+        <div className="space-y-2 pt-4">
+          <h3 className="font-semibold text-lg">עיר</h3>
+          <Select
+            options={dencalCities}
+            onChange={(selectedOption) =>
+              setTransportData((prev) => ({
+                ...prev,
+                city: selectedOption ? selectedOption.value : "",
+              }))
+            }
+            className="react-select-container"
+            classNamePrefix="react-select"
+            placeholder="בחר עיר"
+          />
+        </div>
+      ) : null}
 
-//   const handleChange = (
-//     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-//   ) => {
-//     const { name, value } = e.target;
+      {transportData.typePublicTransportId === "675597190f7ad3122ddce703" ? ( // Jerusalem Light Rail
+        <div className="space-y-2 pt-4">
+          <h3 className="font-semibold text-lg">יעד</h3>
+          <div className="space-y-2">
+            {jerusalemCheckpoints.map((checkpoint) => (
+              <label key={checkpoint} className="flex items-center gap-x-2">
+                <input
+                  type="checkbox"
+                  checked={transportData.line === checkpoint}
+                  onChange={(e) =>
+                    handleCheckpointChange(checkpoint, e.target.checked)
+                  }
+                  className="custom-checkbox"
+                />
+                <span>{checkpoint}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      ) : transportData.typePublicTransportId === "675597130f7ad3122ddce701" ? ( //DanKal Light Rail
+        <div className="space-y-2 pt-4">
+          <h3 className="font-semibold text-lg">קו</h3>
+          <div className="space-y-2">
+            {dencalCheckpoints.map((checkpoint) => (
+              <label key={checkpoint} className="flex items-center gap-x-2">
+                <input
+                  type="checkbox"
+                  checked={transportData.line === checkpoint}
+                  onChange={(e) =>
+                    handleCheckpointChange(checkpoint, e.target.checked)
+                  }
+                  className="custom-checkbox"
+                />
+                <span>{checkpoint}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
-//     setFormData((prevData) => ({
-//       ...prevData,
-//       [name]: value,
-//     }));
-//   };
+      {transportData.typePublicTransportId === "675596f50f7ad3122ddce6fd" || // Intercity Bus
+      transportData.typePublicTransportId === "675596d90f7ad3122ddce6fb" || // Urban Bus
+      transportData.typePublicTransportId === "675597040f7ad3122ddce6ff" ? ( // or Israel Railways
+        <div className="space-y-2 pt-4">
+          <h3 className="font-semibold text-lg">קו</h3>
+          <input
+            type="text"
+            value={transportData.line}
+            onChange={(e) =>
+              setTransportData((prev) => ({ ...prev, line: e.target.value }))
+            }
+            placeholder="הכנס את מספר הקו"
+            className="form-input text-right border-2 border-primary rounded-md"
+          />
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
-//   return (
-//     <div className="block text-sm font-medium text-gray-700">
-//       <p className="block text-sm text-gray-700 font-bold">
-//         בחר סוג תחבורה ציבורית:
-//       </p>
-//       <div className="flex justify-evenly pt-4">
-//         <label>
-//           <input
-//             type="checkbox"
-//             name="isBus"
-//             checked={checkboxState.isBus}
-//             onChange={handleCheckboxChange}
-//           />
-//           אוטובוס
-//         </label>
-//         <label>
-//           <input
-//             type="checkbox"
-//             name="isRail"
-//             checked={checkboxState.isRail}
-//             onChange={handleCheckboxChange}
-//           />
-//           רכבת קלה{" "}
-//         </label>
-//         <label>
-//           <input
-//             type="checkbox"
-//             name="isTrain"
-//             checked={checkboxState.isTrain}
-//             onChange={handleCheckboxChange}
-//           />
-//           רכבת{" "}
-//         </label>
-//         <label>
-//           <input
-//             type="checkbox"
-//             name="isCablecar"
-//             checked={checkboxState.isCablecar}
-//             onChange={handleCheckboxChange}
-//           />
-//           רכבלית - חיפה
-//         </label>
-//       </div>
-//       {checkboxState.isBus ? (
-//         <div className="flex justify-evenly pt-4">
-//           {" "}
-//           <label>
-//             <input
-//               type="checkbox"
-//               name="isCityBus"
-//               checked={checkboxState.isCityBus}
-//               onChange={handleCheckboxChange}
-//             />
-//             אוטובוס עירוני
-//           </label>
-//           <label>
-//             <input
-//               type="checkbox"
-//               name="isOutBus"
-//               checked={checkboxState.isOutBus}
-//               onChange={handleCheckboxChange}
-//             />
-//             אוטובוס בין עירוני
-//           </label>
-//         </div>
-//       ) : (
-//         <></>
-//       )}
-//       {checkboxState.isRail ? (
-//         <div className="flex justify-evenly pt-4">
-//           {" "}
-//           <label>
-//             <input
-//               type="checkbox"
-//               name="isJlm"
-//               checked={checkboxState.isJlm}
-//               onChange={handleCheckboxChange}
-//             />
-//             רכבת קלה - ירושלים
-//           </label>
-//           <label>
-//             <input
-//               type="checkbox"
-//               name="isTlv"
-//               checked={checkboxState.isTlv}
-//               onChange={handleCheckboxChange}
-//             />
-//             רכבת קלה - דנקל
-//           </label>
-//         </div>
-//       ) : (
-//         <></>
-//       )}
-//       {checkboxState.isTrain || checkboxState.isBus ? (
-//         <div className="pt-4">
-//           <label
-//             htmlFor="line"
-//             className="block text-sm font-medium text-gray-700 mb-1"
-//           >
-//             {checkboxState.isBus ? "הכנס קו אוטובוס" : "הכנס מספר רכבת"}
-//           </label>
-//           <input
-//             type="text"
-//             id="line"
-//             name="line"
-//             value={formData.line}
-//             onChange={handleChange}
-//             className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-//             placeholder={checkboxState.isBus ? "קו אוטובוס" : "מספר רכבת"}
-//           />
-//         </div>
-//       ) : (
-//         <></>
-//       )}
-//       {checkboxState.isBus ? (
-//         <div className="pt-4">
-//           <label
-//             htmlFor="category"
-//             className="block text-sm font-medium text-gray-700"
-//           >
-//             {checkboxState.isCityBus ? "בחר עיר" : "בחר עיר יעד"}{" "}
-//           </label>
-//           <select
-//             id="city"
-//             name="city"
-//             value={formData.city}
-//             onChange={handleChange}
-//             className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-//             required
-//           >
-//             <option value="">
-//               {" "}
-//               {checkboxState.isCityBus ? "בחר עיר" : "בחר עיר יעד"}{" "}
-//             </option>
-//             {cities.map((category) => (
-//               <option key={category} value={category}>
-//                 {category}
-//               </option>
-//             ))}
-//           </select>
-//         </div>
-//       ) : (
-//         <></>
-//       )}
-
-//       {checkboxState.isRail && checkboxState.isTlv ? (
-//         <div className="pt-4">
-//           <label
-//             htmlFor="category"
-//             className="block text-sm font-medium text-gray-700"
-//           >
-//             בחר יעד:{" "}
-//           </label>
-//           <select
-//             id="city"
-//             name="city"
-//             value={formData.city}
-//             onChange={handleChange}
-//             className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-//             required
-//           >
-//             <option value="">בחר יעד</option>
-//             <option value="קוממיות - בת ים"></option>
-//             <option value="פתח תקווה">פתח תקווה</option>
-//           </select>
-//         </div>
-//       ) : checkboxState.isRail && checkboxState.isJlm ? (
-//         <div>
-//           <label
-//             htmlFor="category"
-//             className="block text-sm font-medium text-gray-700"
-//           >
-//             בחר יעד:{" "}
-//           </label>
-//           <select
-//             id="city"
-//             name="city"
-//             value={formData.city}
-//             onChange={handleChange}
-//             className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-//             required
-//           >
-//             <option value="">בחר יעד</option>
-//             <option value="חיל האוויר">חיל האוויר</option>
-//             <option value="הר הרצל">הר הרצל</option>
-//           </select>
-//         </div>
-//       ) : (
-//         <></>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default PublicTransportation;
+export default PublicTransportation;

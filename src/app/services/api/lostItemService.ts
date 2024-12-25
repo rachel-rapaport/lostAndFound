@@ -1,17 +1,16 @@
 import axios from "axios";
-import { LostItem } from "../../types/props/lostItem";
+import { LostItemRequest } from "@/app/types/request/lostItemRequest";
 
 // get all lost items
 export const getLostItems = async () => {
   try {
-    const response = await axios.get("/api/lostItem",{
+    const response = await axios.get("/api/lostItem", {
       withCredentials: true,
     });
     console.log(response);
     return response.data;
-  } catch (error) {
-    console.error("Error getting lostItems:", error);
-    throw error;
+  } catch {
+    throw new Error("Failed to get lostItems");
   }
 };
 
@@ -22,31 +21,29 @@ export const getLostItemById = async (id: string) => {
     const response = await axios.get(`/api/lostItem/${id}`);
     console.log(response);
     return response.data;
-  } catch (error) {
-    console.error("Error getting lost Item:", error);
-    throw error;
+  } catch {
+    throw new Error("Failed to get lostItem by id");
   }
 };
 
 // create new lost item
-export const createLostItem = async (lostItem: LostItem) => {
+export const createLostItem = async (lostItem: LostItemRequest) => {
   try {
     const response = await axios.post("/api/lostItem", lostItem);
-    return response.data;
-  } catch (error) {
-    console.log("Error creating lostItem:", error);
-    throw error;
+    console.log(response.data.data[0]);
+    return response.data.data[0];
+  } catch {
+    throw new Error("Failed to create lostItem");
   }
 };
 
 // update lost item by id
-export const updateLostItemById = async (id: string, lostItem: LostItem) => {
+export const updateLostItemById = async (id: string, lostItem: LostItemRequest) => {
   try {
     const response = await axios.put(`/api/lostItem/${id}`, lostItem);
     return response.data;
-  } catch (error) {
-    console.log("Error updating lostItem:", error);
-    throw error;
+  } catch {
+    throw new Error("Failed to update lostItem");
   }
 };
 
@@ -59,8 +56,7 @@ export const deleteLostItemById = async (id: string) => {
     console.log("after axios in service");
     
     return response.data;
-  } catch (error) {
-    console.log("Error deleting lostItem", error);
-    throw error;
+  } catch {
+    throw new Error("Failed to delete lostItem");
   }
 };

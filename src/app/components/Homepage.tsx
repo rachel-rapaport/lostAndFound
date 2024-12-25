@@ -7,9 +7,7 @@
 // import { sendEmailToAdmin } from "../services/api/sendEmailService";
 // import useUserStore from "../store/userStore";
 
-// import { useEffect } from 'react';
-// import { useAppStore } from "../store/store";
-// import { useRouter } from "next/navigation";
+
 
 const Homepage = () => {
   // const router = useRouter();

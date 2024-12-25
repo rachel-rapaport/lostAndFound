@@ -1,7 +1,4 @@
-import {
-  createTypePublicTransportation,
-  getTypePublicTransportations,
-} from "@/app/services/api/publicTransportationService";
+import { createTypePublicTransportation, getTypePublicTransportations } from "@/app/services/api/typePublicTransportationService";
 import { TypePublicTransport } from "@/app/types/props/typePublicTransport";
 import { Types } from "mongoose";
 import React, { useEffect, useState } from "react";

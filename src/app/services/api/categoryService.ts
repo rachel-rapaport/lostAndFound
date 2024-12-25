@@ -22,10 +22,6 @@ export const getCategoryById = async (id: string) => {
     }
 }
 
-
-
-
-
 export const addCategory = async (category: Category) => {
     try {
         const response = await axios.post('api/category', category);

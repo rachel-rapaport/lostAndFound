@@ -4,14 +4,10 @@ import { Color } from "../../types/props/color";
 // get all colors
 export const getColors = async () => {
   try {
-    const response = await axios.get("/api/color", {
-      withCredentials: true,
-    });
-    console.log(response);
-    return response.data;
-  } catch (error) {
-    console.error("Error getting colors:", error);
-    throw error;
+    const response = await axios.get("/api/color");
+    return response.data.data;
+  } catch {
+    throw new Error("Failed to get colors")
   }
 };
 
@@ -21,9 +17,8 @@ export const getColorById = async (id: string) => {
     const response = await axios.get(`/api/color/${id}`);
     console.log(response);
     return response.data;
-  } catch (error) {
-    console.error("Error getting color:", error);
-    throw error;
+  } catch {
+    throw new Error("Failed to get color by id")
   }
 };
 
@@ -32,9 +27,8 @@ export const createColor = async (color: Color) => {
   try {
     const response = await axios.post("/api/color", color);
     return response.data;
-  } catch (error) {
-    console.log("Error creating color:", error);
-    throw error;
+  } catch {
+    throw new Error("Failed to create color")
   }
 };
 
@@ -43,9 +37,8 @@ export const updateColorById = async (id: string, color: Color) => {
   try {
     const response = await axios.put(`/api/color/${id}`, color);
     return response.data;
-  } catch (error) {
-    console.log("Error updating color:", error);
-    throw error;
+  } catch {
+    throw new Error("Failed to update color")
   }
 };
 
@@ -56,10 +49,9 @@ export const deleteColorById = async (id: string) => {
 
     const response = await axios.delete(`/api/color/${id}`);
     console.log(response.data);
-    
+
     return response.data;
-  } catch (error) {
-    console.log("Error deleting color", error);
-    throw error;
+  } catch {
+    throw new Error("Failed to delete color")
   }
 };
