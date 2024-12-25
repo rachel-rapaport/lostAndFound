@@ -21,13 +21,10 @@ export const blockItemForUser = async (currentUser: User, foundItemToBlock: Foun
         ...currentUser,
         blockedItems: [...currentUser.blockedItems || [], foundItemToBlock]
     }
-    if (currentUser._id) {
-        const response = await updateUserById(currentUser._id.toString(), updatedUser);
-        if (response) {
-            return response;
-        } else {
-            throw new Error("Failed to update user");
-        }
+    const response = await updateUserById(currentUser._id.toString(), updatedUser);
+    if (response) {
+        return response;
+    } else {
+        throw new Error("Failed to update user");
     }
-
 }

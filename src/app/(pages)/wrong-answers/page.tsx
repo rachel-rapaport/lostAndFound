@@ -1,12 +1,18 @@
 import React from 'react'
+import ContactTheAdmin from '@/app/components/ContactTheAdmin';
 
 const page = () => {
     return (
-        <>
-            <p>טעית בתשובות. פריט זה נחסם עבורך ולא יוצג לך יותר.</p>
-            <p>אם בכל זאת זה נראה פריט שלך- פנה לאדמין</p>
-            <p>-- פניה לאדמין --</p>
-        </>
+        <div className='flex h-[65vh]'>
+            <div className='flex flex-col w-[50%] mx-auto justify-center items-center text-secondary'>
+                <p>
+                    <strong className='font-semibold'>טעית בתשובות, </strong>
+                    פריט זה נחסם עבורך ולא יוצג לך יותר.
+                </p>
+                <p className='pb-[5vh]'>אם מדובר בפריט שלך- אנא פנה למנהל המערכת.</p>
+                <ContactTheAdmin />
+            </div>
+        </div>
     )
 }
 

@@ -1,10 +1,9 @@
-"use client"
-import React from 'react';
-import { useParams } from 'next/navigation';
 import Chat from '@/app/components/chat/Chat';
+import React from 'react';
 
-const ChatPage = () => {
-  const { roomId } = useParams(); 
+const ChatPage = ({ params }: { params: { roomId: string } }  ) => {
+
+  const { roomId } = params; 
 
   if (!roomId) {
     return <p>טוען...</p>;
@@ -13,4 +12,6 @@ const ChatPage = () => {
   return <Chat roomId={roomId as string} />;
 };
 
-export default ChatPage
+
+
+export default ChatPage;

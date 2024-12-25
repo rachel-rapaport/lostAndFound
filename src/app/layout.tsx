@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
@@ -12,9 +11,7 @@ const LayoutContent: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <html lang="en" dir="rtl" >
-        <body>{children}</body>
-      </html>
+      <body>{children}</body>
     </QueryClientProvider>
   );
 };
@@ -25,9 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <LayoutContent>
-    <Header></Header>
-      {children}
-    </LayoutContent>
+    <html lang="en" dir="rtl">
+      <LayoutContent>
+        <Header />
+        <div className="inner-body">{children}</div>
+      </LayoutContent>
+    </html>
   );
 }

@@ -1,5 +1,4 @@
-//deletetee
-// components/Chat.tsx
+"use client"
 import React, { useState, useEffect } from 'react';
 import { database, ref, onValue, push, set } from '../../lib/firebase/firebaseConfig'; // ייבוא של פונקציות Firebase
 
@@ -38,20 +37,37 @@ const Chat: React.FC<ChatProps> = ({ roomId }) => {
   };
 
   return (
-    <div>
-      <h2>חדר צאט עם חדר {roomId}</h2>
-      <div>
+    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex items-center justify-center bg-blue-600 text-white p-4 shadow-lg">
+      <h2 className="text-xl font-bold">חדר צ&apos;אט - חדר {roomId}</h2>
+    </div>
+    <div className="flex-1 overflow-y-auto p-4">
+      <div className="space-y-2">
         {messages.map((msg, index) => (
-          <p key={index}>{msg.text}</p> // הצגת כל הודעה
+          <div
+            key={index}
+            className="p-3 bg-white rounded-lg shadow-md max-w-sm"
+          >
+            {msg.text}
+          </div>
         ))}
       </div>
+    </div>
+    <div className="flex items-center p-4 bg-gray-200 border-t">
       <input
         type="text"
         value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)} // עדכון תוכן ההודעה
+        onChange={(e) => setNewMessage(e.target.value)}
         placeholder="הקלד הודעה"
+        className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
       />
-      <button onClick={sendMessage}>שלח</button> {/* כפתור לשליחת הודעה */}
+      <button
+        onClick={sendMessage}
+        className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+      >
+        שלח
+      </button>
+    </div>
     </div>
   );
 };

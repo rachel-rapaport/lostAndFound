@@ -8,6 +8,12 @@ body {
   @apply font-fredoka;
 }
 
+.inner-body {
+  @apply p-[70px] text-right;
+  /* overflow-y-hidden; */
+}
+
+
 @layer utilities {
   .btn {
     @apply py-3 px-6 min-w-[11vw] rounded-[10px];
@@ -91,18 +97,13 @@ body {
 /* select */
 .react-select__option--is-focused,
 .react-select__option--is-selected {
-  background-color: FADB3F !important;
+  background-color: #FADB3F !important;
 }
 
 .react-select__control {
-  border-color: FADB3F !important;
+  border-color: #FADB3F !important;
   box-shadow: none !important;
   direction: rtl;
-}
-
-/* error */
-.error-message {
-  @apply text-red-500 text-sm;
 }
 
 input:checked+label .indicator {
@@ -111,15 +112,6 @@ input:checked+label .indicator {
 
 .state:checked~.label .text {
   @apply opacity-100;
-}
-
-/* contact to admin */
-.contact-input {
-  @apply bg-inherit text-white border-b-[1px] pt-4 pb-1 border-b-white;
-}
-
-.contact-input:focus {
-  @apply outline-none ring-0;
 }
 
 /* show questions */
@@ -157,4 +149,13 @@ input:checked+label .indicator {
 
 .state:checked~.label .text {
   @apply opacity-100;
+}
+
+/* contact to admin */
+.contact-input {
+  @apply bg-inherit text-white border-b-[1px] pt-3 pb-1 border-b-white;
+}
+
+.contact-input:focus {
+  @apply outline-none ring-0;
 }

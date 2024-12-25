@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createTransport } from 'nodemailer';
 
 export async function POST(request: NextRequest) {
-    try {        
-        const { to, subject, text, htmlContent } = await request.json();
+    try {
+        const { to, subject, htmlContent } = await request.json();
 
-        if (!subject || !text) {
+        if (!subject || !htmlContent) {
             return NextResponse.json(
                 { error: 'Missing email content' },
                 { status: 400 }
@@ -25,14 +25,12 @@ export async function POST(request: NextRequest) {
             from: process.env.FROM_EMAIL,
             to: to || process.env.TO_EMAIL,
             subject,
-            text,
             html: htmlContent
         };
 
         // Sending the email
         const info = await transporter.sendMail(mailOptions);
         return NextResponse.json({ success: true, info }, { status: 200 });
-
     } catch (error) {
         return NextResponse.json(
             { message: 'Failed to send email', error: error },

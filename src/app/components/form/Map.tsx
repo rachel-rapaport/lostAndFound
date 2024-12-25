@@ -13,13 +13,6 @@ const Map: React.FC<{
   const [mapKey, setMapKey] = useState(0);
   const mapRef = useRef<google.maps.Map | null>(null);
 
-  // Fetch the user's location once the Google Maps API has loaded
-  useEffect(() => {
-    if (googleLoaded) {
-      getUserLocation();
-    }
-  }, [googleLoaded]);
-  
   // Function to get the user's current location using the browser's geolocation API
   const getUserLocation = () => {
     if (navigator.geolocation && googleLoaded) {
@@ -49,7 +42,7 @@ const Map: React.FC<{
       },
       radius: newCircle.getRadius(),
     };
-    setCircles([...circles, circleData]); 
+    setCircles([...circles, circleData]);
   };
 
   // Toggle the drawing mode between active and inactive
@@ -81,13 +74,20 @@ const Map: React.FC<{
       }
     }
   };
-  
+
   // Function to reset the circles on the map
   const handleResetCircles = () => {
-    setCircles([]); 
-    setMapKey((prevKey) => prevKey + 1); 
-    setDrawingMode(false); 
+    setCircles([]);
+    setMapKey((prevKey) => prevKey + 1);
+    setDrawingMode(false);
   };
+
+  // Fetch the user's location once the Google Maps API has loaded
+  useEffect(() => {
+    if (googleLoaded) {
+      getUserLocation();
+    }
+  }, [googleLoaded, getUserLocation]);
 
   return (
     <div>

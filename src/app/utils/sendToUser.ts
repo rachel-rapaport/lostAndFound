@@ -5,44 +5,43 @@ import { sendPhoneCall } from '../services/api/phoneCallService';
 
 
 export const afterFilter = (user: User, status: string, link: string) => {
+    let doc;
+    const parser = new DOMParser();
+
     const contentItem = {
         "subject": "נמצא פריט התואם לאבידה שלך – בדוק אותו!",
-        "text": "שלום",
         "htmlContent":
-            `היי,
-
-רצינו לעדכן אותך כי מישהו העלה לאתר פריט שמצא, לאחר שבדקנו את הפרטים, נראה שהם תואמים לאבידה שלך.
-אנא בדוק אם אכן מדובר באבידה שלך.
-
-${link}`
+            `<div dir="rtl">
+        <p>היי ${user.fullName},</p>
+        <p>רצינו לעדכן אותך כי אחד המשתמשים באתרנו העלה פריט שמצא, ולאחר שבדקנו את הפרטים, נראה שהם תואמים לאבידה שלך.</p>
+        <p>אנא בדוק <a href="${link}">כאן</a> אם אכן מדובר באבידה שלך</p>
+        </div>`
     }
     const contentChat = {
         "subject": "מישהו מחכה לך בצ'אט!",
-        "text": "שלום",
         "htmlContent":
-            `היי,
-
-אחד המשתמשים באתרנו איבד פריט הזהה לפריט שמצאת, והוא ענה על הסימנים נכונה.
-כעת הוא מחכה לך בצ'אט לאימות סופי ולתיאום העברת הפריט.
-
-אנא היכנס/י לצ'אט על מנת להשלים את התהליך.
-
-${link}`
+            `<div>
+            <p>היי ${user.fullName},</p>
+                <p>.אחד המשתמשים באתרנו איבד פריט הזהה לפריט שמצאת, וענה נכונה על הסימנים שהזנת</p>
+                <p>.כעת הוא ממתין לך בצ'אט לאימות סופי ולתיאום העברת הפריט</p>
+                <p>אנא היכנס ל<a href=${link}>צ'אט</a> כדי להשלים את התהליך.</p>
+            </div>`
     }
+
 
     switch (status) {
         case "chat":
-            sendEmailToUser(user.email, contentChat.subject, contentChat.text, contentChat.htmlContent);
-            sendPhoneCall(user.phone, contentChat.text)
+            sendEmailToUser(user.email, contentChat.subject, contentChat.htmlContent);
+            doc = parser.parseFromString(contentChat.htmlContent, "text/html");
+            sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
             createAlert(String(user._id), contentChat.subject,link)
             break;
         case "foundItem":
-            sendEmailToUser(user.email, contentItem.subject, contentItem.text, contentItem.htmlContent);
-            sendPhoneCall(user.phone, contentItem.text);
+            sendEmailToUser(user.email, contentItem.subject, contentItem.htmlContent);
+            doc = parser.parseFromString(contentItem.htmlContent, "text/html");
+            sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
             createAlert(String(user._id), contentItem.subject,link)
-
     }
-
 }
 
 export const resetPassword = (email: string, link: string) => {
@@ -63,8 +62,8 @@ export const resetPassword = (email: string, link: string) => {
       `,
     }
 
-     sendEmailToUser(email, content.subject, content.text, content.htmlContent);
-   
+    sendEmailToUser(email, content.subject, content.htmlContent);
+
 }
 
 

@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
             )
         }
 
-        const data = await AlertModel.find();
+        const data = await AlertModel.findById(id);
 
         if (!data) {
             return NextResponse.json(
