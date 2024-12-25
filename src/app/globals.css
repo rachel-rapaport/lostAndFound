@@ -6,7 +6,6 @@
 *,
 body {
   @apply font-fredoka;
-  @apply font-fredoka;
 }
 
 
@@ -162,4 +161,14 @@ input:checked+label .indicator {
 
 .state:checked~.label .text {
   @apply opacity-100;
+}
+
+.table-cell {
+  @apply border border-gray-300 px-4 py-2 w-[10vw] flex;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.table-title {
+  @apply border border-gray-300 px-4 py-3 text-center w-full flex
 }
