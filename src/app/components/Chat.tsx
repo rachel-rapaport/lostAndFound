@@ -1,5 +1,4 @@
 //deletetee
-// components/Chat.tsx
 import React, { useState, useEffect } from 'react';
 import { database, ref, onValue, push, set } from '../lib/firebase/firebaseConfig'; // ייבוא של פונקציות Firebase
 
