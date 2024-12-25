@@ -25,10 +25,10 @@ const Header: React.FC = () => {
               onClick={() => router.push("/alerts")}
             >
               <BellAlertIcon className="w-10 h-10 ml-2 text-white" />
-              {alerts?.filter((alert) => !alert.read).length! >
+              {alerts?.filter((alert) =>alert?.read).length! >
                 0 && (
                 <span className="absolute bottom-0 left-0 inline-flex items-center justify-center w-5 h-5 text-s font-semibold text-black bg-primary rounded-full">
-                  {alerts?.filter((alert) => !alert.read).length}
+                  {alerts?.filter((alert) => alert?.read).length}
                 </span>
               )}
             </li>
