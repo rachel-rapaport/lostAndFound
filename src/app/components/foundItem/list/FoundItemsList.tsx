@@ -5,6 +5,7 @@ import { matchLostFound } from '@/app/services/api/matchService';
 import Card from './Card';
 import { FoundItem } from '@/app/types/props/foundItem';
 import useFoundItemStore from '@/app/store/foundItemStore';
+import CardBlocked from './CardBlocked';
 
 const FoundItemsList = () => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);
@@ -30,13 +31,18 @@ const FoundItemsList = () => {
   }, [currentLostItem, setFilteredFoundItems]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-wrap gap-4 justify-start">
       {foundItemsList && foundItemsList.map((item: FoundItem, index: number) => (
-        <Card
+       
+        <>
+ <Card
           key={String(item._id)}
-          counter={index}
+          counter={index+1}
           id={String(item._id)}
         />
+
+        <CardBlocked/>
+        </>
       ))}
     </div>
   );

@@ -9,7 +9,7 @@ body {
 }
 
 .inner-body {
-  @apply p-[70px] text-right;
+  @apply p-[50px] text-right;
   /* overflow-y-hidden; */
 }
 
