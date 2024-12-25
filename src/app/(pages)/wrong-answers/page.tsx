@@ -1,5 +1,5 @@
-import ContactTheAdmin from '@/app/components/ContactTheAdmin';
 import React from 'react'
+import ContactTheAdmin from '@/app/components/ContactTheAdmin';
 
 const page = () => {
     return (

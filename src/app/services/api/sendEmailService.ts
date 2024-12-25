@@ -13,8 +13,9 @@ export const sendEmailToUser = async (
       to: userEmail,
       subject,
       htmlContent: `
-      <div dir="rtl">
+      <div dir="rtl" style="padding-bottom: 4vh;">
         <p>${content}</p>
+        <p style="color: #464A4D; font-size: 12px; font-style: italic;">זוהי הודעה אוטומטית, אין להשיב למייל זה</p>
         <p>בברכה,</p>
         <p>צוות אתר מציאון.</p>
       </div>`,

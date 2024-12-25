@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { z } from 'zod';
 import { sendEmailToAdmin } from '../services/api/sendEmailService';
+import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 const ContactTheAdmin = () => {
 
@@ -12,6 +14,7 @@ const ContactTheAdmin = () => {
     });
     const [formData, setFormData] = useState<z.infer<typeof emailSchema>>({ name: "", email: "", content: "" });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -28,8 +31,20 @@ const ContactTheAdmin = () => {
             emailSchema.parse(formData);
             setErrors({});
             setFormData({ name: "", email: "", content: "" });
-            // Send email
             sendEmailToAdmin(formData.email, `נשלח ע"י האתר מהלקוח: ${formData.name}`, formData.content);
+            Swal.fire({
+                title: "נשלח",
+                text: "פנייתך נשלחה בהצלחה ותיענה בהקדם",
+                icon: "success",
+                confirmButtonText: "אוקי",
+                customClass: {
+                    confirmButton: 'secondary-btn',
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    router.push('/home');
+                }
+            });
         }
         catch (error) {
             if (error instanceof z.ZodError) {

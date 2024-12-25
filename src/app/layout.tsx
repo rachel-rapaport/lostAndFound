@@ -11,9 +11,7 @@ const LayoutContent: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <html lang="en" dir="rtl" >
-        <body>{children}</body>
-      </html>
+      <body>{children}</body>
     </QueryClientProvider>
   );
 };
@@ -24,14 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <LayoutContent>
-      <html lang="en">
-        <body dir="rtl" className="p-[70px]">
-          {/* overflow-y-hidden */}
-          <Header />
-          {children}
-        </body>
-      </html>
-    </LayoutContent>
+    <html lang="en" dir="rtl">
+      <LayoutContent>
+        <Header />
+        <div className="inner-body">{children}</div>
+      </LayoutContent>
+    </html>
   );
 }

@@ -6,9 +6,12 @@
 *,
 body {
   @apply font-fredoka;
-  @apply font-fredoka;
 }
 
+.inner-body {
+  @apply p-[70px] text-right;
+  /* overflow-y-hidden; */
+}
 
 
 @layer utilities {
@@ -21,7 +24,6 @@ body {
 
 .primary-btn {
   @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
-  @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
 }
 
 
@@ -30,7 +32,6 @@ body {
 }
 
 .delete-btn {
-  @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
   @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
 }
 
