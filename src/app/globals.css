@@ -16,7 +16,7 @@ body {
 
 /* buttons */
 .primary-btn {
-  @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C ];
+  @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
 }
 
 .secondary-btn {
@@ -24,7 +24,7 @@ body {
 }
 
 .delete-btn {
-  @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B ];
+  @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
 }
 
 .disabled-btn {
