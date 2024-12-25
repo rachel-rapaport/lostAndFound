@@ -5,6 +5,7 @@ export const createAlert = async (userId: string,massage:string,link:string) => 
     try {
         const newAlert = {
             "message": massage,
+            "link":link,
             "userId": userId,
             "read": false
         }
