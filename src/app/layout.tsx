@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
@@ -27,8 +26,9 @@ export default function RootLayout({
   return (
     <LayoutContent>
       <html lang="en">
-        <body dir="rtl" className="p-[70px] overflow-y-hidden">
-          <Header/>
+        <body dir="rtl" className="p-[70px]">
+          {/* overflow-y-hidden */}
+          <Header />
           {children}
         </body>
       </html>
