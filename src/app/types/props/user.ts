@@ -4,7 +4,7 @@ import { FoundItem } from "./foundItem";
 import { Alert } from "./alert";
 
 export interface User{
-    _id?: Types.ObjectId;
+    _id: Types.ObjectId;
     fullName: string;
     email: string;
     password: string;

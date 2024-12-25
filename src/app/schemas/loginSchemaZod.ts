@@ -22,6 +22,8 @@ export const signUpSchema = z.object({
     ),
 });
 
+
+
 export const resetPasswordSchema = z.object({
   email: z.string().email("כתובת דוא״ל לא חוקית"),
 });

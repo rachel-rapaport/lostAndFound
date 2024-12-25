@@ -1,26 +1,62 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { User } from "../types/props/user";
+import { Alert } from "../types/props/alert";
+import { getAlertById } from "../services/api/alertService";
 
 interface CurrentUserState {
+  setAlerts: (alerts: Alert[]) => void;
   user: User | null;
   setUser: (user: User) => void;
   clearUser: () => void;
+  alerts: Alert[] | null;
+  getAlerts: () => Promise<void>;
 }
 
 const userStore = create(
   persist<CurrentUserState>(
-    (set) => ({
+    (set, get) => ({
       user: null,
+      alerts: null,
 
       setUser: (user: User) => {
         set({ user });
+        get().getAlerts();
       },
 
-      clearUser: () => set({ user: null }),
+      clearUser: () => {
+        set({ user: null, alerts: null });
+      },
+      setAlerts: (alerts: Alert[]) => set({ alerts }),
+
+      getAlerts: async () => {
+        const currentUser = get().user;
+
+        if (currentUser?.alerts && currentUser.alerts.length > 0) {
+          try {
+            const alertPromises = currentUser.alerts.map(async (alertId) => {
+              if (alertId) {
+                const newAlert = await getAlertById(alertId.toString());
+                return newAlert;
+              }
+            });
+
+            const fetchedAlerts = await Promise.all(alertPromises);
+
+            // Filter out undefined values and update alerts in the store
+            set({
+              alerts: fetchedAlerts.filter((alert) => alert !== undefined),
+            });
+          } catch (error) {
+            console.error("Error fetching alerts:", error);
+          }
+        } else {
+          set({ alerts: [] });
+        }
+      },
     }),
     {
-      name: "userData", // this will be the name for the localStorage key
+      name: "userData", // Name for localStorage key
     }
   )
 );

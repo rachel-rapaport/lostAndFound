@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
       },
       {
         $lookup: {
-          from: 'blockeditems',
+          from: 'founditems',
           localField: 'blockedItems',
           foreignField: '_id',
           as: 'blockedItemsDetails'
@@ -67,10 +68,10 @@ export async function GET(request: NextRequest) {
           email: 1,
           password: 1,
           phone: 1,
-          lostItemsDetails: 1,
-          foundItemsDetails: 1,
-          blockedItemsDetails: 1,
-          alertsDetails: 1
+          lostItems: 1,
+          foundItems: 1,
+          blockedItems: 1,
+          alerts: 1
         }
       }
     ]);
@@ -138,10 +139,14 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
 
+
+    console.log("in api delete before connect");
+    
     await connect();
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
+console.log("after exract the id ",id);
 
 
     if (!id) {

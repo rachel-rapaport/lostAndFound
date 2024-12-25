@@ -1,11 +1,11 @@
-import Homepage from "@/app/components/Homepage";
+import { Alerts } from "@/app/components/Alerts";
 import React from "react";
 
 
 const page = () => {
   return (
     <>
-      <Homepage/>
+    <Alerts></Alerts>
     </>
   );
 };

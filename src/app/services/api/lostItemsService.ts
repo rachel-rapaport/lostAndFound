@@ -29,7 +29,7 @@ export const getLostItemById = async (id: string) => {
 };
 
 // create new lost item
-export const createLostI = async (lostItem: LostItem) => {
+export const createLostItem = async (lostItem: LostItem) => {
   try {
     const response = await axios.post("/api/lostItem", lostItem);
     return response.data;
@@ -53,7 +53,11 @@ export const updateLostItemById = async (id: string, lostItem: LostItem) => {
 // delete lost item by id
 export const deleteLostItemById = async (id: string) => {
   try {
+    console.log('before axios in service');
+    
     const response = await axios.delete(`/api/lostItem/${id}`);
+    console.log("after axios in service");
+    
     return response.data;
   } catch (error) {
     console.log("Error deleting lostItem", error);

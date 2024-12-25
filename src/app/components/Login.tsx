@@ -9,7 +9,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import userStore from "../store/userStore";
 import { loginAuthenticationCookies } from "../services/api/loginAuth";
 import { signupAuthenticationCookies } from "../services/api/signupAuth";
-import { loginSchema, signUpSchema } from "@/app/schemas/loginSchema";
+import { loginSchema, signUpSchema } from "@/app/schemas/loginSchemaZod";
 import PasswordResetModal from "./ModalResetPasswordEmail";
 
 const LoginForm = () => {
@@ -23,6 +23,8 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false); // New loading state
+
   const setUser = userStore((state) => state.setUser);
 
   // Log in / Sign up
@@ -47,7 +49,9 @@ const LoginForm = () => {
   // Submit function - zod validation
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
+      setPassword(password.replace(/^0/, "+972"));
       const formData = { email, password, fullName, phone };
       if (isLogin) {
         const loginData = loginSchema.parse({ email, password });
@@ -62,6 +66,8 @@ const LoginForm = () => {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -143,14 +149,14 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="bg-gray-200 space-y-16 w-full h-[600px] text-black p-12">
-      <div className="flex justify-center space-x-6 mb-8">
-        {/* Toggle buttons  */}
+    <div className="bg-gray-200 space-y-16 w-full h-auto text-black p-8 md:p-12">
+      <div className="flex flex-col md:flex-row justify-center md:space-x-6 mb-8">
+        {/* Toggle buttons */}
         <button
           onClick={toggleForm}
-          className={`px-8 py-3 text-2xl font-semibold ${
+          className={`px-8 py-3 text-2xl font-semibold mb-4 md:mb-0 ${
             isLogin
-              ? "bg-[#FADB3F] text-white rounded-t-lg "
+              ? "bg-[#FADB3F] text-white rounded-t-lg"
               : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
           }`}
         >
@@ -243,7 +249,7 @@ const LoginForm = () => {
           </div>
         </div>
 
-        {/* Forgot password  */}
+        {/* Forgot password */}
         {isLogin ? (
           <a
             href="#"
@@ -260,9 +266,17 @@ const LoginForm = () => {
         {/* Submit form button */}
         {!isModalOpen && (
           <>
-            <button className="w-full bg-[#FADB3F] text-white py-3 mt-6 text-lg rounded-lg hover:bg-yellow-500 transition">
+            <button
+              className="w-full bg-[#FADB3F] text-white py-3 mt-6 text-lg rounded-lg font-semibold hover:bg-yellow-500 transition"
+              disabled={loading}
+            >
               {isLogin ? "התחברות" : "הרשמה"}
             </button>
+            {loading && (
+              <p className="text-yellow-600 mt-2 text-center text-lg font-medium">
+                נא המתן...
+              </p>
+            )}
             {error && <p className="text-red-700 mt-4 text-lg">{error}</p>}
           </>
         )}
@@ -272,5 +286,4 @@ const LoginForm = () => {
     </div>
   );
 };
-
 export default LoginForm;

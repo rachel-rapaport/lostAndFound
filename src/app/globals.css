@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 *,
 body {
-  @apply font-fredoka;
+  @apply  font-fredoka;
 }
+
 
 @layer utilities {
   .btn {
@@ -31,43 +33,59 @@ body {
 
 .disabled-btn {
   @apply btn bg-[#EAEAEA] text-[#B8B8B8] cursor-not-allowed font-fredoka;
-  ;
+}
+
+.error-message {
+  @apply text-red-500 text-sm h-[20px];
+}
+
+/* select */
+.react-select__option--is-focused,
+.react-select__option--is-selected {
+  background-color: FADB3F !important;
+}
+
+.react-select__control {
+  border-color: FADB3F !important;
+  box-shadow: none !important; 
+  direction: rtl; 
+}
+
+.react-select__menu {
+  direction: rtl; 
 }
 
 
-/* show questions */
-.state {
-  @apply absolute top-0 right-0 opacity-[1e-5] pointer-events-none;
+/* checkbox */
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000000; 
+  border-radius: 4px;
+  appearance: none; 
+  cursor: pointer;
+  display: inline-block;
 }
 
-.label {
-  @apply inline-flex items-center cursor-pointer;
+.custom-checkbox:checked {
+  background-color: FADB3F;
+  border-color: #000000;
 }
 
-.text {
-  @apply mr-[16px] opacity-50 transition-opacity transition-transform duration-200 ease-linear transform;
+/* title form */
+.section-title {
+  @apply font-semibold text-lg mb-2;
 }
 
-.indicator {
-  @apply w-4 h-4 hidden rounded-full bg-primary;
+/* error */
+.error-message {
+  @apply text-red-500 text-sm;
 }
 
-.state:checked~.label .indicator::after {
-  @apply opacity-100 transition-opacity transition-transform duration-200 opacity-100 hover:opacity-50 ease-linear hover:ease-out transform hover:scale-105;
+/* amin table mangagement */
+.table-cell {
+  @apply border border-gray-300 px-4 py-2;
 }
-
-.state:focus~.label .text {
-  @apply opacity-100 transform translate-x-[8px];
-}
-
-.label:hover .text {
-  @apply opacity-100 scale-105;
-}
-
-input:checked+label .indicator {
-  @apply block;
-}
-
-.state:checked~.label .text {
-  @apply opacity-100;
+.table-title{
+  @apply border border-gray-300 px-4 py-3 text-center
 }
