@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { Profile } from "./Profile";
 import { BellAlertIcon } from "@heroicons/react/16/solid";
@@ -6,8 +5,10 @@ import userStore from "../store/userStore";
 import { useRouter } from "next/navigation";
 
 const Header: React.FC = () => {
-  const alerts = userStore((state)=>state.alerts)
+  const alerts = userStore((state) => state.alerts);
   const router = useRouter();
+
+  const unreadAlertsCount = alerts?.filter((alert) => !alert.read).length || 0;
 
   return (
     <header className="bg-secondary text-white p-8 shadow-md">
@@ -25,16 +26,15 @@ const Header: React.FC = () => {
               onClick={() => router.push("/alerts")}
             >
               <BellAlertIcon className="w-10 h-10 ml-2 text-white" />
-              {alerts?.filter((alert) =>alert?.read).length! >
-                0 && (
+              {unreadAlertsCount > 0 && (
                 <span className="absolute bottom-0 left-0 inline-flex items-center justify-center w-5 h-5 text-s font-semibold text-black bg-primary rounded-full">
-                  {alerts?.filter((alert) => alert?.read).length}
+                  {unreadAlertsCount}
                 </span>
               )}
             </li>
 
             <li>
-              <Profile></Profile>
+              <Profile />
             </li>
           </ul>
         </nav>
