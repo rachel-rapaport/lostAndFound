@@ -27,6 +27,7 @@ const userStore = create(
       clearUser: () => {
         set({ user: null, alerts: null });
       },
+
       setAlerts: (alerts: Alert[]) => set({ alerts }),
 
       getAlerts: async () => {
@@ -43,9 +44,16 @@ const userStore = create(
 
             const fetchedAlerts = await Promise.all(alertPromises);
 
-            // Filter out undefined values and update alerts in the store
+            // Filter out undefined values and sort alerts (unread first)
+            const sortedAlerts = fetchedAlerts
+              .filter((alert) => alert !== undefined)
+              .sort((a, b) => {
+                if (a?.read === b?.read) return 0;
+                return a?.read ? 1 : -1; // Unread alerts first
+              });
+
             set({
-              alerts: fetchedAlerts.filter((alert) => alert !== undefined),
+              alerts: sortedAlerts,
             });
           } catch (error) {
             console.error("Error fetching alerts:", error);

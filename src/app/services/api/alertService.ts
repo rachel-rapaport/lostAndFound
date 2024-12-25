@@ -2,11 +2,12 @@ import { Alert } from "@/app/types/props/alert";
 import axios from "axios";
 
 // create new alert
-export const createAlert = async (userId: string, massage: string) => {
+export const createAlert = async (userId: string, massage: string, link:string) => {
   try {
     const newAlert = {
       message: massage,
       userId: userId,
+      link:link,
       read: false,
     };
     const response = await axios.post("/api/alert", newAlert);

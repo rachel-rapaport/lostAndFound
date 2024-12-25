@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Profile } from "./Profile";
 import { BellAlertIcon } from "@heroicons/react/16/solid";
 import userStore from "../store/userStore";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { Alerts } from "./Alerts";
 
 const Header: React.FC = () => {
   const alerts = userStore((state) => state.alerts);
-  const router = useRouter();
+  // const router = useRouter();
 
   const unreadAlertsCount = alerts?.filter((alert) => !alert.read).length || 0;
+  const [showAlerts, setShowAlerts] = useState(false);
+
+  const handleAlertsClick = () => {
+    setShowAlerts(!showAlerts); // Toggle the display of the Alerts component
+  };
 
   return (
     <header className="bg-secondary text-white p-8 shadow-md">
@@ -21,17 +27,21 @@ const Header: React.FC = () => {
                 דף הבית
               </a>
             </li>
-            <li
-              className="relative cursor-pointer"
-              onClick={() => router.push("/alerts")}
-            >
-              <BellAlertIcon className="w-10 h-10 ml-2 text-white" />
-              {unreadAlertsCount > 0 && (
-                <span className="absolute bottom-0 left-0 inline-flex items-center justify-center w-5 h-5 text-s font-semibold text-black bg-primary rounded-full">
-                  {unreadAlertsCount}
-                </span>
-              )}
-            </li>
+            <div>
+              <li
+                className="relative cursor-pointer"
+                onClick={handleAlertsClick}
+              >
+                <BellAlertIcon className="w-10 h-10 ml-2 text-white" />
+                {unreadAlertsCount > 0 && (
+                  <span className="absolute bottom-0 left-0 inline-flex items-center justify-center w-5 h-5 text-s font-semibold text-black bg-primary rounded-full">
+                    {unreadAlertsCount}
+                  </span>
+                )}
+              </li>
+
+              {showAlerts && <Alerts />}
+            </div>
 
             <li>
               <Profile />
