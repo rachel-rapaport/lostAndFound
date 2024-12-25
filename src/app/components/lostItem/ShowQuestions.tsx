@@ -1,11 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import useFoundItemStore from '../store/foundItemStore';
-import NotMineButton from './NotMineButton';
+import useFoundItemStore from '../../store/foundItemStore';
+import NotMineButton from '../NotMineButton';
 import _ from 'lodash';
-import { checkAnswers } from '../utils/checkAnswers';
+import { checkAnswers } from '../../utils/checkAnswers';
 import { z } from 'zod';
-import userStore from '../store/userStore';
+import userStore from '../../store/userStore';
 import { useRouter } from 'next/navigation';
 
 const ShowQuestions = (props: { id: string }) => {
@@ -37,6 +37,15 @@ const ShowQuestions = (props: { id: string }) => {
         setCurrentFoundItem(foundItem);
     }, [id, setCurrentFoundItem, getFilteredFoundItemById]);
 
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            answers: [...prevData.answers, value],
+        }));
+    };
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -63,14 +72,6 @@ const ShowQuestions = (props: { id: string }) => {
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            answers: [...prevData.answers, value],
-        }));
-    };
-
     return (
         //  Assume that every question, and every answer per question, is unique
         <div className='flex flex-col w-[50%] mx-auto text-secondary'>
@@ -81,7 +82,7 @@ const ShowQuestions = (props: { id: string }) => {
                         <div key={question.question} className='w-full pb-7'>
                             <span className='flex'>
                                 <p className='ml-2'>{index + 1}. </p>
-                                <h2 className='font-fredoka'>{question.question}</h2>
+                                <p className='font-fredoka'>{question.question}</p>
                             </span>
                             {/* Changing the order in which answers are displayed */}
                             {question.answers.map((answer: string) => (
@@ -95,7 +96,6 @@ const ShowQuestions = (props: { id: string }) => {
                                             className="state"
                                             onChange={(e) => handleChange(e)}
                                         />
-
                                         <label htmlFor={answer} className='label'>
                                             <div className='indicator fill-secondary'>
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-4">

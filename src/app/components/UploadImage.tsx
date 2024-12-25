@@ -4,7 +4,7 @@ import { CldUploadWidget } from "next-cloudinary";
 import { saveImage } from '../utils/uploadImage';
 
 const UploadImage = () => {
-    
+
     useEffect(() => {
         console.log("on load component");
     })

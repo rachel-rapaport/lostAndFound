@@ -1,4 +1,4 @@
-import ShowQuestions from '@/app/components/ShowQuestions'
+import ShowQuestions from '@/app/components/lostItem/ShowQuestions'
 import React from 'react'
 
 const Page = ({ params }: { params: { id: string } }) => {

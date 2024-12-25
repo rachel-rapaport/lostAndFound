@@ -53,11 +53,11 @@ body {
   @apply w-4 h-4 hidden rounded-full bg-primary;
 }
 
-.state:checked ~ .label .indicator::after {
+.state:checked~.label .indicator::after {
   @apply opacity-100 transition-opacity transition-transform duration-200 opacity-100 hover:opacity-50 ease-linear hover:ease-out transform hover:scale-105;
 }
 
-.state:focus ~ .label .text {
+.state:focus~.label .text {
   @apply opacity-100 transform translate-x-[8px];
 }
 
@@ -65,10 +65,19 @@ body {
   @apply opacity-100 scale-105;
 }
 
-input:checked + label .indicator {
+input:checked+label .indicator {
   @apply block;
 }
 
-.state:checked ~ .label .text {
+.state:checked~.label .text {
   @apply opacity-100;
+}
+
+/* contact to admin */
+.contact-input {
+  @apply bg-inherit text-white border-b-[1px] pt-3 pb-1 border-b-white;
+}
+
+.contact-input:focus {
+  @apply outline-none ring-0;
 }
