@@ -19,14 +19,9 @@ body {
 
 /* buttons */
 
-
-/* buttons */
-
 .primary-btn {
   @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
-  @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
 }
-
 
 .secondary-btn {
   @apply btn bg-secondary text-white hover:bg-[#303030] active:bg-secondary;
@@ -34,11 +29,14 @@ body {
 
 .delete-btn {
   @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
-  @apply btn bg-[#CF5151] text-white hover:bg-[#D26F6F] active:bg-[#C24B4B];
 }
 
 .disabled-btn {
   @apply btn bg-[#EAEAEA] text-[#B8B8B8] cursor-not-allowed font-fredoka;
+}
+
+.error-message {
+  @apply text-red-500 text-sm h-[20px];
 }
 
 /* select */

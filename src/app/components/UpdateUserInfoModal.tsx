@@ -30,6 +30,10 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
     email: initialUserData.email,
     password: "",
     phone: initialUserData.phone,
+    alerts: initialUserData.alerts,
+    blockedItems: initialUserData.blockedItems,
+    foundItems: initialUserData.foundItems,
+    lostItems: initialUserData.lostItems,
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
