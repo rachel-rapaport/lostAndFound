@@ -1,4 +1,4 @@
-import ShowDetails from '@/app/components/ShowDetails';
+import ShowDetails from '@/app/components/foundItem/ShowDetails';
 import React from 'react'
 
 const page = () => {

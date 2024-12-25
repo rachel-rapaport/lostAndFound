@@ -12,8 +12,8 @@ const config: Config = {
         fredoka: ['"Fredoka"', 'sans-serif'],
       },
       colors: {
-        primary: '#FADB3F',
-        secondary: '#000000',
+        primary: '#FADB3F ',
+        secondary: '#000000 ',
       },
     },
   },

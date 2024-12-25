@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import userStore from "../store/userStore";
-import { logout } from "../services/api/logoutService";
+import userStore from "../../store/userStore";
+import { logout } from "../../services/api/logoutService";
 import { Types } from "mongoose";
 
 export const Profile = () => {

@@ -1,11 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import useFoundItemStore from '../store/foundItemStore';
-import NotMineButton from './NotMineButton';
+import useFoundItemStore from '../../store/foundItemStore';
+import NotMineButton from '../NotMineButton';
 import _ from 'lodash';
-import { checkAnswers } from '../utils/checkAnswers';
+import { checkAnswers } from '../../utils/checkAnswers';
 import { z } from 'zod';
-import userStore from '../store/userStore';
+import userStore from '../../store/userStore';
 import { useRouter } from 'next/navigation';
 
 const ShowQuestions = (props: { id: string }) => {

@@ -1,8 +1,8 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
-import useFoundItemStore from '../store/foundItemStore';
-import NotMineButton from './NotMineButton';
+import useFoundItemStore from '../../store/foundItemStore';
+import NotMineButton from '../NotMineButton';
 import { useRouter } from 'next/navigation';
 
 const ShowDetails = () => {

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { GoogleMap, LoadScript, DrawingManager, Marker } from "@react-google-maps/api";
-import { Circle } from "../types/props/circle";
+import { Circle } from "../../types/props/circle";
 
 const Map: React.FC<{
   circles: Circle[];

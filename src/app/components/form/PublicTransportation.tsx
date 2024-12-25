@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Select from "react-select";
 import TypePublicTransportSelect from "./select/TypePublicTransportSelect";
 import CitySelect from "./select/CitySelect";
-import { PublicTransportRequest } from "../types/request/PublicTransportRequest";
+import { PublicTransportRequest } from "../../types/request/PublicTransportRequest";
 
 const PublicTransportation: React.FC<{
   transportData: PublicTransportRequest;

@@ -1,6 +1,6 @@
 // components/Header.tsx
 import React from "react";
-import { Profile } from "./Profile";
+import { Profile } from "../user/Profile";
 import { BellAlertIcon} from "@heroicons/react/16/solid";
 
 const Header: React.FC = () => {

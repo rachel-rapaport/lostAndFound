@@ -1,4 +1,4 @@
-import LostForm from '@/app/components/form/LostForm'
+import LostForm from '@/app/components/lostItem/LostForm'
 import React from 'react'
 
 const page = () => {
