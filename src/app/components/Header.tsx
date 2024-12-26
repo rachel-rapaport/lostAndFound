@@ -2,18 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { Profile } from "./Profile";
 import { BellAlertIcon } from "@heroicons/react/16/solid";
 import userStore from "../store/userStore";
-// import { useRouter } from "next/navigation";
 import { Alerts } from "./Alerts";
 
 const Header: React.FC = () => {
   const alerts = userStore((state) => state.alerts);
-  // const router = useRouter();
 
   const unreadAlertsCount = alerts?.filter((alert) => !alert.read).length || 0;
   const [showAlerts, setShowAlerts] = useState(false);
   const alertsRef = useRef<HTMLDivElement | null>(null);
 
-  // Close Alerts when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -38,7 +35,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-secondary text-white p-8 shadow-md">
+    <header className="bg-secondary text-white p-6 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-3xl font-bold">מציאון</h1>
         <nav>
@@ -48,7 +45,7 @@ const Header: React.FC = () => {
                 דף הבית
               </a>
             </li>
-            <div ref={alertsRef}>
+           <div ref={alertsRef}>
               <li
                 className="relative cursor-pointer"
                 onClick={handleAlertsClick}

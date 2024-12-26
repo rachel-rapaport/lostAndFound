@@ -1,3 +1,4 @@
+"use client";
 import {
   deleteColorById,
   getColors,
@@ -46,9 +47,6 @@ export const ColorTable = () => {
   };
 
   const handleSaveEdit = async () => {
-    console.log("is updating");
-    console.log(editColor);
-
     if (editColor) {
       try {
         const response = await updateColorById(
@@ -63,9 +61,6 @@ export const ColorTable = () => {
           );
           setIsEditing(null);
           setEditColor(null);
-          console.log("Update successful");
-        } else {
-          console.error("Update failed:", response.status, response.statusText);
         }
       } catch (error) {
         console.error("Error during update:", error);
@@ -89,25 +84,25 @@ export const ColorTable = () => {
   };
 
   return (
-    <div className="p-6">
-      <table className="table-auto w-full border-collapse border border-gray-300">
+    <div className="p-6 flex justify-center">
+      <table className="table-auto w-full max-w-4xl border-collapse border border-gray-300">
         <thead className="bg-gray-200">
           <tr>
-            <th className="table-cell">צבע</th>
-            <th className="table-cell">קבוצה</th>
-            <th className="table-cell">הקסדצימלי</th>
-            <th className="table-cell">Actions</th>
+            <th className="table-cell w-1/4 px-2 py-1">צבע</th>
+            <th className="table-cell px-2 py-1 w-[80px]">קבוצה</th>
+            <th className="table-cell w-1/4 px-2 py-1">הקסדצימלי</th>
+            <th className="table-cell px-2 py-1">פעולות</th>
           </tr>
         </thead>
         <tbody>
-          {colors?.map((color) => (
+          {colors.map((color) => (
             <tr
               key={color._id.toString()}
               className="hover:bg-gray-100 even:bg-gray-50"
             >
               {isEditing === color._id.toString() ? (
                 <>
-                  <td className="table-cell">
+                  <td className="table-cell px-2 py-1">
                     <input
                       type="text"
                       value={editColor?.name || ""}
@@ -119,7 +114,7 @@ export const ColorTable = () => {
                       className="w-full px-2 py-1 border rounded"
                     />
                   </td>
-                  <td className="table-cell">
+                  <td className="table-cell px-2 py-1 w-[80px]">
                     <input
                       type="number"
                       value={editColor?.groupId || ""}
@@ -133,7 +128,7 @@ export const ColorTable = () => {
                       className="w-full px-2 py-1 border rounded"
                     />
                   </td>
-                  <td className="table-cell">
+                  <td className="table-cell px-2 py-1">
                     <input
                       type="text"
                       value={editColor?.hexadecimal || ""}
@@ -145,38 +140,40 @@ export const ColorTable = () => {
                       className="w-full px-2 py-1 border rounded"
                     />
                   </td>
-                  <td className="table-cell text-center">
+                  <td className="table-cell px-2 py-1 text-center">
                     <button
-                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mr-2"
+                      className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 mr-2"
                       onClick={handleSaveEdit}
                     >
-                      Save
+                      שמור
                     </button>
                     <button
-                      className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                      className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
                       onClick={() => setIsEditing(null)}
                     >
-                      Cancel
+                      בטל
                     </button>
                   </td>
                 </>
               ) : (
                 <>
-                  <td className="table-cell">{color.name}</td>
-                  <td className="table-cell">{color.groupId}</td>
-                  <td className="table-cell">{color.hexadecimal}</td>
-                  <td className="table-cell text-center justify-between">
+                  <td className="table-cell px-2 py-1">{color.name}</td>
+                  <td className="table-cell px-2 py-1 w-[80px]">
+                    {color.groupId}
+                  </td>
+                  <td className="table-cell px-2 py-1">{color.hexadecimal}</td>
+                  <td className="table-cell px-2 py-1 text-center">
                     <button
-                      className="px-3 py-2 bg-primary text-white rounded hover:bg-[#FFE35A]"
+                      className="px-3 py-1 bg-primary text-white rounded hover:bg-[#FFE35A]"
                       onClick={() => handleEdit(color)}
                     >
-                      Edit
+                      ערוך
                     </button>
                     <button
-                      className="px-3 py-2 bg-[#CF5151] text-white rounded hover:bg-[#D26F6F]"
+                      className="px-3 py-1 bg-[#CF5151] text-white rounded hover:bg-[#D26F6F]"
                       onClick={() => handleDelete(color._id.toString())}
                     >
-                      Delete
+                      מחק
                     </button>
                   </td>
                 </>
@@ -184,18 +181,18 @@ export const ColorTable = () => {
             </tr>
           ))}
           <tr>
-            <td className="table-cell">
+            <td className="table-cell px-2 py-1">
               <input
                 type="text"
                 value={newColor.name}
                 onChange={(e) =>
                   setNewColor({ ...newColor, name: e.target.value })
                 }
-                placeholder="New Color Name"
+                placeholder="צבע חדש"
                 className="w-full px-2 py-1 border rounded"
               />
             </td>
-            <td className="table-cell">
+            <td className="table-cell px-2 py-1 w-[80px]">
               <input
                 type="number"
                 value={newColor.groupId || ""}
@@ -205,27 +202,27 @@ export const ColorTable = () => {
                     groupId: parseInt(e.target.value, 10) || 0,
                   })
                 }
-                placeholder="New Group ID"
+                placeholder="קבוצה"
                 className="w-full px-2 py-1 border rounded"
               />
             </td>
-            <td className="table-cell">
+            <td className="table-cell px-2 py-1">
               <input
                 type="text"
                 value={newColor.hexadecimal}
                 onChange={(e) =>
                   setNewColor({ ...newColor, hexadecimal: e.target.value })
                 }
-                placeholder="New hexedecimal"
+                placeholder="הקסדצימלי"
                 className="w-full px-2 py-1 border rounded"
               />
             </td>
-            <td className="table-cell text-center">
+            <td className="table-cell px-2 py-1 text-center">
               <button
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                 onClick={handleAdd}
               >
-                Add
+                הוסף
               </button>
             </td>
           </tr>

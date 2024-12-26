@@ -40,7 +40,7 @@ export const UsersTable = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);// no dependency
+  }, []); // no dependency
 
   const handleDelete = async (id: string) => {
     await deleteUserById(id);
@@ -96,17 +96,17 @@ export const UsersTable = () => {
         <table className="table-auto w-full border-collapse border border-gray-300 hidden md:table">
           <thead className="bg-gray-200">
             <tr>
-              <th className="table-cell text-center">Full Name</th>
-              <th className="table-cell text-center">Email</th>
-              <th className="table-cell text-center">Password</th>
-              <th className="table-cell text-center">Phone</th>
-              <th className="table-cell text-center">Actions</th>
+              <th className="table-cell text-center">שם מלא</th>
+              <th className="table-cell text-center">דואר אלקטרוני</th>
+              <th className="table-cell text-center">סיסמה</th>
+              <th className="table-cell text-center">טלפון</th>
+              <th className="table-cell text-center">פעולות</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
               <tr
-                key={user._id&&user._id.toString()}
+                key={user._id && user._id.toString()}
                 className="hover:bg-gray-100 even:bg-gray-50"
               >
                 {isEditing === user._id?.toString() ? (
@@ -171,13 +171,13 @@ export const UsersTable = () => {
                             handleEdit(user._id.toString(), updateUser);
                         }}
                       >
-                        Save
+                        שמירה
                       </button>
                       <button
                         className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
                         onClick={() => setIsEditing(null)}
                       >
-                        Cancel
+                        ביטול
                       </button>
                     </td>
                   </>
@@ -198,7 +198,7 @@ export const UsersTable = () => {
                         className="px-4 py-2 mr-2 bg-primary text-white rounded hover:bg-[#FFE35A]"
                         onClick={() => handleIsEditing(user)}
                       >
-                        Edit
+                        עריכה
                       </button>
                       <button
                         className="px-4 py-2 bg-[#CF5151] text-white rounded hover:bg-[#D26F6F]"
@@ -206,7 +206,7 @@ export const UsersTable = () => {
                           user._id && handleDelete(user._id.toString())
                         }
                       >
-                        Delete
+                        מחיקה
                       </button>
                     </td>
                   </>
@@ -217,7 +217,7 @@ export const UsersTable = () => {
               <td className="table-cell">
                 <input
                   type="text"
-                  placeholder="Full Name"
+                  placeholder="שם מלא"
                   value={newUser.fullName || ""}
                   className="w-full p-2 border rounded"
                   onChange={(e) =>
@@ -228,7 +228,7 @@ export const UsersTable = () => {
               <td className="table-cell">
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder="דואר אלקטרוני"
                   value={newUser.email || ""}
                   className="w-full p-2 border rounded"
                   onChange={(e) =>
@@ -239,7 +239,7 @@ export const UsersTable = () => {
               <td className="table-cell">
                 <input
                   type="text"
-                  placeholder="Password"
+                  placeholder="סיסמה"
                   value={newUser.password || ""}
                   className="w-full p-2 border rounded"
                   onChange={(e) =>
@@ -250,7 +250,7 @@ export const UsersTable = () => {
               <td className="table-cell">
                 <input
                   type="text"
-                  placeholder="Phone"
+                  placeholder="טלפון"
                   value={newUser.phone || ""}
                   className="w-full p-2 border rounded"
                   onChange={(e) =>
@@ -263,7 +263,7 @@ export const UsersTable = () => {
                   className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                   onClick={handleAdd}
                 >
-                  Add
+                  הוספה
                 </button>
               </td>
             </tr>
@@ -325,36 +325,36 @@ export const UsersTable = () => {
                           handleEdit(user._id.toString(), updateUser);
                       }}
                     >
-                      Save
+                      שמירה
                     </button>
                     <button
                       className="bg-gray-500 text-white px-4 py-2 rounded"
                       onClick={() => setIsEditing(null)}
                     >
-                      Cancel
+                      ביטול
                     </button>
                   </div>
                 </div>
               ) : (
                 <div>
                   <p>
-                    <strong>Full Name:</strong> {user.fullName}
+                    <strong>שם מלא:</strong> {user.fullName}
                   </p>
                   <p>
-                    <strong>Email:</strong> {user.email}
+                    <strong>דואר אלקטרוני:</strong> {user.email}
                   </p>
                   <p>
-                    <strong>Password:</strong> {user.password}
+                    <strong>סיסמה:</strong> {user.password}
                   </p>
                   <p>
-                    <strong>Phone:</strong> {user.phone}
+                    <strong>טלפון:</strong> {user.phone}
                   </p>
                   <div className="flex justify-between mt-2">
                     <button
                       className="bg-yellow-500 text-white px-3 py-2 rounded"
                       onClick={() => handleIsEditing(user)}
                     >
-                      Edit
+                      עריכה
                     </button>
                     <button
                       className="bg-red-500 text-white px-3 py-2 rounded"
@@ -362,7 +362,7 @@ export const UsersTable = () => {
                         user._id && handleDelete(user._id.toString())
                       }
                     >
-                      Delete
+                      מחיקה{" "}
                     </button>
                   </div>
                 </div>
@@ -372,7 +372,7 @@ export const UsersTable = () => {
           <div className="bg-white shadow-md rounded-lg p-4 mb-4">
             <input
               type="text"
-              placeholder="Full Name"
+              placeholder="שם מלא"
               value={newUser.fullName || ""}
               className="w-full p-2 border rounded mb-2"
               onChange={(e) =>
@@ -381,7 +381,7 @@ export const UsersTable = () => {
             />
             <input
               type="email"
-              placeholder="Email"
+              placeholder="דואר אלקטרוני"
               value={newUser.email || ""}
               className="w-full p-2 border rounded mb-2"
               onChange={(e) =>
@@ -390,7 +390,7 @@ export const UsersTable = () => {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="סיסמה"
               value={newUser.password || ""}
               className="w-full p-2 border rounded mb-2"
               onChange={(e) =>
@@ -399,7 +399,7 @@ export const UsersTable = () => {
             />
             <input
               type="text"
-              placeholder="Phone"
+              placeholder="טלפון"
               value={newUser.phone || ""}
               className="w-full p-2 border rounded mb-2"
               onChange={(e) =>
@@ -411,7 +411,7 @@ export const UsersTable = () => {
                 className="bg-green-500 text-white px-4 py-2 rounded"
                 onClick={handleAdd}
               >
-                Add
+                הוספה{" "}
               </button>
             </div>
           </div>
