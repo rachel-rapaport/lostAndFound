@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { resetPasswordSchema } from "@/app/schemas/loginSchemaZod";
 import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
-import { resetPassword } from "../utils/sendToUser";
+import { sendEmailForResetPassword } from "../utils/sendToUser";
 
 interface PasswordResetModalProps {
   isOpen: boolean;
@@ -24,7 +24,7 @@ const PasswordResetModal: React.FC<PasswordResetModalProps> = ({
         resetData.email
       )}`;
 
-      resetPassword(resetData.email, resetUrl);
+      sendEmailForResetPassword(resetData.email, resetUrl);
       setEmail("");
       onClose();
     } catch (err) {

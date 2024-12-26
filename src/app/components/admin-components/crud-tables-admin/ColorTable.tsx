@@ -22,24 +22,23 @@ export const ColorTable = () => {
   useEffect(() => {
     const fetchColors = async () => {
       const response = await getColors();
-      setColors(response.data);
+      setColors(response);
     };
     fetchColors();
   }, []);
 
-const handleDelete = async (id: string) => {
-  try {
-    const response = await deleteColorById(id);
-    if (response.data) {
-      setColors((prevColors) => 
-        prevColors.filter((item) => item._id.toString() !== id)
-      );
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await deleteColorById(id);
+      if (response.data) {
+        setColors((prevColors) =>
+          prevColors.filter((item) => item._id.toString() !== id)
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting color:", error);
     }
-  } catch (error) {
-    console.error("Error deleting color:", error);
-  }
-};
-
+  };
 
   const handleEdit = (color: Color) => {
     setIsEditing(color._id.toString());
@@ -101,7 +100,7 @@ const handleDelete = async (id: string) => {
           </tr>
         </thead>
         <tbody>
-          {colors.map((color) => (
+          {colors?.map((color) => (
             <tr
               key={color._id.toString()}
               className="hover:bg-gray-100 even:bg-gray-50"
@@ -163,15 +162,9 @@ const handleDelete = async (id: string) => {
                 </>
               ) : (
                 <>
-                  <td className="table-cell">
-                    {color.name}
-                  </td>
-                  <td className="table-cell">
-                    {color.groupId}
-                  </td>
-                  <td className="table-cell">
-                    {color.hexadecimal}
-                  </td>
+                  <td className="table-cell">{color.name}</td>
+                  <td className="table-cell">{color.groupId}</td>
+                  <td className="table-cell">{color.hexadecimal}</td>
                   <td className="table-cell text-center justify-between">
                     <button
                       className="px-3 py-2 bg-primary text-white rounded hover:bg-[#FFE35A]"

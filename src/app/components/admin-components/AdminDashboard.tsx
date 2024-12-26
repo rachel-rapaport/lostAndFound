@@ -1,25 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UsersTable } from "./crud-tables-admin/UsersTable";
 import CategorysTable from "./crud-tables-admin/CategoriesTable";
 import LostItemsTable from "./crud-tables-admin/LostItemsTable";
 import FoundItemsTable from "./crud-tables-admin/FoundItemsTable";
 import { ColorTable } from "./crud-tables-admin/ColorTable";
 import { TypeTransportationTable } from "./crud-tables-admin/TypeTransportationTable";
+import { getUsers } from "@/app/services/api/userService";
 
 export const AdminDashboard = () => {
   const [activeTable, setActiveTable] = useState("users");
+  const [userEmails, setUserEmails] = useState<string[]>([]);
+
+  const fetchUserEmails = async () => {
+    try {
+      const response = await getUsers(); 
+      const emails = response.data.map((user: { email: string }) => user.email);
+      setUserEmails(emails);
+    } catch (error) {
+      console.error("Failed to fetch user emails:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserEmails();
+  }, []); 
 
   const renderTable = () => {
     switch (activeTable) {
       case "users":
         return <UsersTable />;
       case "categories":
-        return <CategorysTable />;
+        return <CategorysTable  />;
       case "Lost items":
-        return <LostItemsTable />;
+        return <LostItemsTable userEmails={userEmails}/>;
       case "Found items":
-        return <FoundItemsTable />;
+        return <FoundItemsTable  userEmails={userEmails}/>;
       case "Colors":
         return <ColorTable />;
       case "Transportation":
@@ -84,7 +100,9 @@ export const AdminDashboard = () => {
               <button
                 onClick={() => setActiveTable("Transportation")}
                 className={`block w-full text-right text-lg font-semibold p-2 rounded 
-    ${activeTable === "Transportation" ? "bg-[#515748]" : "hover:bg-[#515748]"}`}
+    ${
+      activeTable === "Transportation" ? "bg-[#515748]" : "hover:bg-[#515748]"
+    }`}
               >
                 ניהול סוגי תחבורה ציבורית
               </button>

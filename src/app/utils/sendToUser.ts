@@ -45,7 +45,7 @@ ${link}`
 
 }
 
-export const resetPassword = (email: string, link: string) => {
+export const sendEmailForResetPassword = (email: string, link: string) => {
     const content = {
         "subject": "איפוס סיסמה",
         "text": "שלום, לאיפוס סיסמה אנא השתמש בקישור שלהלן.",
