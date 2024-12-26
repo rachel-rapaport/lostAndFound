@@ -5,14 +5,12 @@ import NotMineButton from '../NotMineButton';
 import _ from 'lodash';
 import { checkAnswers } from '../../utils/checkAnswers';
 import { z } from 'zod';
-import userStore from '../../store/userStore';
 import { useRouter } from 'next/navigation';
 
 const ShowQuestions = (props: { id: string }) => {
 
     const { id } = props;
     const router = useRouter();
-    const currentUser = userStore((state) => state.user);
     const currentFoundItem = useFoundItemStore((state) => state.currentFoundItem);
     const setCurrentFoundItem = useFoundItemStore((state) => state.setCurrentFoundItem);
     const getFilteredFoundItemById = useFoundItemStore((state) => state.getFilteredFoundItemById);
@@ -46,7 +44,7 @@ const ShowQuestions = (props: { id: string }) => {
             answerSchema.parse(formData);
             setErrors({});
             const answers = formData.answers;
-            checkAnswers(currentUser, currentFoundItem, answers, setCurrentFoundItem, router);
+            checkAnswers(answers, router);
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const fieldErrors: { [key: string]: string } = {};
