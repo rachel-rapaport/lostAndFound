@@ -2,9 +2,6 @@ import userStore from '@/app/store/userStore';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-interface RoomListProps {
-  rooms: string[]; // רשימת חדרים
-}
 
 const RoomList= () => {
  const currentUser = userStore((state) => state.user);
