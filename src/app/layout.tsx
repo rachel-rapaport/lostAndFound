@@ -2,7 +2,7 @@
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import Header from "./components/Header";
+import Header from "./components/layOut/Header";
 
 const LayoutContent: React.FC<{ children: React.ReactNode }> = ({
   children,

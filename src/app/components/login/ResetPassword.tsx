@@ -2,9 +2,9 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { getUserByEmail, updateUserById } from "../services/api/userService";
-import { User } from "../types/props/user";
-import { resetPasswordSchema } from "../schemas/resetPasswordSchema";
+import { getUserByEmail, updateUserById } from "../../services/api/userService";
+import { User } from "../../types/props/user";
+import { resetPasswordSchema } from "../../schemas/resetPasswordSchema";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 

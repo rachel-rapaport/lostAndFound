@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
-import AlertModel from "@/app/lib/models/notification";
+import AlertModel from "@/app/lib/models/alert";
 
 
 //get alert by id
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
             )
         }
 
-        const data = await AlertModel.find();
+        const data = await AlertModel.findById(id);
 
         if (!data) {
             return NextResponse.json(

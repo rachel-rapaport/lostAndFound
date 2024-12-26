@@ -9,7 +9,7 @@ body {
 }
 
 .inner-body {
-  @apply p-[70px] text-right;
+  @apply p-[50px] text-right;
   /* overflow-y-hidden; */
 }
 
@@ -21,11 +21,9 @@ body {
 }
 
 /* buttons */
-
 .primary-btn {
   @apply btn bg-primary hover:bg-[#FFE35A] active:bg-[#EACD3C];
 }
-
 
 .secondary-btn {
   @apply btn bg-secondary text-white hover:bg-[#303030] active:bg-secondary;
@@ -37,6 +35,10 @@ body {
 
 .disabled-btn {
   @apply btn bg-[#EAEAEA] text-[#B8B8B8] cursor-not-allowed font-fredoka;
+}
+
+.error-message {
+  @apply text-red-500 text-sm h-[20px];
 }
 
 /* select */

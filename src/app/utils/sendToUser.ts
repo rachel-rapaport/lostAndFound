@@ -34,13 +34,13 @@ export const afterFilter = (user: User, status: string, link: string) => {
             sendEmailToUser(user.email, contentChat.subject, contentChat.htmlContent);
             doc = parser.parseFromString(contentChat.htmlContent, "text/html");
             sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
-            createAlert(String(user._id), contentChat.subject)
+            createAlert(String(user._id), contentChat.subject,link)
             break;
         case "foundItem":
             sendEmailToUser(user.email, contentItem.subject, contentItem.htmlContent);
             doc = parser.parseFromString(contentItem.htmlContent, "text/html");
             sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
-            createAlert(String(user._id), contentItem.subject)
+            createAlert(String(user._id), contentItem.subject,link)
     }
 }
 

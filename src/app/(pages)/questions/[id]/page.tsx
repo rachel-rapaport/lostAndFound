@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React from 'react';
 import ShowQuestions from '@/app/components/lostItem/ShowQuestions';
+=======
+import ShowQuestions from '@/app/components/foundItem/ShowQuestions'
+import React from 'react'
+>>>>>>> f21b2c3bdffc65881e63a1e6bab5218582f82c17
 
 const Page = ({ params }: { params: { id: string } }) => {
 

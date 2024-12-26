@@ -6,9 +6,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { z } from "zod";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import userStore from "../store/userStore";
-import { loginAuthenticationCookies } from "../services/api/loginAuth";
-import { signupAuthenticationCookies } from "../services/api/signupAuth";
+import userStore from "../../store/userStore";
+import { loginAuthenticationCookies } from "../../services/api/loginAuth";
+import { signupAuthenticationCookies } from "../../services/api/signupAuth";
 import { loginSchema, signUpSchema } from "@/app/schemas/loginSchemaZod";
 import PasswordResetModal from "./ModalResetPasswordEmail";
 

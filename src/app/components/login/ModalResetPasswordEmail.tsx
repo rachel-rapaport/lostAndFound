@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { z } from "zod";
 import { resetPasswordSchema } from "@/app/schemas/loginSchemaZod";
-import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
-import { resetPassword } from "../utils/sendToUser";
+import { getVercelUrlWithoutRequest } from "../../utils/vercelUrl";
+import { resetPassword } from "../../utils/sendToUser";
 
 interface PasswordResetModalProps {
   isOpen: boolean;

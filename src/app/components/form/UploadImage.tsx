@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import { CldUploadWidget } from "next-cloudinary";
-import { saveImage } from '../utils/uploadImage';
+import { saveImage } from '../../utils/uploadImage';
 
 const UploadImage = () => {
 

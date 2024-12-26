@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
-import AlertModel from "@/app/lib/models/notification";
+import AlertModel from "@/app/lib/models/alert";
 
 
 //get all alerts

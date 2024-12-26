@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import userStore from "../store/userStore";
+import userStore from "../../store/userStore";
 import UpdateUserModal from "./UpdateUserInfoModal";
-import { updateUserById } from "../services/api/userService";
+import { updateUserById } from "../../services/api/userService";
 import { Types } from "mongoose";
 
 const UserDashboard: React.FC = () => {

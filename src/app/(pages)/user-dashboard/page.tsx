@@ -1,4 +1,4 @@
-import UserDashboard from "@/app/components/UserDashboard";
+import UserDashboard from "@/app/components/user/UserDashboard";
 import React from "react";
 
 

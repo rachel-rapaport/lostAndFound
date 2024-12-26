@@ -1,13 +1,13 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
-import useFoundItemStore from '../store/foundItemStore';
-import NotMineButton from './NotMineButton';
+import useFoundItemStore from '../../store/foundItemStore';
+import NotMineButton from '../NotMineButton';
 import { useRouter } from 'next/navigation';
-import { afterFilter } from '../utils/sendToUser';
-import userStore from '../store/userStore';
-import { getVercelUrlWithoutRequest } from '../utils/vercelUrl';
-import { initiateChat } from '../utils/chat';
+import userStore from '@/app/store/userStore';
+import { initiateChat } from '@/app/utils/chat';
+import { getVercelUrlWithoutRequest } from '@/app/utils/vercelUrl';
+import { afterFilter } from '@/app/utils/sendToUser';
 
 const ShowDetails = () => {
 
@@ -20,7 +20,7 @@ const ShowDetails = () => {
         if (currentFoundItem?.userId && currentUser) {
             const roomId = await initiateChat(currentFoundItem?.userId);
             const chatRoomLink = `${getVercelUrlWithoutRequest()}/chat/${roomId}`;
-            afterFilter(currentUser, 'chat', chatRoomLink);
+            afterFilter(currentFoundItem?.userId, 'chat', chatRoomLink);
             router.push(`/chat/${roomId}`);
         }
     }

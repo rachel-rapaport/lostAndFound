@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { z } from "zod";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import { User } from "../types/props/user";
-import { signUpSchema } from "../schemas/loginSchemaZod";
+import { User } from "../../types/props/user";
+import { signUpSchema } from "../../schemas/loginSchemaZod";
 import { Types } from "mongoose";
 
 interface UpdateUserModalProps {

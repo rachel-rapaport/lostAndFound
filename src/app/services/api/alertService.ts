@@ -1,10 +1,11 @@
 import axios from "axios";
 
 // create new alert
-export const createAlert = async (userId: string,massage:string) => {
+export const createAlert = async (userId: string,massage:string,link:string) => {
     try {
         const newAlert = {
             "message": massage,
+            "link":link,
             "userId": userId,
             "read": false
         }
