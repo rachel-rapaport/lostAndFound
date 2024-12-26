@@ -1,5 +1,5 @@
-import ShowQuestions from '@/app/components/lostItem/ShowQuestions'
-import React from 'react'
+import React from 'react';
+import ShowQuestions from '@/app/components/lostItem/ShowQuestions';
 
 const Page = ({ params }: { params: { id: string } }) => {
 
