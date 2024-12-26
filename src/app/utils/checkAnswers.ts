@@ -9,17 +9,14 @@ export const checkAnswers = (currentUser: User | null, currentFoundItem: FoundIt
         ? currentFoundItem.questions.map(q => q.answers[0])
         : [];
 
-    if (answers.length !== correctAnswers.length) {
-        console.log("answers", answers);
-        console.log("correctAnswers", correctAnswers);
-
-        throw new Error('The number of provided answers does not match the number of correct answers');
+    if (answers.some(answer => answer.length === 0)) {
+        throw new Error('Some of the provided answers are empty');
     }
 
     for (let i = 0; i < answers.length; i++) {
         if (answers[i] != correctAnswers[i] && currentUser && currentFoundItem) {
             blockItemForUser(currentUser, currentFoundItem, setCurrentFoundItem);
-            router.replace('/wrong-answers');
+            router.replace('/block-item-for-user');
             return;
         }
     }

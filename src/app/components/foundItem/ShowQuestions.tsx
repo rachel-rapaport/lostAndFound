@@ -17,10 +17,13 @@ const ShowQuestions = (props: { id: string }) => {
     const setCurrentFoundItem = useFoundItemStore((state) => state.setCurrentFoundItem);
     const getFilteredFoundItemById = useFoundItemStore((state) => state.getFilteredFoundItemById);
     const [shuffledQuestions, setShuffledQuestions] = useState<{ question: string, answers: string[] }[]>([]);
-    const answerSchema = z.object({ answers: z.array(z.string()).min(currentFoundItem?.questions.length || 0, "יש למלא את כל השדות") });
+    const answerSchema = z.object({ answers: z.array(z.string().min(1, "יש למלא את כל השדות")) });
     const [formData, setFormData] = useState<z.infer<typeof answerSchema>>({ answers: [] });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+    useEffect(() => {
+        setFormData({ answers: new Array(currentFoundItem?.questions.length || 0).fill('') });
+    }, [currentFoundItem]);
 
     useEffect(() => {
         if (currentFoundItem) {
@@ -43,13 +46,15 @@ const ShowQuestions = (props: { id: string }) => {
             answerSchema.parse(formData);
             setErrors({});
             const answers = formData.answers;
+            // console.log("in try. answers:", answers);
             checkAnswers(currentUser, currentFoundItem, answers, setCurrentFoundItem, router);
             // reset answers
-            setFormData({ answers: [] });
-        } catch (err) {
-            if (err instanceof z.ZodError) {
+            // setFormData({ answers: [] });
+            // console.log("in try after set. answers:", answers);
+        } catch (error) {
+            if (error instanceof z.ZodError) {
                 const fieldErrors: { [key: string]: string } = {};
-                err.errors.forEach((error) => {
+                error.errors.forEach((error) => {
                     const path = error.path[0]?.toString();
                     if (path) {
                         fieldErrors[path] = error.message;
@@ -58,16 +63,24 @@ const ShowQuestions = (props: { id: string }) => {
                 setErrors(fieldErrors);
             }
             else {
-                console.log("error in submitting form:", err);
+                console.log("error in submitting form:", error.message);
             }
+            // setFormData({ answers: [] });
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const { value } = e.target;
+        console.log("answers:", formData.answers);
         setFormData((prevData) => ({
             ...prevData,
-            answers: [...prevData.answers, value],
+            answers: prevData.answers.map((answer, i) => {
+                console.log("index:", index, "i:", i); // הוספת log לצורך הבנת הערכים
+                if (i === index) {
+                    return value; // אם i תואם ל-index, מחליפים את הערך במערך
+                }
+                return answer; // אם לא, משאירים את הערך כפי שהוא
+            })
         }));
     };
 
@@ -93,7 +106,7 @@ const ShowQuestions = (props: { id: string }) => {
                                             id={answer}
                                             value={answer}
                                             className="state"
-                                            onChange={(e) => handleChange(e)}
+                                            onChange={(e) => handleChange(e, index)}
                                         />
 
                                         <label htmlFor={answer} className='label'>
