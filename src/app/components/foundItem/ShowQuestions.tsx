@@ -46,11 +46,7 @@ const ShowQuestions = (props: { id: string }) => {
             answerSchema.parse(formData);
             setErrors({});
             const answers = formData.answers;
-            // console.log("in try. answers:", answers);
             checkAnswers(currentUser, currentFoundItem, answers, setCurrentFoundItem, router);
-            // reset answers
-            // setFormData({ answers: [] });
-            // console.log("in try after set. answers:", answers);
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const fieldErrors: { [key: string]: string } = {};
@@ -65,7 +61,6 @@ const ShowQuestions = (props: { id: string }) => {
             else {
                 console.log("error in submitting form:", error.message);
             }
-            // setFormData({ answers: [] });
         }
     };
 
@@ -75,11 +70,10 @@ const ShowQuestions = (props: { id: string }) => {
         setFormData((prevData) => ({
             ...prevData,
             answers: prevData.answers.map((answer, i) => {
-                console.log("index:", index, "i:", i); // הוספת log לצורך הבנת הערכים
                 if (i === index) {
-                    return value; // אם i תואם ל-index, מחליפים את הערך במערך
+                    return value;
                 }
-                return answer; // אם לא, משאירים את הערך כפי שהוא
+                return answer;
             })
         }));
     };
