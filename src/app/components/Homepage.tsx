@@ -4,6 +4,7 @@ import { afterFilter } from "../utils/sendToUser";
 import { initiateChat } from "../utils/chat";
 import { getUserById } from "../services/api/userService";
 import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
+import RoomList from "./chat/RoomList";
 // import { sendEmailToAdmin } from "../services/api/sendEmailService";
 // import useUserStore from "../store/userStore";
 
@@ -44,23 +45,23 @@ const Homepage = () => {
 
   // דוגמת אובייקטים של משתמשים
 
-  const handleStartChat = async () => {
-    try {
-      const my = await getUserById(String("675801ac63851d07680e8ebf"));
-      console.log(my.data[0].email);
-      const roomId = await initiateChat(my.data[0]);
-      console.log("rommId", roomId);
+  // const handleStartChat = async () => {
+  //   try {
+  //     const my = await getUserById(String("675801ac63851d07680e8ebf"));
+  //     console.log(my.data[0].email);
+  //     const roomId = await initiateChat(my.data[0]);
+  //     console.log("rommId", roomId);
 
-      alert("חדר צ'אט נוצר, נשלחה הזמנה במייל!");
-      // אפשר להפנות את המשתמש לדף הצ'אט
+  //     alert("חדר צ'אט נוצר, נשלחה הזמנה במייל!");
+  //     // אפשר להפנות את המשתמש לדף הצ'אט
 
-      const chatRoomLink = `${getVercelUrlWithoutRequest()}/chat/${roomId}`;
-      afterFilter(my.data[0], "chat", chatRoomLink);
-      window.location.href = `/chat/${roomId}`;
-    } catch (error) {
-      console.error("שגיאה ביצירת צ'אט:", error);
-    }
-  };
+  //     const chatRoomLink = `${getVercelUrlWithoutRequest()}/chat/${roomId}`;
+  //     afterFilter(my.data[0], "chat", chatRoomLink);
+  //     window.location.href = `/chat/${roomId}`;
+  //   } catch (error) {
+  //     console.error("שגיאה ביצירת צ'אט:", error);
+  //   }
+  // };
 
   // const handleClick = async () => {
   //   const res = await sendEmailToAdmin(
@@ -73,13 +74,14 @@ const Homepage = () => {
 
   return (
     <>
+    <RoomList/>
       {/* <h1 className="text-center text-[5vh] font-semibold mb-[5vh]">
         אתר מציאון
       </h1> */}
       {/* <button onClick={handleClick}>send email</button> */}
-      <button className="btn" onClick={handleStartChat}>
+      {/* <button className="btn" onClick={handleStartChat}>
         התחל צאט
-      </button>
+      </button> */}
       {/* {currentUser ? <h1>email:{currentUser.email}</h1> : <p>no user</p>} */}
       {/* <button onClick={logout}>log out</button> */}
       <br />

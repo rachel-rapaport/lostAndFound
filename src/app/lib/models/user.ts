@@ -3,13 +3,14 @@ import mongoose, { Model, Schema } from "mongoose";
 
 const UserSchema: Schema<User> = new Schema({
     fullName: { type: String, required: true },
-    email: { type: String,unique:true, required: true },
+    email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     phone: { type: String, required: true },
     lostItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "LostItem" }],
     foundItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FoundItem" }],
     blockedItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FoundItem" }],
-    alerts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Alert" }]
+    alerts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Alert" }],
+    chatRooms: [{ type: String }]
 });
 
 const UserModel: Model<User> =
