@@ -6,6 +6,7 @@ import { User } from "../types/props/user";
 export const blockItemForUser = async () => {
 
     const { user } = userStore.getState();
+    const { setUser } = userStore.getState();
     const { currentFoundItem } = useFoundItemStore.getState();
     const { setCurrentFoundItem } = useFoundItemStore.getState();
 
@@ -18,14 +19,17 @@ export const blockItemForUser = async () => {
     );
 
     if (isItemBlocked) {
-        console.log("Item is already blocked");
-        return;
+        return { message: "Item is already blocked" };
     }
+
     if (user && currentFoundItem) {
         const updatedUser: User = {
             ...user,
             blockedItems: [...user.blockedItems || [], currentFoundItem]
         }
+        // update store current user
+        setUser(updatedUser);
+        // update in db
         const response = await updateUserById(user._id.toString(), updatedUser);
         if (response) {
             return response;
