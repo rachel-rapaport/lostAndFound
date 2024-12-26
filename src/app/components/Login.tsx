@@ -63,8 +63,7 @@ const LoginForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      setPassword(password.replace(/^0/, "+972"));
-      const formData = { email, password, fullName, phone };
+      const formData = { email, password, phone, fullName };
       if (isLogin) {
         const loginData = loginSchema.parse({ email, password });
         await login(loginData);
@@ -93,7 +92,7 @@ const LoginForm = () => {
     try {
       const response = await signupAuthenticationCookies(
         signUpData.email,
-        signUpData.phone,
+        signUpData.phone.replace(/^0/, "+972"),
         signUpData.fullName,
         signUpData.password
       );

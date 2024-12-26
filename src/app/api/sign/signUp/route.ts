@@ -56,14 +56,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-  const response=  await axios.post(`${baseUrl}/api/user`, {
+    const response = await axios.post(`${baseUrl}/api/user`, {
       fullName,
       email,
       password,
       phone,
     });
-const user= await response.data;
-
+    const user = await response.data;
 
     const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
@@ -80,7 +79,7 @@ const user= await response.data;
     );
 
     return NextResponse.json(
-      { message: "Signup successful", token ,user},
+      { message: "Signup successful", token, user },
       { headers }
     );
   } catch (error) {
