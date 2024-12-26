@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Profile } from "./Profile";
 import { BellAlertIcon } from "@heroicons/react/16/solid";
 import userStore from "../store/userStore";
@@ -11,6 +11,27 @@ const Header: React.FC = () => {
 
   const unreadAlertsCount = alerts?.filter((alert) => !alert.read).length || 0;
   const [showAlerts, setShowAlerts] = useState(false);
+  const alertsRef = useRef<HTMLDivElement | null>(null);
+
+  // Close Alerts when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        alertsRef.current &&
+        !alertsRef.current.contains(event.target as Node)
+      ) {
+        setShowAlerts(false);
+      }
+    };
+
+    if (showAlerts) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showAlerts]);
 
   const handleAlertsClick = () => {
     setShowAlerts(!showAlerts); // Toggle the display of the Alerts component
@@ -27,7 +48,7 @@ const Header: React.FC = () => {
                 דף הבית
               </a>
             </li>
-            <div>
+            <div ref={alertsRef}>
               <li
                 className="relative cursor-pointer"
                 onClick={handleAlertsClick}

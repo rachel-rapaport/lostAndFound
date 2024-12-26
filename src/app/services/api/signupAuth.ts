@@ -25,7 +25,7 @@ export async function signupAuthenticationCookies(
     );
 
     if (response && response.data && response.data.token) {
-      return true;
+      return response;
     }
   } catch (error) {
     console.error("Error in signupAuthenticationCookies:", error);

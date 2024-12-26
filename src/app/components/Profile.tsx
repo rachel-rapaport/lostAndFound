@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import userStore from "../store/userStore";
@@ -9,10 +9,30 @@ import { Types } from "mongoose";
 export const Profile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const profileRef = useRef<HTMLDivElement | null>(null);
 
   // Fetch user and setUser from the store
   const currentUser = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   // Toggle menu visibility
   const toggleMenu = () => {
@@ -29,10 +49,10 @@ export const Profile = () => {
         email: "",
         password: "",
         phone: "",
-        alerts:[],
-        blockedItems:[],
-        foundItems:[],
-        lostItems:[]
+        alerts: [],
+        blockedItems: [],
+        foundItems: [],
+        lostItems: [],
       });
       console.log("Logging out...");
     } else {
@@ -46,7 +66,10 @@ export const Profile = () => {
   };
 
   return (
-    <div style={{ position: "relative", display: "inline-block" }}>
+    <div
+      style={{ position: "relative", display: "inline-block" }}
+      ref={profileRef}
+    >
       {/* Profile icon or image */}
       <div
         onClick={toggleMenu}

@@ -10,7 +10,9 @@ export const createAlert = async (userId: string, massage: string, link:string) 
       link:link,
       read: false,
     };
+
     const response = await axios.post("/api/alert", newAlert);
+console.log(response.data);
 
     return response.data;
   } catch (error) {
