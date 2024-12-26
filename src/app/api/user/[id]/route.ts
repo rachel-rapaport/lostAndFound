@@ -4,7 +4,7 @@ import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 import FoundItemModel from "@/app/lib/models/foundItem";
 import LostItemModel from "@/app/lib/models/lostItem";
-import AlertModel from "@/app/lib/models/notification";
+import AlertModel from "@/app/lib/models/alert";
 import mongoose from "mongoose";
 
 

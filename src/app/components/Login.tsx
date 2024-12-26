@@ -2,7 +2,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { z } from "zod";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
@@ -23,9 +23,21 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // New loading state
+  const [loading, setLoading] = useState(false);
 
   const setUser = userStore((state) => state.setUser);
+
+  useEffect(() => {
+    const clearData = () => {
+      setFullName("");
+      setEmail("");
+      setPassword("");
+      setError("");
+      setPhone("");
+    };
+
+    clearData();
+  }, []);
 
   // Log in / Sign up
   const toggleForm = () => {
@@ -86,8 +98,7 @@ const LoginForm = () => {
         signUpData.password
       );
       if (response) {
-        console.log("Response:", response);
-        clearData();
+        setUser(response.data.user.data); // Update the store with user data
         router.push("/home");
       } else {
         setError("error");
@@ -112,7 +123,6 @@ const LoginForm = () => {
           if (router) {
             router.push("/home");
           }
-          clearData();
         } else {
           // The user is logged in already
           if (router) {
@@ -126,16 +136,6 @@ const LoginForm = () => {
       console.error(error);
       setError("An error occurred during login");
     }
-  };
-
-  // Clear form
-  const clearData = () => {
-    setFullName("");
-    setEmail("");
-    setPassword("");
-    setError("");
-    setPhone("");
-    setIsLogin(false);
   };
 
   // Error handler
