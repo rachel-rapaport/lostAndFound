@@ -46,7 +46,7 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   }, [data]);
 
   if (!email) return <div>An error occured. No Email provided.</div>;
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>טוען...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   // handle submit

@@ -129,11 +129,11 @@ const LoginForm = () => {
           }
         }
       } else {
-        setError("Password or email is incorrect");
+        setError("דואר אלקטרוני או סיסמה שגויים");
       }
     } catch (error) {
       console.error(error);
-      setError("An error occurred during login");
+      setError("התרחשה שגיאה במהלך התחברות");
     }
   };
 
@@ -143,7 +143,7 @@ const LoginForm = () => {
       setError(error.response.data.message || defaultMessage);
       setIsLogin(true);
     } else {
-      setError("An unexpected error occurred. Please try again.");
+      setError("התרחשה שגיאה לא צפויה. נסה שוב.");
     }
   };
 
@@ -153,21 +153,19 @@ const LoginForm = () => {
         {/* Toggle buttons */}
         <button
           onClick={toggleForm}
-          className={`px-8 py-3 text-2xl font-semibold mb-4 md:mb-0 ${
-            isLogin
-              ? "bg-[#FADB3F] text-white rounded-t-lg"
-              : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
-          }`}
+          className={`px-8 py-3 text-2xl font-semibold mb-4 md:mb-0 ${isLogin
+            ? "bg-[#FADB3F] text-white rounded-t-lg"
+            : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
+            }`}
         >
           התחברות
         </button>
         <button
           onClick={toggleForm}
-          className={`px-8 py-3 text-2xl font-semibold ${
-            !isLogin
-              ? "bg-[#FADB3F] text-white rounded-t-lg"
-              : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
-          }`}
+          className={`px-8 py-3 text-2xl font-semibold ${!isLogin
+            ? "bg-[#FADB3F] text-white rounded-t-lg"
+            : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
+            }`}
         >
           הרשמה
         </button>

@@ -27,7 +27,7 @@ const ColorSelect: React.FC<{
     }
   }, [colors, colorsFromStore, setColors]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>טוען...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
   if ((colorsFromStore ?? colors)?.length === 0)
     return <div>No colors available</div>;

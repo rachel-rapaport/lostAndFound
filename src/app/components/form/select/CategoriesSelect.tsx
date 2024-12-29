@@ -30,10 +30,10 @@ const CategoriesSelect: React.FC<{
     }
   }, [categories, categoriesFromStore, setCategories]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>טוען</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
   if ((categoriesFromStore ?? categories)?.length === 0)
-    return <div>No categories available</div>;
+    return <div>לא נמצאו קטגוריות</div>;
 
   // Handle the change event for the Select component
   const handleChange = (selectedOption: SelectProps) => {

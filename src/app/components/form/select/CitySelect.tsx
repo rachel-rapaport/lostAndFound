@@ -29,7 +29,7 @@ const CitySelect: React.FC<{ onSelect: (selectedColorId: string) => void }> = ({
     }
   }, [cities, citiesFromStore, setCities]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>טוען...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
   if ((citiesFromStore ?? cities)?.length === 0)
     return <div>No cities available</div>;

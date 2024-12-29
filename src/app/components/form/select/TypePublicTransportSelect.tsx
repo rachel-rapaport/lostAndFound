@@ -37,7 +37,7 @@ const TypePublicTransportSelect: React.FC<{
     setTypePublicTransports,
   ]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>טוען...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
   if ((typePublicTransportsFromStore ?? typePublicTransports)?.length === 0)
     return <div>No typePublicTransports available</div>;

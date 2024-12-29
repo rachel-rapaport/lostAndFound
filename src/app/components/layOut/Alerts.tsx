@@ -30,7 +30,7 @@ export const Alerts = () => {
   };
 
   if (!alerts) {
-    return <p>Loading alerts...</p>;
+    return <p>טוען התראות...</p>;
   }
 
   return (
