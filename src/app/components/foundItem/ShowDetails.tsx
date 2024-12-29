@@ -29,7 +29,7 @@ const ShowDetails = () => {
             }
             addChatRoom(chatRoom, currentFoundItem?.userId)
             afterFilter(currentFoundItem?.userId, 'chat', chatRoomLink);
-            router.push(`/chat/${roomId}`);
+            router.replace(`/chat/${roomId}`);
         }
     }
 

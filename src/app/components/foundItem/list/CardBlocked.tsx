@@ -5,7 +5,7 @@ const CardBlocked=() => {
     const router = useRouter();
     
     const handleClick = () => {
-        router.push('/block-item-for-user');
+        router.replace('/block-item-for-user');
       };
 
   return (

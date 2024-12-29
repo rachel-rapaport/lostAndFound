@@ -1,9 +1,9 @@
 import Chat from '@/app/components/chat/Chat';
 import React from 'react';
 
-const ChatPage = ({ params }: { params: { roomId: string } }  ) => {
+const ChatPage = ({ params }: { params: { roomId: string } }) => {
 
-  const { roomId } = params; 
+  const { roomId } = params;
 
   if (!roomId) {
     return <p>טוען...</p>;

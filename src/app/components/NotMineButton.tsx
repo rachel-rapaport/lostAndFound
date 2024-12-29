@@ -19,7 +19,7 @@ const NotMineButton = () => {
                 if (response) {
                     console.log("Block action succeeded:", response);
                 }
-                router.replace('/foundItems-list');
+                router.push('/foundItems-list');
             } catch (error) {
                 console.error("Error blocking item:", error);
             }
