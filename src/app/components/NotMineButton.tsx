@@ -4,9 +4,11 @@ import { blockItemForUser } from '../utils/blockItemForUser';
 import userStore from '../store/userStore';
 import useFoundItemStore from '../store/foundItemStore';
 import Swal from 'sweetalert2';
+import { useRouter } from 'next/navigation';
 
 const NotMineButton = () => {
 
+    const router = useRouter();
     const currentUser = userStore((state) => state.user);
     const foundItemToBlock = useFoundItemStore((state) => state.currentFoundItem);
 
@@ -17,6 +19,7 @@ const NotMineButton = () => {
                 if (response) {
                     console.log("Block action succeeded:", response);
                 }
+                router.replace('/foundItems-list');
             } catch (error) {
                 console.error("Error blocking item:", error);
             }
@@ -47,8 +50,9 @@ const NotMineButton = () => {
                     customClass: {
                         confirmButton: "secondary-btn"
                     }
+                }).then(() => {
+                    handleNotMine();
                 });
-                handleNotMine();
             }
         });
     }

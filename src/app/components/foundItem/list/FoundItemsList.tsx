@@ -17,23 +17,27 @@ const FoundItemsList = () => {
 
   const [foundItemsList, setFoundItemsList] = useState<FoundItem[]>([]);
 
-  useEffect(() => {
-    const fetchFoundItems = async () => {
-      if (currentLostItem) {
-        try {
-          const found = await matchLostFound(currentLostItem);
-          console.log("found", found);
 
-          setFoundItemsList(found);
-          setFilteredFoundItems(found);
-        } catch (error) {
-          console.error("Error fetching found items:", error);
-        }
+  const fetchFoundItems = async () => {
+    if (currentLostItem) {
+      try {
+        const found = await matchLostFound(currentLostItem);
+        setFoundItemsList(found);
+        setFilteredFoundItems(found);
+      } catch (error) {
+        console.error("Error fetching found items:", error);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
+    fetchFoundItems();
+  }, []);
+
+  useEffect(() => {
     fetchFoundItems();
   }, [currentLostItem, setFilteredFoundItems]);
+
 
   return (
     <div className="flex flex-wrap gap-4 justify-start">

@@ -20,7 +20,7 @@ const userStore = create(
       clearUser: () => set({ user: null }),
     }),
     {
-      name: "userData", // this will be the name for the localStorage key
+      name: "userData",
     }
   )
 );
