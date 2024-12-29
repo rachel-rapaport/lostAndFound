@@ -34,7 +34,7 @@ export const Alerts = () => {
   }
 
   return (
-    <div className="no-scrollbar absolute top-[11vh] left-[7vw] z-50 w-full max-w-md h-[400px] overflow-y-auto bg-white p-6 rounded-lg shadow-lg border-2 border-solid border-secondary">
+    <div className="no-scrollbar absolute top-full left-0 z-50 w-96 max-h-[400px] overflow-y-auto bg-white p-6 rounded-lg shadow-lg border-2 border-solid border-secondary">
       <h2 className="text-2xl font-semibold mb-2 text-center text-black">
         התראות
       </h2>

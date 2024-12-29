@@ -1,15 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BellAlertIcon } from "@heroicons/react/16/solid";
+import { BellAlertIcon } from "@heroicons/react/24/solid";
 import userStore from "@/app/store/userStore";
 import { Alerts } from "./Alerts";
 import { Profile } from "../user/Profile";
+import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
+import RoomList from "../chat/RoomList";
 
 const Header: React.FC = () => {
   const alerts = userStore((state) => state.alerts);
-
   const unreadAlertsCount = alerts?.filter((alert) => !alert.read).length || 0;
+
   const [showAlerts, setShowAlerts] = useState(false);
-  const alertsRef = useRef<HTMLDivElement | null>(null);
+  const [showChat, setShowChat] = useState(false);
+
+  const alertsRef = useRef<HTMLLIElement | null>(null);
+  const chatRef = useRef<HTMLLIElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -19,19 +24,25 @@ const Header: React.FC = () => {
       ) {
         setShowAlerts(false);
       }
+
+      if (chatRef.current && !chatRef.current.contains(event.target as Node)) {
+        setShowChat(false);
+      }
     };
 
-    if (showAlerts) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showAlerts]);
+  }, []);
 
   const handleAlertsClick = () => {
-    setShowAlerts(!showAlerts); // Toggle the display of the Alerts component
+    setShowAlerts((prev) => !prev);
+  };
+
+  const handleChatClick = () => {
+    setShowChat((prev) => !prev);
   };
 
   return (
@@ -45,21 +56,27 @@ const Header: React.FC = () => {
                 דף הבית
               </a>
             </li>
-           <div ref={alertsRef}>
-              <li
-                className="relative cursor-pointer"
-                onClick={handleAlertsClick}
-              >
+
+            {/* Chat Icon and Popup */}
+            <li ref={chatRef} className="relative">
+              <div className="cursor-pointer" onClick={handleChatClick}>
+                <ChatBubbleOvalLeftEllipsisIcon className="w-11 h-11 text-white ml-2" />
+              </div>
+              {showChat && <RoomList setShowChat={setShowChat} />}
+            </li>
+
+            {/* Alerts Icon and Popup */}
+            <li ref={alertsRef} className="relative">
+              <div className="cursor-pointer" onClick={handleAlertsClick}>
                 <BellAlertIcon className="w-10 h-10 ml-2 text-white" />
                 {unreadAlertsCount > 0 && (
                   <span className="absolute bottom-0 left-0 inline-flex items-center justify-center w-5 h-5 text-s font-semibold text-black bg-primary rounded-full">
                     {unreadAlertsCount}
                   </span>
                 )}
-              </li>
-
+              </div>
               {showAlerts && <Alerts />}
-            </div>
+            </li>
 
             <li>
               <Profile />
