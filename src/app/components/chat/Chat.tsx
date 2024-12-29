@@ -9,11 +9,15 @@ import {
 } from "../../lib/firebase/firebaseConfig"; // ייבוא של פונקציות Firebase
 import userStore from "@/app/store/userStore";
 import { Message } from "@/app/types/massageChat";
+import { closeChat } from "@/app/utils/chat";
+import { useRouter } from "next/navigation";
 
 const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const currentUser = userStore((state) => state.user);
+
+  const router = useRouter();
 
   // פוקנציה שמטפלת בהתחברות ל-Firebase ומביאה את ההודעות
   useEffect(() => {
@@ -46,6 +50,10 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
     }
   };
 
+const close = ()=>{
+  closeChat(roomId)
+  router.push(`/chat/preFinish`)
+}
   return (
     <div className="w-full">
       <div className="space-y-2">
@@ -86,8 +94,8 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
         ))}
       </div>
       <div className="flex gap-x-4 mt-6">
-        <button onClick={sendMessage} className="secondary-btn text-#ffff">
-       סיים צ&apos;אט 
+        <button onClick={close} className="secondary-btn text-#ffff">
+          סיים צ&apos;אט
         </button>
         <input
           type="text"

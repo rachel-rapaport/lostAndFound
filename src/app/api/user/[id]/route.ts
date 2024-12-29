@@ -71,7 +71,8 @@ export async function GET(request: NextRequest) {
           lostItems: 1,
           foundItems: 1,
           blockedItems: 1,
-          alerts: 1
+          alerts: 1,
+          chatRooms: 1
         }
       }
     ]);

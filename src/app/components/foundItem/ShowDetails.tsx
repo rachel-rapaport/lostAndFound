@@ -5,9 +5,10 @@ import useFoundItemStore from '../../store/foundItemStore';
 import NotMineButton from '../NotMineButton';
 import { useRouter } from 'next/navigation';
 import userStore from '@/app/store/userStore';
-import { initiateChat } from '@/app/utils/chat';
+import { addChatRoom, initiateChat } from '@/app/utils/chat';
 import { getVercelUrlWithoutRequest } from '@/app/utils/vercelUrl';
 import { afterFilter } from '@/app/utils/sendToUser';
+import { Chat } from '@/app/types/props/chat';
 
 const ShowDetails = () => {
 
@@ -20,6 +21,13 @@ const ShowDetails = () => {
         if (currentFoundItem?.userId && currentUser) {
             const roomId = await initiateChat(currentFoundItem?.userId);
             const chatRoomLink = `${getVercelUrlWithoutRequest()}/chat/${roomId}`;
+            const chatRoom : Chat= {
+                roomId: roomId,
+                userNameFound: currentFoundItem?.userId.fullName,
+                userNameLost: currentUser.fullName,
+                available: true
+            }
+            addChatRoom(chatRoom, currentFoundItem?.userId)
             afterFilter(currentFoundItem?.userId, 'chat', chatRoomLink);
             router.push(`/chat/${roomId}`);
         }

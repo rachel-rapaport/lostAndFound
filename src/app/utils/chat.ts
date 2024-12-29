@@ -10,7 +10,7 @@ export const initiateChat = async (otherUser: User) => {
     return roomId;
 }
 
-export const addChatRoom = async (chatRoom: Chat) => {
+export const addChatRoom = async (chatRoom: Chat, otherUser :User) => {
     const { user, setUser } = userStore.getState();
     if (!user) {
         throw new Error("User not found in store");
@@ -19,6 +19,40 @@ export const addChatRoom = async (chatRoom: Chat) => {
         ...user,
         chatRooms: [...user?.chatRooms || [], chatRoom]
     }
+    const updatedOtherUser: User = {
+        ...otherUser,
+        chatRooms: [...otherUser?.chatRooms || [], chatRoom]
+    }
+    const response = await updateUserById(String(user._id), updatedUser)
+    const responseTwo = await updateUserById(String(otherUser._id), updatedOtherUser)
+
+    console.log("inn",responseTwo.data);
+    
+
+    if (response&&responseTwo) {
+        setUser(updatedUser)
+        return response;
+    } else {
+        throw new Error("Failed to update user");
+    }
+}
+
+export const closeChat = async (roomId: string)=>{
+    const { user, setUser } = userStore.getState();
+    if (!user) {
+        throw new Error("User not found in store");
+    }
+     // עדכון ה-chatRooms
+     const updatedChatRooms = user.chatRooms?.map(chatRoom =>
+        chatRoom.roomId === roomId ? { ...chatRoom, available: false } : chatRoom
+    ) || [];
+
+    // יצירת אובייקט משתמש מעודכן
+    const updatedUser: User = {
+        ...user,
+        chatRooms: updatedChatRooms,
+    };
+    
     const response = await updateUserById(String(user._id), updatedUser)
     if (response) {
         setUser(updatedUser)
@@ -27,8 +61,4 @@ export const addChatRoom = async (chatRoom: Chat) => {
         throw new Error("Failed to update user");
     }
 }
-
-// export const closeChat = (roomId: string)=>{
-//     const { user, setUser } = userStore.getState();
-// }
 

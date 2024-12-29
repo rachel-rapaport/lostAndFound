@@ -52,6 +52,7 @@ export async function GET() {
           foundItems: 1,
           blockedItems: 1,
           alerts: 1,
+          chatRooms: 1
         },
       },
     ]);
