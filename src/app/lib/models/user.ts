@@ -1,5 +1,6 @@
 import { User } from "@/app/types/props/user";
 import mongoose, { Model, Schema } from "mongoose";
+import ChatSchema from "../schema/chatSchema";
 
 const UserSchema: Schema<User> = new Schema({
     fullName: { type: String, required: true },
@@ -10,7 +11,7 @@ const UserSchema: Schema<User> = new Schema({
     foundItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FoundItem" }],
     blockedItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FoundItem" }],
     alerts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Alert" }],
-    chatRooms: [{ type: String }]
+    chatRooms: [{ type: ChatSchema, _id: false }],
 });
 
 const UserModel: Model<User> =

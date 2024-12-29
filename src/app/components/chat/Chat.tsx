@@ -1,6 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {database, ref, onValue,push, set} from "../../lib/firebase/firebaseConfig"; // ייבוא של פונקציות Firebase
+import {
+  database,
+  ref,
+  onValue,
+  push,
+  set,
+} from "../../lib/firebase/firebaseConfig"; // ייבוא של פונקציות Firebase
 import userStore from "@/app/store/userStore";
 import { Message } from "@/app/types/massageChat";
 
@@ -80,12 +86,15 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
         ))}
       </div>
       <div className="flex gap-x-4 mt-6">
+        <button onClick={sendMessage} className="secondary-btn text-#ffff">
+       סיים צ&apos;אט 
+        </button>
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               sendMessage();
             }
           }}

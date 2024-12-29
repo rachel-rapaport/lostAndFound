@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import { LostItem } from "./lostItem";
 import { FoundItem } from "./foundItem";
 import { Alert } from "./alert";
+import { Chat } from "./chat";
 
 export interface User {
     _id: Types.ObjectId;
@@ -13,5 +14,5 @@ export interface User {
     foundItems?: FoundItem[];
     blockedItems?: FoundItem[];
     alerts?: Alert[];
-    chatRooms? : string[]
+    chatRooms? : Chat[]
 }
