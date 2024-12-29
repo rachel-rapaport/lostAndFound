@@ -28,7 +28,7 @@ export const addChatRoom = async (chatRoom: Chat) => {
     }
 }
 
-export const closeChat = (roomId: string)=>{
-    const { user, setUser } = userStore.getState();
-}
+// export const closeChat = (roomId: string)=>{
+//     const { user, setUser } = userStore.getState();
+// }
 
