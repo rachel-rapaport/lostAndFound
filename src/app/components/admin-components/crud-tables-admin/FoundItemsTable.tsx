@@ -6,6 +6,7 @@ import {
 import { FoundItem } from "@/app/types/props/foundItem";
 import { useState, useEffect } from "react";
 import EmailSelect from "../EmailsSelect";
+import Image from "next/image";
 
 const FoundItemsTable = ({ userEmails }: { userEmails: string[] }) => {
   const [foundItems, setFoundItems] = useState<FoundItem[]>([]);
@@ -86,7 +87,9 @@ const FoundItemsTable = ({ userEmails }: { userEmails: string[] }) => {
                 key={item._id.toString()}
                 className="hover:bg-gray-100 even:bg-gray-50"
               >
-                <td className="table-cell px-2 py-1">{item.subCategoryId.title}</td>
+                <td className="table-cell px-2 py-1">
+                  {item.subCategoryId.title}
+                </td>
                 <td className="table-cell px-2 py-1">{item.userId.fullName}</td>
                 <td className="table-cell px-2 py-1">{item.userId.email}</td>
                 <td className="table-cell px-2 py-1">{item.colorId?.name}</td>
@@ -96,8 +99,12 @@ const FoundItemsTable = ({ userEmails }: { userEmails: string[] }) => {
                 <td className="table-cell px-2 py-1">
                   {item.publicTransport.typePublicTransportId.title}
                 </td>
-                <td className="table-cell px-2 py-1">{item.publicTransport.city}</td>
-                <td className="table-cell px-2 py-1">{item.publicTransport.line}</td>
+                <td className="table-cell px-2 py-1">
+                  {item.publicTransport.city}
+                </td>
+                <td className="table-cell px-2 py-1">
+                  {item.publicTransport.line}
+                </td>
                 <td
                   className="table-cell cursor-pointer max-w-xs overflow-hidden"
                   onClick={() => handleTextToggle(item._id.toString())}
@@ -113,12 +120,15 @@ const FoundItemsTable = ({ userEmails }: { userEmails: string[] }) => {
 
                 <td className="table-cell px-2 py-1">
                   {item.image ? (
-                    <img
-                      src={item.image}
-                      alt="Thumbnail"
-                      className="w-16 h-16 object-cover cursor-pointer"
-                      onClick={() => handleImageClick(item.image)}
-                    />
+                   <Image
+                   src={item.image}
+                   alt="Thumbnail"
+                   width={64} 
+                   height={64} 
+                   className="object-cover cursor-pointer"
+                   onClick={() => handleImageClick(item.image)}
+                 />
+                 
                   ) : (
                     "No image"
                   )}
@@ -157,7 +167,8 @@ const FoundItemsTable = ({ userEmails }: { userEmails: string[] }) => {
               <strong>צבע:</strong> {item.colorId?.name || "-"}
             </p>
             <p>
-              <strong>מיקום:</strong> {`${item.postion.latitude}, ${item.postion.longitude}`}
+              <strong>מיקום:</strong>{" "}
+              {`${item.postion.latitude}, ${item.postion.longitude}`}
             </p>
             <p>
               <strong>סוג תחבורה ציבורית:</strong>{" "}
@@ -169,21 +180,21 @@ const FoundItemsTable = ({ userEmails }: { userEmails: string[] }) => {
             <p>
               <strong>קו:</strong> {item.publicTransport.line || "-"}
             </p>
-            <p
-              className="cursor-pointer"
-            >
-              <strong>תיאור:</strong>{" "}
-                <span>{item.descripition}</span>
+            <p className="cursor-pointer">
+              <strong>תיאור:</strong> <span>{item.descripition}</span>
             </p>
             <div>
               <strong>תמונה:</strong>{" "}
               {item.image ? (
-                <img
-                  src={item.image}
-                  alt="Thumbnail"
-                  className="w-16 h-16 object-cover cursor-pointer"
-                  onClick={() => handleImageClick(item.image)}
-                />
+               <Image
+               src={item.image}
+               alt="Thumbnail"
+               width={64} // Match w-16 (16 * 4px = 64px)
+               height={64} // Match h-16 (16 * 4px = 64px)
+               className="object-cover cursor-pointer"
+               onClick={() => handleImageClick(item.image)}
+             />
+             
               ) : (
                 "No image"
               )}
@@ -208,10 +219,12 @@ const FoundItemsTable = ({ userEmails }: { userEmails: string[] }) => {
             className="bg-white p-4 rounded relative"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
           >
-            <img
+            <Image
               src={selectedImage}
               alt="Full size"
-              className="max-w-s max-h-80 object-contain" // Smaller size in modal
+              width={460} 
+              height={460}
+              className="max-h-80 object-contain"
             />
           </div>
         </div>
