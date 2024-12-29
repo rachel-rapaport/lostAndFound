@@ -21,7 +21,7 @@ const ShowDetails = () => {
             const roomId = await initiateChat(currentFoundItem?.userId);
             const chatRoomLink = `${getVercelUrlWithoutRequest()}/chat/${roomId}`;
             afterFilter(currentFoundItem?.userId, 'chat', chatRoomLink);
-            router.push(`/chat/${roomId}`);
+            router.replace(`/chat/${roomId}`);
         }
     }
 

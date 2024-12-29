@@ -10,11 +10,9 @@ export const blockItemForUser = async () => {
     const { currentFoundItem } = useFoundItemStore.getState();
     const { setCurrentFoundItem } = useFoundItemStore.getState();
 
-    setCurrentFoundItem(null);
-
     const isItemBlocked = user && currentFoundItem && user.blockedItems && user.blockedItems.some(
         (item) => {
-            return item.toString() === currentFoundItem._id.toString();
+            return String(item._id) === String(currentFoundItem._id);
         }
     );
 
@@ -27,14 +25,15 @@ export const blockItemForUser = async () => {
             ...user,
             blockedItems: [...user.blockedItems || [], currentFoundItem]
         }
-        // update store current user
+        // Update store current user
         setUser(updatedUser);
-        // update in db
-        const response = await updateUserById(user._id.toString(), updatedUser);
+        // Update db
+        const response = await updateUserById(String(user._id), updatedUser);
         if (response) {
             return response;
         } else {
             throw new Error("Failed to update user");
         }
     }
+    setCurrentFoundItem(null);
 }
