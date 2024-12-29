@@ -91,7 +91,7 @@ const UserDashboard: React.FC = () => {
                     className="border border-gray-200 p-4 rounded-md"
                   >
                     <h3 className="font-semibold">
-                      {item.subCategoryId.title}
+                      {item.subCategoryId?.title}
                     </h3>
                     <p className="text-gray-500">{item.descripition}</p>
                   </div>

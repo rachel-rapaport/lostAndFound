@@ -1,4 +1,7 @@
-import { createTypePublicTransportation, getTypePublicTransportations } from "@/app/services/api/typePublicTransportationService";
+import {
+  createTypePublicTransportation,
+  getTypePublicTransportations,
+} from "@/app/services/api/typePublicTransportationService";
 import { TypePublicTransport } from "@/app/types/props/typePublicTransport";
 import { Types } from "mongoose";
 import React, { useEffect, useState } from "react";
@@ -23,7 +26,7 @@ export const TypeTransportationTable = () => {
       console.log(response);
 
       if (response) {
-        setTypePublicTransport(response.data);
+        setTypePublicTransport(response);
       }
     } catch (error) {
       console.error("Failed to fetch categorys:", error);
@@ -51,32 +54,26 @@ export const TypeTransportationTable = () => {
         <table className="table-auto w-full max-w-4xl mx-auto border-collapse border border-gray-300 hidden md:table">
           <thead className="bg-gray-200">
             <tr>
-              <th className="table-title">
-                Title
-              </th>
-              <th className="table-title">
-                Actions
-              </th>
+              <th className="table-title w-1/3 px-2 py-1">Title</th>
+              <th className="table-title px-2 w-1/4 py-1">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {typePublicTransport.map((type) => (
+            {typePublicTransport?.map((type) => (
               <tr
-                key={type._id.toString()} 
+                key={type._id.toString()}
                 className="hover:bg-gray-100 even:bg-gray-50 cursor-pointer text-md"
               >
-                <td className="table-title">
-                  {type.title}
-                </td>
-                <td className="table-title"></td>
+                <td className="table-title px-2 py-1">{type.title}</td>
+                <td className="table-title px-2 py-1"></td>
               </tr>
             ))}
 
             <tr className="bg-gray-50">
-              <td className="table-title">
+              <td className="table-title px-2 py-1">
                 <input
                   type="text"
-                  placeholder="New Category"
+                  placeholder="New Public Transport Type"
                   value={newTypePublicTransport.title || ""}
                   className="w-full p-2 border rounded text-sm"
                   onChange={(e) =>
@@ -87,7 +84,7 @@ export const TypeTransportationTable = () => {
                   }
                 />
               </td>
-              <td className="table-title">
+              <td className="table-title px-2 py-1">
                 <button
                   className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                   onClick={handleAddCategory}
@@ -101,7 +98,7 @@ export const TypeTransportationTable = () => {
 
         {/* Mobile view */}
         <div className="block md:hidden">
-          {typePublicTransport.map((type) => (
+          {typePublicTransport?.map((type) => (
             <div
               key={type._id.toString()}
               className="bg-white shadow-md rounded-lg p-4 mb-4"
@@ -116,7 +113,7 @@ export const TypeTransportationTable = () => {
           <div className="bg-white shadow-md rounded-lg p-4 mb-4">
             <input
               type="text"
-              placeholder="New Category"
+              placeholder="New Public Trnasport Type"
               value={newTypePublicTransport.title || ""}
               className="w-full p-2 border rounded text-sm mb-2"
               onChange={(e) =>

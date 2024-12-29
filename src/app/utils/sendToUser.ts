@@ -29,22 +29,29 @@ export const afterFilter = (user: User, status: string, link: string) => {
     }
 
 
-    switch (status) {
-        case "chat":
-            sendEmailToUser(user.email, contentChat.subject, contentChat.htmlContent);
-            doc = parser.parseFromString(contentChat.htmlContent, "text/html");
-            sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
-            createAlert(String(user._id), contentChat.subject,link)
-            break;
-        case "foundItem":
-            sendEmailToUser(user.email, contentItem.subject, contentItem.htmlContent);
-            doc = parser.parseFromString(contentItem.htmlContent, "text/html");
-            sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
-            createAlert(String(user._id), contentItem.subject,link)
-    }
+    // switch (status) {
+    //     case "chat":
+    //         sendEmailToUser(user.email, contentChat.subject, contentChat.htmlContent);
+    //         doc = parser.parseFromString(contentChat.htmlContent, "text/html");
+    //         sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
+    //         createAlert(String(user._id), contentChat.subject,link)
+    //         sendEmailToUser(user.email, contentChat.subject, contentChat.text, contentChat.htmlContent);
+    //         sendPhoneCall(user.phone, contentChat.text)
+    //         createAlert(String(user._id), contentChat.subject,link)
+    //         break;
+    //     case "foundItem":
+    //         sendEmailToUser(user.email, contentItem.subject, contentItem.htmlContent);
+    //         doc = parser.parseFromString(contentItem.htmlContent, "text/html");
+    //         sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
+    //         createAlert(String(user._id), contentItem.subject,link)
+    //         sendEmailToUser(user.email, contentItem.subject, contentItem.text, contentItem.htmlContent);
+    //         sendPhoneCall(user.phone, contentItem.text);
+    //         createAlert(String(user._id), contentItem.subject,link)
+
+    // }
 }
 
-export const resetPassword = (email: string, link: string) => {
+export const sendEmailForResetPassword = (email: string, link: string) => {
     const content = {
         "subject": "איפוס סיסמה",
         "text": "שלום, לאיפוס סיסמה אנא השתמש בקישור שלהלן.",

@@ -23,7 +23,7 @@ export const sendEmailToUser = async (
 
     if (response && response.status === 200) {
       console.log("Email was send successfully");
-      alert("הקישור לאיפוס נשלח בהצלחה. בדוק את תיבת הדואר הנכנס שלך");
+      // alert("הקישור לאיפוס נשלח בהצלחה. בדוק את תיבת הדואר הנכנס שלך");
       return response.data;
     } else {
       throw new Error("Failed to send email: Received status code");

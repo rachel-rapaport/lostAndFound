@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,7 +10,6 @@ body {
 
 .inner-body {
   @apply p-[50px] text-right;
-  /* overflow-y-hidden; */
 }
 
 
@@ -48,11 +47,11 @@ body {
 /* select */
 .react-select__option--is-focused,
 .react-select__option--is-selected {
-  background-color: #FADB3F !important;
+  background-color: #fadb3f !important;
 }
 
 .react-select__control {
-  border-color: #FADB3F !important;
+  border-color: #fadb3f !important;
   box-shadow: none !important;
   direction: rtl;
 }
@@ -60,7 +59,6 @@ body {
 .react-select__menu {
   direction: rtl;
 }
-
 
 /* checkbox */
 .custom-checkbox {
@@ -74,7 +72,7 @@ body {
 }
 
 .custom-checkbox:checked {
-  background-color: #FADB3F;
+  background-color: #fadb3f;
   border-color: #000000;
 }
 
@@ -114,7 +112,7 @@ input:checked+label .indicator {
   @apply block;
 }
 
-.state:checked~.label .text {
+.state:checked ~ .label .text {
   @apply opacity-100;
 }
 
@@ -135,11 +133,11 @@ input:checked+label .indicator {
   @apply w-4 h-4 hidden rounded-full bg-primary;
 }
 
-.state:checked~.label .indicator::after {
+.state:checked ~ .label .indicator::after {
   @apply opacity-100 transition-opacity transition-transform duration-200 opacity-100 hover:opacity-50 ease-linear hover:ease-out transform hover:scale-105;
 }
 
-.state:focus~.label .text {
+.state:focus ~ .label .text {
   @apply opacity-100 transform translate-x-[8px];
 }
 
@@ -147,11 +145,11 @@ input:checked+label .indicator {
   @apply opacity-100 scale-105;
 }
 
-input:checked+label .indicator {
+input:checked + label .indicator {
   @apply block;
 }
 
-.state:checked~.label .text {
+.state:checked ~ .label .text {
   @apply opacity-100;
 }
 

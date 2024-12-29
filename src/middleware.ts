@@ -38,7 +38,12 @@ export async function middleware(req: NextRequest) {
       // Clear token and redirect to login
       const res = NextResponse.redirect(new URL("/login", req.url));
       res.cookies.delete("token");
+      console.log(userStore.getState().user);
+      console.log(userStore.getState().alerts);
       userStore.getState().clearUser();
+      userStore.getState().setAlerts([]);
+      console.log(userStore.getState().user);
+      console.log(userStore.getState().alerts);
       return res;
     }
   } else {
