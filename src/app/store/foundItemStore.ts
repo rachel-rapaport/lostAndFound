@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import { FoundItemStore } from "../types/store/foundItemStore";
 import { FoundItem } from "../types/props/foundItem";
+import { createJSONStorage, persist } from "zustand/middleware";
 
- const useFoundItemStore = create<FoundItemStore>((set,get) => ({
+const useFoundItemStore = create<FoundItemStore>()(
+  persist((set, get) => ({
     currentFoundItem: null,
     setCurrentFoundItem: (foundItem: FoundItem | null) => {
       set({ currentFoundItem: foundItem });
@@ -15,8 +17,15 @@ import { FoundItem } from "../types/props/foundItem";
       const foundItem = get().filteredFoundItems?.find(
         (item) => item._id.toString() === id
       );
-      return foundItem || null; // Return found item or null
+      return foundItem || null;
     },
-}))
+  }),
+    {
+      name: "found-item-store",
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+);
+
 
 export default useFoundItemStore;

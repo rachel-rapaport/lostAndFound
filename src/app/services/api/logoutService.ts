@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const logout = async () => {
   try {
-    const response = await axios.post("/api/logout");
+    const response = await axios.post("/api/sign/logout");
     userStore.getState().setAlerts([]);
     return response.data;
   } catch (error) {

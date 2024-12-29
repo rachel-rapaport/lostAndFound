@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect } from "react";
-import userStore from "../store/userStore";
-import { updateAlertById } from "../services/api/alertService";
-import { Alert } from "../types/props/alert";
+import userStore from "../../store/userStore";
+import { updateAlertById } from "../../services/api/alertService";
+import { Alert } from "../../types/props/alert";
 import Link from "next/link";
 
 export const Alerts = () => {

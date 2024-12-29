@@ -5,7 +5,7 @@ const CardBlocked=() => {
     const router = useRouter();
     
     const handleClick = () => {
-        router.push('/wrong-answers');
+        router.push('/block-item-for-user');
       };
 
   return (

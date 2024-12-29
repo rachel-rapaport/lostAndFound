@@ -1,4 +1,4 @@
-import { Alerts } from "@/app/components/Alerts";
+import { Alerts } from "@/app/components/layOut/Alerts";
 import React from "react";
 
 
