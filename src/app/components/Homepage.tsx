@@ -4,7 +4,7 @@
 // import { initiateChat } from "../utils/chat";
 // import { getUserById } from "../services/api/userService";
 // import { getVercelUrlWithoutRequest } from "../utils/vercelUrl";
-import RoomList from "./chat/RoomList";
+// import RoomList from "./chat/RoomList";
 // import { sendEmailToAdmin } from "../services/api/sendEmailService";
 // import useUserStore from "../store/userStore";
 
@@ -74,7 +74,8 @@ const Homepage = () => {
 
   return (
     <>
-    <RoomList/>
+    <p>Homepage</p>
+    {/* <RoomList/> */}
       {/* <h1 className="text-center text-[5vh] font-semibold mb-[5vh]">
         אתר מציאון
       </h1> */}

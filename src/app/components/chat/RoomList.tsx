@@ -1,38 +1,59 @@
-import userStore from '@/app/store/userStore';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import userStore from "@/app/store/userStore";
+import { useRouter } from "next/navigation";
+import React from "react";
 
-const RoomList = () => {
+interface RoomListProps {
+  setShowChat: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const RoomList: React.FC<RoomListProps> = ({ setShowChat }) => {
   const currentUser = userStore((state) => state.user);
   const rooms = currentUser?.chatRooms;
   const router = useRouter();
 
+  const handleOpenChatClick = (roomId: string) => {
+    router.push(`/chat/${roomId}`);
+    setShowChat(false);
+  };
+
   return (
-    <div className="flex flex-col space-y-4 bg-gray-100 p-4 rounded-lg">
-      {rooms && rooms.map((room) => (
-        <div
-          key={room.roomId}
-          className={`p-4 rounded-lg ${
-            room.available ? 'bg-blue-500 hover:bg-blue-600 cursor-pointer' : 'bg-gray-300'
-          }`}
-        >
-          <div className="flex justify-between items-center">
-            <span className="text-white font-medium">
-              {room.userNameFound !== currentUser.fullName ? room.userNameFound : room.userNameLost}
-            </span>
-            {room.available ? (
-              <button
-                onClick={() => router.push(`/chat/${room.roomId}`)} // מעבר לעמוד חדר
-                className="px-3 py-1 bg-white text-blue-500 font-medium rounded-lg hover:bg-gray-100"
-              >
-                פתח CHAT
-              </button>
-            ) : (
-              <span className="text-gray-500">לא זמין</span>
-            )}
-          </div>
-        </div>
-      ))}
+    <div className="no-scrollbar absolute top-full left-0 z-50 w-96 max-h-[400px] overflow-y-auto bg-white p-6 rounded-lg shadow-lg border-2 border-solid border-secondary">
+      <h2 className="text-2xl font-semibold mb-2 text-center text-black">
+        צ&apos;אטים{" "}
+      </h2>
+      <div className="flex flex-col space-y-4 p-4 rounded-lg">
+        {rooms &&
+          rooms.map((room) => (
+            <div
+              key={room.roomId}
+              className={`border border-gray-200 p-4 rounded-md bg-gray-100 ${
+                !room.available ? "" : "border-2 border-solid border-primary"
+              }`}
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-black text-lg">
+                  {room.userNameFound !== currentUser.fullName
+                    ? room.userNameFound &&
+                      room.userNameFound.charAt(0).toUpperCase() +
+                        room.userNameFound.slice(1).toLowerCase()
+                    : room.userNameLost &&
+                      room.userNameLost.charAt(0).toUpperCase() +
+                        room.userNameLost.slice(1).toLowerCase()}
+                </span>
+                {room.available ? (
+                  <button
+                    onClick={() => handleOpenChatClick(room.roomId)} // Navigate to room
+                    className="px-3 py-1 text-secondary border-2 border-solid bg-gray-100 border-primary rounded-lg hover:bg-primary"
+                  >
+                    פתח CHAT
+                  </button>
+                ) : (
+                  <span className="text-gray-500">לא זמין</span>
+                )}
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
