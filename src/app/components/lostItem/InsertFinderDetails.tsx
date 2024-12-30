@@ -6,7 +6,7 @@ const InsertFinderDetails: React.FC<{ setImage: (image: string) => void; descrip
         return (
             <>
                 <UploadImage setImage={setImage} />
-                <input type='text' placeholder='כתוב תיאור קצר על הפריט שמצאת' value={description} className='w-[50%]' onChange={(e) => setDescription(e.target.value)} />
+                <input type='text' placeholder='כתוב תיאור קצר על הפריט שמצאת' value={description} className='w-[50%] text-center' onChange={(e) => setDescription(e.target.value)} />
             </>
         )
     }

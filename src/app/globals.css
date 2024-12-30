@@ -35,13 +35,15 @@ body {
 .disabled-btn {
   @apply btn bg-[#EAEAEA] text-[#B8B8B8] cursor-not-allowed font-fredoka;
 }
-.round-btn{
-  @apply flex bg-primary rounded-full h-[50px] min-w-[50px] self-end justify-center items-center;
-}
 
 /* error */
 .error-message {
   @apply text-red-500 text-sm h-[20px];
+}
+
+/* hr */
+.hr {
+  @apply w-[calc(100%-20px)] border-[#EAEAEA] border-[0.5px];
 }
 
 /* select */
@@ -112,7 +114,7 @@ input:checked+label .indicator {
   @apply block;
 }
 
-.state:checked ~ .label .text {
+.state:checked~.label .text {
   @apply opacity-100;
 }
 
@@ -133,11 +135,11 @@ input:checked+label .indicator {
   @apply w-4 h-4 hidden rounded-full bg-primary;
 }
 
-.state:checked ~ .label .indicator::after {
+.state:checked~.label .indicator::after {
   @apply opacity-100 transition-opacity transition-transform duration-200 opacity-100 hover:opacity-50 ease-linear hover:ease-out transform hover:scale-105;
 }
 
-.state:focus ~ .label .text {
+.state:focus~.label .text {
   @apply opacity-100 transform translate-x-[8px];
 }
 
@@ -145,11 +147,11 @@ input:checked+label .indicator {
   @apply opacity-100 scale-105;
 }
 
-input:checked + label .indicator {
+input:checked+label .indicator {
   @apply block;
 }
 
-.state:checked ~ .label .text {
+.state:checked~.label .text {
   @apply opacity-100;
 }
 
@@ -161,5 +163,3 @@ input:checked + label .indicator {
 .contact-input:focus {
   @apply outline-none ring-0;
 }
-
-

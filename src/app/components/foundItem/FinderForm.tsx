@@ -44,14 +44,14 @@ const FinderForm = () => {
         //     throw new Error("Failed to create found item");
         // }
     }
-    router.push('/insert-item-details');
+    router.push('/'); // לנתב להמשך...
 
     return (
         <form onSubmit={handleSubmit} className='flex flex-col h-[100vh] justify-between items-center'>
             <QuestionsCreator questions={questions} setQuestions={setQuestions} />
-            <hr></hr>
+            <hr className="hr" />
             <InsertFinderDetails setImage={setImage} description={description} setDescription={setDescription} />
-            <hr></hr>
+            <hr className="hr" />
             <button type="submit" className='primary-btn' title='שלח'>שלח</button>
         </form>
     )

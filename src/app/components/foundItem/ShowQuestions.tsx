@@ -110,7 +110,7 @@ const ShowQuestions = (props: { id: string }) => {
                                             <span className='text'>{answer}</span>
                                         </label>
                                     </span>
-                                    <hr className="w-[calc(100%-20px)] border-secondary-500" />
+                                    <hr className="hr" />
                                 </div>
                             ))}
                         </div>
