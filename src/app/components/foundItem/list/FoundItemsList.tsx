@@ -10,8 +10,12 @@ import userStore from "@/app/store/userStore";
 
 const FoundItemsList = () => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);
-  const filteredFoundItems = useFoundItemStore((state) => state.filteredFoundItems);
-  const setFilteredFoundItems = useFoundItemStore((state) => state.setFilteredFoundItems);
+  const filteredFoundItems = useFoundItemStore(
+    (state) => state.filteredFoundItems
+  );
+  const setFilteredFoundItems = useFoundItemStore(
+    (state) => state.setFilteredFoundItems
+  );
   const currentUser = userStore((state) => state.user);
 
   const fetchFoundItems = async () => {
@@ -34,15 +38,15 @@ const FoundItemsList = () => {
     fetchFoundItems();
   }, [currentLostItem, setFilteredFoundItems]);
 
-
   return (
     <div className="flex flex-wrap gap-4 justify-start">
       {filteredFoundItems &&
+        currentUser &&
         filteredFoundItems.map((item: FoundItem, index: number) => {
           const isBlocked =
-            currentUser?.blockedItems?.some(
-              (blocked) => String(blocked._id) === String(item._id)
-            ) || false;
+            currentUser?.blockedItems?.some((blocked) => {
+              return String(item._id) === String(blocked);
+            }) || false;
 
           return isBlocked ? (
             <CardBlocked key={String(item._id)} />

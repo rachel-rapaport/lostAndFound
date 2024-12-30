@@ -1,41 +1,23 @@
-import { database, ref, set, get } from '@/app/lib/firebase/firebaseConfig';
+import { database, ref, set } from '@/app/lib/firebase/firebaseConfig';
+import { v4 as uuidv4 } from 'uuid';
+
 
 //Generate a room ID based on user IDs
-export const generateChatRoomId = (user1Id: string, user2Id: string): string =>
-
-{
-  console.log("in func");
-  return user1Id < user2Id ? `${user1Id}_${user2Id}` : `${user2Id}_${user1Id}`;
+export const generateChatRoomId = (user1Id: string, user2Id: string): string => {
+  return uuidv4(); // מייצר מזהה אקראי וייחודי
 };
 
-//Create a chat room if it doesn't exist
+//Create a chat room always, without checking if it already exists
 export const createChatRoom = async (user1Id: string, user2Id: string): Promise<string> => {
-  console.log("lokijbhg");
-  
-  console.log("innnnn");
-  
   const roomId = generateChatRoomId(user1Id, user2Id);
-  console.log("rommId",roomId);
-  
-  
   
   const chatRef = ref(database, `chats/${roomId}`);
-  console.log("chatRef",chatRef);
   
-  const chatSnapshot = await get(chatRef); 
-  console.log("chatSnapshot",chatSnapshot);
-  
-
-   console.log("after");
-  if (!chatSnapshot.exists()) {
-    await set(chatRef, {
-      users: [user1Id, user2Id],
-      createdAt: Date.now(),
-    });
-  }
-
- console.log("bjk",chatRef);
- 
+  // Always create the chat room (no check if it exists)
+  await set(chatRef, {
+    users: [user1Id, user2Id],
+    createdAt: Date.now(),
+  });
 
   return roomId;
 };

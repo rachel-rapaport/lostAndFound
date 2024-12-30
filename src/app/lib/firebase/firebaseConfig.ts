@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'; 
-import { getDatabase, ref, set, get, onValue, push } from 'firebase/database'; 
+import { getDatabase, ref, set, get, onValue, push ,update } from 'firebase/database'; 
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY, 
@@ -17,4 +17,4 @@ const app = initializeApp(firebaseConfig);
 // Connect to the Firebase Realtime Database.
 const database = getDatabase(app);
 
-export { database, ref, set, get, onValue, push };
+export { database, ref, set, get, onValue, push,update };
