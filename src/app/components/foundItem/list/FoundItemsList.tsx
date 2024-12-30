@@ -41,7 +41,7 @@ const FoundItemsList = () => {
         filteredFoundItems.map((item: FoundItem, index: number) => {
           const isBlocked =
             currentUser?.blockedItems?.some(
-              (blocked) => String(blocked._id) === String(item._id)
+              (blocked) => String(blocked) === String(item._id)
             ) || false;
 
           return isBlocked ? (

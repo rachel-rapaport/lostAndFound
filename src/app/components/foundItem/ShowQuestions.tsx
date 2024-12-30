@@ -78,7 +78,7 @@ const ShowQuestions = (props: { id: string }) => {
 
     return (
         //  Assume that every question, and every answer per question, is unique
-        <div className='flex flex-col w-[50%] mx-auto text-secondary'>
+        <div className='flex flex-col w-[50%] mx-auto'>
             <strong className='font-semibold pb-12'>ענה על הסימנים הבאים: </strong>
             <form onSubmit={handleSubmit}>
                 {

@@ -12,7 +12,7 @@ export interface User {
     phone: string;
     lostItems?: LostItem[];
     foundItems?: FoundItem[];
-    blockedItems?: FoundItem[];
+    blockedItems?: string[];
     alerts?: Alert[];
-    chatRooms? : Chat[]
+    chatRooms?: Chat[]
 }

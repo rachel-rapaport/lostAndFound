@@ -46,13 +46,13 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-secondary text-white p-6 shadow-md">
+    <header className="bg-secondary p-6 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-3xl font-bold">מציאון</h1>
         <nav>
           <ul className="flex space-x-reverse space-x-6 items-center justify-around">
             <li>
-              <a href="/home" className="hover:text-gray-300">
+              <a href="/home" className="text-white hover:text-gray-300">
                 דף הבית
               </a>
             </li>
@@ -60,7 +60,7 @@ const Header: React.FC = () => {
             {/* Chat Icon and Popup */}
             <li ref={chatRef} className="relative">
               <div className="cursor-pointer" onClick={handleChatClick}>
-                <ChatBubbleOvalLeftEllipsisIcon className="w-11 h-11 text-white ml-2" />
+                <ChatBubbleOvalLeftEllipsisIcon fill="white" className="w-11 h-11 ml-2" />
               </div>
               {showChat && <RoomList setShowChat={setShowChat} />}
             </li>
@@ -68,7 +68,7 @@ const Header: React.FC = () => {
             {/* Alerts Icon and Popup */}
             <li ref={alertsRef} className="relative">
               <div className="cursor-pointer" onClick={handleAlertsClick}>
-                <BellAlertIcon className="w-10 h-10 ml-2 text-white" />
+                <BellAlertIcon fill="white" className="w-10 h-10 ml-2" />
                 {unreadAlertsCount > 0 && (
                   <span className="absolute bottom-0 left-0 inline-flex items-center justify-center w-5 h-5 text-s font-semibold text-black bg-primary rounded-full">
                     {unreadAlertsCount}

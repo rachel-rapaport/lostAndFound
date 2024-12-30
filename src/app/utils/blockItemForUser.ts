@@ -12,7 +12,7 @@ export const blockItemForUser = async () => {
 
     const isItemBlocked = user && currentFoundItem && user.blockedItems && user.blockedItems.some(
         (item) => {
-            return String(item._id) === String(currentFoundItem._id);
+            return String(item) === String(currentFoundItem._id);
         }
     );
 
@@ -21,14 +21,19 @@ export const blockItemForUser = async () => {
     }
 
     if (user && currentFoundItem) {
-        const updatedUser: User = {
-            ...user,
-            blockedItems: [...user.blockedItems || [], currentFoundItem]
-        }
         // Update store current user
-        setUser(updatedUser);
+        const updatedUserForStore: User = {
+            ...user,
+            blockedItems: [...user.blockedItems || [], String(currentFoundItem._id)]
+        }
+        setUser(updatedUserForStore);
+
         // Update db
-        const response = await updateUserById(String(user._id), updatedUser);
+        const updatedUserForDb: User = {
+            ...user,
+            blockedItems: [...user.blockedItems || [], String(currentFoundItem._id)]
+        }
+        const response = await updateUserById(String(user._id), updatedUserForDb);
         if (response) {
             return response;
         } else {

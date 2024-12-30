@@ -5,7 +5,7 @@
 
 *,
 body {
-  @apply font-fredoka;
+  @apply font-fredoka text-secondary;
 }
 
 .inner-body {
