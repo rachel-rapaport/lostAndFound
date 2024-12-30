@@ -95,15 +95,16 @@ const LostForm = () => {
       publicTransport:
         selectedLocation === "transport"
           ? {
-              typePublicTransportId: transportData.typePublicTransportId,
-              line: transportData.line,
-              city: transportData.city,
-            }
+            typePublicTransportId: transportData.typePublicTransportId,
+            line: transportData.line,
+            city: transportData.city,
+          }
           : null,
     };
 
     try {
       const newListItem = await createLostItem(lostItem);
+      // Set in store
       setCurrentLostItem(newListItem);
       router.push("/foundItems-list");
     } catch (error) {

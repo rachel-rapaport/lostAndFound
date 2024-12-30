@@ -11,7 +11,7 @@ const lostItemStore = create<LostItemStore>()(
             set({ filteredLostItems: lostItems });
         },
         getFilteredLostItemById: (id) => {
-            const  lostItem = get().filteredLostItems?.find(
+            const lostItem = get().filteredLostItems?.find(
                 (item) => item._id.toString() === id
             );
             return lostItem || null;
