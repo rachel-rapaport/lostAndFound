@@ -1,4 +1,8 @@
 "use client";
+
+import analyzeTextWithModel from "../utils/NERmodel";
+// import NERmodel from "../utils/NERmodel";
+
 // import userStore from "../store/userStore";
 // import { afterFilter } from "../utils/sendToUser";
 // import { initiateChat } from "../utils/chat";
@@ -8,9 +12,13 @@
 // import { sendEmailToAdmin } from "../services/api/sendEmailService";
 // import useUserStore from "../store/userStore";
 
-
-
 const Homepage = () => {
+  const sentence = " ילד אוכל בננה"; 
+  analyzeTextWithModel(sentence).then((result) => {
+    if (result) {
+      console.log("Analysis Result:", result);
+    }
+  });
   // const router = useRouter();
 
   // const { currentUser } = useUserStore();
@@ -74,8 +82,8 @@ const Homepage = () => {
 
   return (
     <>
-    <p>Homepage</p>
-    {/* <RoomList/> */}
+      <p>Homepage</p>
+      {/* <RoomList/> */}
       {/* <h1 className="text-center text-[5vh] font-semibold mb-[5vh]">
         אתר מציאון
       </h1> */}
@@ -86,7 +94,6 @@ const Homepage = () => {
       {/* {currentUser ? <h1>email:{currentUser.email}</h1> : <p>no user</p>} */}
       {/* <button onClick={logout}>log out</button> */}
       <br />
-
     </>
   );
 };
