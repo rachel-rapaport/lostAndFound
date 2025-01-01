@@ -1,11 +1,10 @@
 'use client'
 import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import CategoriesSelect from "../form/select/CategoriesSelect";
 import SubCategoriesSelect from "../form/select/SubCategoriesSelect";
 import ColorSelect from "../form/select/ColorSelect";
 import PublicTransportation from "../form/PublicTransportation";
-import InsertFinderDetails from "../lostItem/InsertFinderDetails";
 import { Question } from "@/app/types/props/question";
 import UploadImage from "../form/UploadImage";
 import QuestionsCreator from "../lostItem/QuestionsCreator";

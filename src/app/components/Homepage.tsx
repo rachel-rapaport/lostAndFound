@@ -1,8 +1,8 @@
 "use client";
 
-import Location from "./form/Location";
-import FinderForm from "./foundItem/FinderForm";
-import FoundItemForm from "./foundItem/FoundItemForm";
+// import Location from "./form/Location";
+// import FinderForm from "./foundItem/FinderForm";
+// import FoundItemForm from "./foundItem/FoundItemForm";
 
 // import userStore from "../store/userStore";
 // import { afterFilter } from "../utils/sendToUser";

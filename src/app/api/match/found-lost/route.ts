@@ -1,24 +1,15 @@
 import connect from "@/app/lib/db/mongo";
 import { Circle } from "@/app/types/props/circle";
-import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
 import { LostItem } from "@/app/types/props/lostItem";
-import { getVercelUrl } from "@/app/utils/vercelUrl";
 import LostItemModel from "@/app/lib/models/lostItem";
 
 export async function POST(request: NextRequest) {
-
-    // const vercelUrl = getVercelUrl(request);
-    // const baseUrl = vercelUrl || process.env.NEXT_PUBLIC_BASE_URL
-
     try {
         await connect();
 
         const foundItem = await request.json();
-
-       console.log("in match foundItem",foundItem);
-       
 
         const lostItems = await LostItemModel.aggregate([
             {
@@ -94,10 +85,7 @@ export async function POST(request: NextRequest) {
                 }
               }
             }
-          ])
-
-          console.log("match lostItems",lostItems);
-          
+          ])          
 
         // Filter the lost items based on the found item properties and geographic matching
         const filteredLostItems = lostItems.filter((lostItem: LostItem) => {
@@ -143,7 +131,6 @@ export async function POST(request: NextRequest) {
         );
 
     } catch (error) {
-        console.log(error.message);
         return NextResponse.json(
             { message: "Error filtering lost items", error: error.message },
             { status: 500 }

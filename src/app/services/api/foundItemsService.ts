@@ -32,7 +32,7 @@ export const createFoundItem = async (foundItem: FoundItemRequest) => {
     const response = await axios.post("/api/foundItem", foundItem);
     console.log(response.data.data[0]);
     return response.data.data[0];
-  } catch (error) {
+  } catch{
     throw new Error("Failed to create foundItem");
 
   }
@@ -43,7 +43,7 @@ export const updateFoundItemById = async (id: string, foundItem: FoundItem) => {
   try {
     const response = await axios.put(`/api/foundItem/${id}`, foundItem);
     return response.data;
-  } catch (error) {
+  } catch{
     throw new Error("Failed to updating foundItem");
   }
 };
@@ -54,7 +54,7 @@ export const deleteFoundItemById = async (id: string) => {
   try {
     const response = await axios.delete(`/api/foundItem/${id}`);
     return response.data;
-  } catch (error) {
+  } catch{
     throw new Error("Failed to deleting foundItem")
   }
 };

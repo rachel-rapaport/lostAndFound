@@ -1,7 +1,5 @@
 import { Postion } from "@/app/types/props/postion";
-import { useState, Dispatch, SetStateAction, useEffect } from "react";
-
-
+import { useState, useEffect } from "react";
 
 const Location: React.FC<{setLocation: React.Dispatch<React.SetStateAction<Postion>>;
 }> = ({setLocation }) => {

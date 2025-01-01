@@ -20,7 +20,7 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
   const [newMessage, setNewMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [isChatClosed, setIsChatClosed] = useState(false);
+  const [, setIsChatClosed] = useState(false);
   const currentUser = userStore((state) => state.user);
 
   const router = useRouter();
