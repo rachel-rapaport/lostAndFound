@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import UploadImage from '../form/UploadImage';
 
 const InsertFinderDetails: React.FC<{ setImage: (image: string) => void; description: string; setDescription: (description: string) => void }>

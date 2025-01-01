@@ -1,13 +1,10 @@
 import React from "react";
-// import Homepage from "@/app/components/Homepage";
-import FinderForm from "@/app/components/foundItem/FinderForm";
-
+import Homepage from "@/app/components/Homepage";
 
 const page = () => {
   return (
     <>
-      {/* <Homepage/> */}
-      <FinderForm />
+      <Homepage />
     </>
   );
 };

@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { checkAnswers } from '@/app/types/store/utils/checkAnswers';
+import { answerSchema } from '@/app/schemas/answerSchemaZod';
 
 const ShowQuestions = (props: { id: string }) => {
 
@@ -15,7 +16,6 @@ const ShowQuestions = (props: { id: string }) => {
     const setCurrentFoundItem = useFoundItemStore((state) => state.setCurrentFoundItem);
     const getFilteredFoundItemById = useFoundItemStore((state) => state.getFilteredFoundItemById);
     const [shuffledQuestions, setShuffledQuestions] = useState<{ question: string, answers: string[] }[]>([]);
-    const answerSchema = z.object({ answers: z.array(z.string().min(1, "יש למלא את כל השדות")) });
     const [formData, setFormData] = useState<z.infer<typeof answerSchema>>({ answers: [] });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
 

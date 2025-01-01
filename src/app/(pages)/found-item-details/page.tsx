@@ -3,9 +3,7 @@ import ShowDetails from '@/app/components/foundItem/ShowDetails';
 
 const page = () => {
     return (
-        <>
-            <ShowDetails />
-        </>
+        <ShowDetails />
     )
 }
 

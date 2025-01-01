@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ResetPassword } from "@/app/components/login/ResetPassword";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
