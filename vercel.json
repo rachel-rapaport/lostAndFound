@@ -1,6 +1,6 @@
 {
     "functions": {
-      "api/NER-model/route.ts": {
+      "app/api/NER-model/route.ts": {
         "maxDuration": 60
       }
     }
