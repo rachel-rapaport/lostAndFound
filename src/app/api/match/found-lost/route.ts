@@ -2,9 +2,9 @@ import connect from "@/app/lib/db/mongo";
 import { Circle } from "@/app/types/props/circle";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
 import { LostItem } from "@/app/types/props/lostItem";
-import { getVercelUrl } from "@/app/utils/vercelUrl";
+import { getVercelUrl } from "@/app/types/store/utils/vercelUrl";
+import { checkIfPointInsideCircle } from "@/app/types/store/utils/geolocationUtils";
 
 export async function POST(request: NextRequest) {
 

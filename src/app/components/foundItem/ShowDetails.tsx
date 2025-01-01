@@ -5,10 +5,10 @@ import useFoundItemStore from '../../store/foundItemStore';
 import NotMineButton from '../NotMineButton';
 import { useRouter } from 'next/navigation';
 import userStore from '@/app/store/userStore';
-import { addChatRoom, initiateChat } from '@/app/utils/chat';
-import { getVercelUrlWithoutRequest } from '@/app/utils/vercelUrl';
-import { afterFilter } from '@/app/utils/sendToUser';
 import { Chat } from '@/app/types/props/chat';
+import { addChatRoom, initiateChat } from '@/app/types/store/utils/chat';
+import { getVercelUrlWithoutRequest } from '@/app/types/store/utils/vercelUrl';
+import { afterFilter } from '@/app/types/store/utils/sendToUser';
 
 const ShowDetails = () => {
 

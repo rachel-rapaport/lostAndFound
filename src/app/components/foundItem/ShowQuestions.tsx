@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import useFoundItemStore from '../../store/foundItemStore';
 import NotMineButton from '../NotMineButton';
 import _ from 'lodash';
-import { checkAnswers } from '../../utils/checkAnswers';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
+import { checkAnswers } from '@/app/types/store/utils/checkAnswers';
 
 const ShowQuestions = (props: { id: string }) => {
 
