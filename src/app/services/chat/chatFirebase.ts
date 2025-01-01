@@ -3,13 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 //Generate a room ID based on user IDs
-export const generateChatRoomId = (user1Id: string, user2Id: string): string => {
+export const generateChatRoomId = (): string => {
   return uuidv4(); // מייצר מזהה אקראי וייחודי
 };
 
 //Create a chat room always, without checking if it already exists
 export const createChatRoom = async (user1Id: string, user2Id: string): Promise<string> => {
-  const roomId = generateChatRoomId(user1Id, user2Id);
+  const roomId = generateChatRoomId();
   
   const chatRef = ref(database, `chats/${roomId}`);
   
