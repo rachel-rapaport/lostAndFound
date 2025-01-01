@@ -145,7 +145,7 @@ const PublicTransportation: React.FC<{
               setTransportData((prev) => ({ ...prev, line: e.target.value }))
             }
             placeholder="הכנס את מספר הקו"
-            className="form-input text-right border-2 border-primary rounded-md"
+            // className="form-input text-right border-2 border-primary rounded-md"
           />
         </div>
       ) : null}

@@ -1,13 +1,8 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { CldUploadWidget } from "next-cloudinary";
-import { saveImage } from '../../utils/uploadImage';
 
-const UploadImage = () => {
-
-    useEffect(() => {
-        console.log("on load component");
-    })
+const UploadImage: React.FC<{ setImage: (image: string) => void }> = ({ setImage }) => {
 
     return (
         <CldUploadWidget
@@ -15,7 +10,7 @@ const UploadImage = () => {
             signatureEndpoint="/api/upload/image"
             onSuccess={(result) => {
                 if (typeof result.info === "object" && "secure_url" in result.info) {
-                    saveImage(result.info.secure_url);
+                    setImage(result.info.secure_url);
                 }
             }}
             options={{
@@ -28,9 +23,9 @@ const UploadImage = () => {
                     <button
                         type="button"
                         onClick={() => open()}
-                        className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="primary-btn"
                     >
-                        Upload Avatar
+                        העלה תמונה של הפריט
                     </button>
                 );
             }}

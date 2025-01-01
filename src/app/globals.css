@@ -12,6 +12,9 @@ body {
   @apply p-[50px] text-right;
 }
 
+input{
+  @apply  text-right border-2 border-primary rounded-md
+}
 
 @layer utilities {
   .btn {

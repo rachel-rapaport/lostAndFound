@@ -4,6 +4,7 @@ import FoundItemModel from "@/app/lib/models/foundItem";
 import SubCategoryModel from "@/app/lib/models/subCategory";
 import UserModel from "@/app/lib/models/user";
 import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
+import mongoose from "mongoose";
 
 
 //get all found items
@@ -138,9 +139,92 @@ export async function POST(req: NextRequest) {
       { $push: { "foundItems": newFoundItem._id } },
       { new: true }
     );
+    
+    //populate data from nested objects
+    const data = await FoundItemModel.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(newFoundItem._id) } 
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'userId'
+        }
+      },
+      {
+        $unwind: { path: '$userId', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $lookup: {
+          from: 'subcategories',
+          localField: 'subCategoryId',
+          foreignField: '_id',
+          as: 'subCategoryId'
+        }
+      },
+      {
+        $unwind: { path: '$subCategoryId', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $lookup: {
+          from: 'colors',
+          localField: 'colorId',
+          foreignField: '_id',
+          as: 'colorId'
+        }
+      },
+      {
+        $unwind: { path: '$colorId', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $lookup:
+        {
+          from: 'typepublictransports',
+          localField: 'publicTransport.typePublicTransportId',
+          foreignField: '_id',
+          as: 'publicTransportType'
+        }
+      },
+      {
+        $unwind: { path: '$publicTransportType', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $unwind: { path: '$typePublicTransportId', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $project: {
+          _id: 1,
+          subCategoryId: {
+            _id: '$subCategoryId._id',
+            title: '$subCategoryId.title'
+          },
+          'colorId': 1,
+          'userId._id': 1,
+          'userId.fullName': 1,
+          'userId.email': 1,
+          'userId.password': 1,
+          'userId.phone':1,
+          postion: 1,
+          image: 1,
+          descripition: 1,
+          questions: 1,
+          publicTransport: {
+            _id: '$publicTransport._id',
+            city: '$publicTransport.city',
+            typePublicTransportId: {
+              _id: '$publicTransportType._id',
+              title: '$publicTransportType.title'
+            },
+            line: '$publicTransport.line'
+          }
+        }
+      }
+    ]);
 
     return NextResponse.json(
-      { message: "Found item was created successfully", data: newFoundItem },
+      { message: "Found item was created successfully", data: data },
       { status: 201 }
     );
   }

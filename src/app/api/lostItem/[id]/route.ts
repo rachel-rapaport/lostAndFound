@@ -89,7 +89,6 @@ export async function GET(request: NextRequest) {
           'userId.password': 1,
           'userId.phone':1,
           circles: 1,
-          image: 1,
           publicTransport: {
             _id: '$publicTransport._id',
             city: '$publicTransport.city',
