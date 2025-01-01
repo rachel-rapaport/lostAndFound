@@ -5,8 +5,8 @@ import NotMineButton from '../NotMineButton';
 import _ from 'lodash';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
-import { checkAnswers } from '@/app/types/store/utils/checkAnswers';
 import { answerSchema } from '@/app/schemas/answerSchemaZod';
+import { checkAnswers } from '@/app/utils/checkAnswers';
 
 const ShowQuestions = (props: { id: string }) => {
 

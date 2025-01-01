@@ -5,7 +5,7 @@ import axios from "axios";
 import connect from '@/app/lib/db/mongo';
 import CategoryModel from '@/app/lib/models/category';
 import { NextRequest, NextResponse } from 'next/server';
-import { getVercelUrl } from '@/app/types/store/utils/vercelUrl';
+import { getVercelUrl } from '@/app/utils/vercelUrl';
 
 export async function POST(request: NextRequest) {
 

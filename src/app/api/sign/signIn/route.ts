@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
-import { getVercelUrl } from "@/app/types/store/utils/vercelUrl";
+import { getVercelUrl } from "@/app/utils/vercelUrl";
 // import { getUserStore } from "@/app/store/userStore";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;

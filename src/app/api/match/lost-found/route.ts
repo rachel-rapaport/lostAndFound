@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { FoundItem } from "@/app/types/props/foundItem";
 // import { getVercelUrl } from "@/app/utils/vercelUrl";
 import FoundItemModel from "@/app/lib/models/foundItem";
-import { checkIfPointInsideCircle } from "@/app/types/store/utils/geolocationUtils";
-
+import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
 
 export async function POST(request: NextRequest) {
 

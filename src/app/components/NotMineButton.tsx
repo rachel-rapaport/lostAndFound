@@ -4,7 +4,7 @@ import userStore from '../store/userStore';
 import useFoundItemStore from '../store/foundItemStore';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
-import { blockItemForUser } from '../types/store/utils/blockItemForUser';
+import { blockItemForUser } from '../utils/blockItemForUser';
 
 const NotMineButton = () => {
 
