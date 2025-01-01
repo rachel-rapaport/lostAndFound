@@ -38,6 +38,20 @@ const ShowQuestions = (props: { id: string }) => {
         setCurrentFoundItem(foundItem);
     }, [id, setCurrentFoundItem, getFilteredFoundItemById]);
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        const { value } = e.target;
+        console.log("answers:", formData.answers);
+        setFormData((prevData) => ({
+            ...prevData,
+            answers: prevData.answers.map((answer, i) => {
+                if (i === index) {
+                    return value;
+                }
+                return answer;
+            })
+        }));
+    };
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -60,20 +74,6 @@ const ShowQuestions = (props: { id: string }) => {
                 console.log("error in submitting form:", error.message);
             }
         }
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const { value } = e.target;
-        console.log("answers:", formData.answers);
-        setFormData((prevData) => ({
-            ...prevData,
-            answers: prevData.answers.map((answer, i) => {
-                if (i === index) {
-                    return value;
-                }
-                return answer;
-            })
-        }));
     };
 
     return (
