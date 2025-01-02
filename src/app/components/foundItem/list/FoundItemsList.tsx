@@ -7,6 +7,7 @@ import { FoundItem } from "@/app/types/props/foundItem";
 import useFoundItemStore from "@/app/store/foundItemStore";
 import CardBlocked from "./CardBlocked";
 import userStore from "@/app/store/userStore";
+import { useRouter } from "next/navigation";
 
 const FoundItemsList = () => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);
@@ -17,6 +18,11 @@ const FoundItemsList = () => {
     (state) => state.setFilteredFoundItems
   );
   const currentUser = userStore((state) => state.user);
+  const router = useRouter();
+
+  const goHome = () => {
+    router.push("/");
+  };
 
   const fetchFoundItems = async () => {
     if (currentLostItem) {
@@ -40,24 +46,47 @@ const FoundItemsList = () => {
 
   return (
     <div className="flex flex-wrap gap-4 justify-start">
-      {filteredFoundItems &&
-        currentUser &&
-        filteredFoundItems.map((item: FoundItem, index: number) => {
-          const isBlocked =
-            currentUser?.blockedItems?.some((blocked) => {
-              return String(item._id) === String(blocked);
-            }) || false;
+   {filteredFoundItems && filteredFoundItems.length > 0 ? (
+    filteredFoundItems.map((item: FoundItem, index: number) => {
+      const isBlocked =
+        currentUser?.blockedItems?.some((blocked) => {
+          return String(item._id) === String(blocked);
+        }) || false;
 
-          return isBlocked ? (
-            <CardBlocked key={String(item._id)} />
-          ) : (
-            <Card
-              key={String(item._id)}
-              counter={index + 1}
-              id={String(item._id)}
-            />
-          );
-        })}
+      return isBlocked ? (
+        <CardBlocked key={String(item._id)} />
+      ) : (
+        <Card
+          key={String(item._id)}
+          counter={index + 1}
+          id={String(item._id)}
+        />
+      );
+    })
+  ) : (
+    // תוכן חלופי במקרה שאין פריטים במערך
+    <div className="flex items-center justify-center mt-16">
+    <div className="text-center space-y-4 p-6">
+      <h1 className="text-2xl font-bold"> 
+           אופס!
+
+      </h1>
+      <p className="text-lg">
+אין פריטים שנמצאו תואמים לאבידתך.....
+
+        <br />
+       עקוב במייל או בהתראות באתר - יכול להיות שנמצא את האבידה שלך!
+        המערכת מסננת ברגעים אלו פריטים אבודים תואמים.
+      </p>
+      <button
+        onClick={goHome}
+        className="primary-btn"
+      >
+        חזרה לדף הבית
+      </button>
+    </div>
+  </div>
+  )}
     </div>
   );
 };

@@ -37,7 +37,7 @@ export const addChatRoom = async (chatRoom: Chat, otherUser :User) => {
     }
 }
 
-export const closeChat = async (roomId: string, otherUser : User)=>{
+export const closeChat = async (roomId: string)=>{
     const { user, setUser } = userStore.getState();
     if (!user) {
         throw new Error("User not found in store");
@@ -47,25 +47,17 @@ export const closeChat = async (roomId: string, otherUser : User)=>{
         chatRoom.roomId === roomId ? { ...chatRoom, available: false } : chatRoom
     ) || [];
 
-    const  updatedChatRoomsOther = otherUser.chatRooms?.map(chatRoom =>
-        chatRoom.roomId === roomId ? { ...chatRoom, available: false } : chatRoom
-    ) || [];
+
 
     // יצירת אובייקט משתמש מעודכן
     const updatedUser: User = {
         ...user,
         chatRooms: updatedChatRooms,
     };
-
-    const updatedOtherUser: User ={
-        ...otherUser,
-        chatRooms:updatedChatRoomsOther
-    }
     
     const response = await updateUserById(String(user._id), updatedUser)
-    const responseTwo = await updateUserById(String(otherUser._id), updatedOtherUser)
     
-    if (response&&responseTwo) {
+    if (response) {
         setUser(updatedUser)
         return response;
     } else {

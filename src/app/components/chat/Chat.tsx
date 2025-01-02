@@ -12,15 +12,20 @@ import {
 import userStore from "@/app/store/userStore";
 import { Message } from "@/app/types/massageChat";
 import { useRouter } from "next/navigation";
-import { blockItemForUser } from "@/app/utils/blockItemForUser";
-import { remove } from "firebase/database";
+import NotMineButton from "../NotMineButton";
+import lostItemStore from "@/app/store/lostItemStore";
+import FoundItemForm from "../foundItem/FoundItemForm";
+import useFoundItemStore from "@/app/store/foundItemStore";
+import { deleteLostItemById } from "@/app/services/api/lostItemService";
+import { deleteFoundItemById } from "@/app/services/api/foundItemsService";
 
 const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [, setIsChatClosed] = useState(false);
+  const [userLost, setUserLost] = useState("");
+  const currentLostItem = lostItemStore((state) => state.currentLostItem);
+  const currentFoundItem = useFoundItemStore((state) => state.currentFoundItem);
+
   const currentUser = userStore((state) => state.user);
 
   const router = useRouter();
@@ -29,36 +34,19 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
     const messagesRef = ref(database, `chats/${roomId}`);
     onValue(messagesRef, (snapshot) => {
       const data = snapshot.val();
-      setMessages(data ? Object.values(data) : []);
-    });
-
-    const chatStatusRef = ref(database, `chatStatus/${roomId}`);
-    onValue(chatStatusRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data?.status === "closed") {
-        setIsChatClosed(true);
-        console.log("df1",data?.closedBy&&currentUser?._id&&data?.closedBy);
-        console.log("df2",data?.closedBy&&currentUser?._id&&currentUser?._id);
-        console.log("onn",data?.closedBy&&currentUser?._id&&data?.closedBy !== data?.closedBy&&currentUser?._id&&currentUser?._id);
-        
-        if (data?.closedBy != currentUser?._id) {
-          // אם זה המשתמש השני, הצ'אט נסגר
-          setShowModal(true);
-          // setIsModalOpen(true);
-        } else {
-          // אם זה המשתמש שסגר את הצ'אט, שאל אם האבדה הושבה
-          setIsModalOpen(true);
-          // setShowModal(true);
-        }
-
+      if (data.messages) {
+        setMessages(Object.values(data.messages));
+      } else {
+        setMessages([]);
       }
+      setUserLost(data.users[0]);
     });
   }, [roomId]);
 
   const sendMessage = () => {
     if (!newMessage.trim()) return;
 
-    const messagesRef = ref(database, `chats/${roomId}`);
+    const messagesRef = ref(database, `chats/${roomId}/messages`);
     const newMessageRef = push(messagesRef);
     const timestamp = new Date().getTime();
 
@@ -71,57 +59,73 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
     setNewMessage("");
   };
 
-  const handleCloseChat = async () => {
-    const chatStatusRef = ref(database, `chatStatus/${roomId}`);
-    await update(chatStatusRef, { status: "closed", closedBy: currentUser?._id });
+  const returnItem = () => {
+    try {
+      deleteLostItemById(String(currentLostItem?._id));
+      deleteFoundItemById(String(currentFoundItem?._id));
+      router.push("/home");
+    } catch {
+      console.log("error delete");
+    }
   };
 
-  const handleConfirmYes = async () => {
-    const chatRef = ref(database, `chats/${roomId}`);
-    await remove(chatRef); // מסיר את הצ'אט מה-DB
-    router.push("/foundItems-list"); // מעבר לדף אחר (למשל דף תודה)
-  };
-
-  const handleConfirmNo = () => {
-    blockItemForUser();
-    setIsModalOpen(false);
-    router.push("/foundItems-list");
-  };
+  console.log("message", messages);
 
   return (
-    <div className="w-full">
+    <div className="relative w-full h-full">
       <div className="space-y-2">
         {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`flex ${
-              message.senderId === String(currentUser?._id)
-                ? "justify-end"
-                : "justify-start"
-            }`}
-          >
+          <>
             <div
-              className={`p-3 rounded-lg ${
+              key={index}
+              className={`flex ${
                 message.senderId === String(currentUser?._id)
-                  ? "bg-primary text-left"
-                  : "bg-gray-300 text-right"
+                  ? "justify-end"
+                  : "justify-start"
               }`}
             >
-              <span className="text-sm text-gray-600 mb-1">
-                {new Date(message.timestamp).toLocaleTimeString("he-IL", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-              <p>{message.text}</p>
+              <div
+                className={`p-3 rounded-lg ${
+                  message.senderId === String(currentUser?._id)
+                    ? "bg-primary text-left"
+                    : "bg-gray-300 text-right"
+                }`}
+              >
+                <span className="text-sm text-gray-600 mb-1">
+                  {new Date(message.timestamp).toLocaleTimeString("he-IL", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+                <p>{message.text}</p>
+              </div>
             </div>
-          </div>
+          </>
         ))}
       </div>
-      <div className="flex gap-x-4 mt-6">
-        <button onClick={handleCloseChat} className="secondary-btn">
-          סיים צ&apos;אט
-        </button>
+
+      <div   className="fixed bottom-0 left-0 w-full z-10 bg-white flex items-center gap-x-4 px-4 py-2 shadow-lg"
+>
+        {userLost == String(currentUser?._id)&& (
+          <div className="flex gap-x-4">
+            <NotMineButton />
+            <button
+              className="flex justify-between  primary-btn  text-white"
+              onClick={returnItem}
+            >
+              {" "}
+              הפריט הוחזר
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-6"
+              >
+                <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
+              </svg>
+            </button>
+          </div>
+        )}
         <input
           type="text"
           value={newMessage}
@@ -144,34 +148,6 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
           </svg>
         </button>
       </div>
-
-      {/* Modal for the user who closed the chat (asking if the lost item was returned) */}
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
-        className="flex flex-col items-center justify-center bg-white p-12 rounded shadow-lg max-w-sm mx-auto"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-      >
-        <h2 className="text-lg font-bold mb-8">האם האבדה הושבה?</h2>
-        <div className="flex gap-4">
-          <button onClick={handleConfirmYes} className="primary-btn">
-            כן
-          </button>
-          <button onClick={handleConfirmNo} className="secondary-btn">
-            לא
-          </button>
-        </div>
-      </Modal>
-
-      {/* Modal for the other user who is notified that the chat was closed */}
-      <Modal
-        isOpen={showModal}
-        onRequestClose={() => setShowModal(false)}
-        className="flex flex-col items-center justify-center bg-white p-8 rounded-lg shadow-xl max-w-md mx-auto border-8 border-primary"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-      >
-        <h2 className="text-xl font-bold mb-4 text-center">אופס! הצ&apos;אט נסגר</h2>
-      </Modal>
     </div>
   );
 };

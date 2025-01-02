@@ -22,6 +22,10 @@ export const checkIfPointInsideCircle = (
     circle: Circle,
     position: Postion
 ) => {
+    console.log("circle",circle);
+    console.log("PoPostion",position);
+    
+    
     // Compute distance from position to circle center
     const distance = computeDistance(circle.center, position);
 
