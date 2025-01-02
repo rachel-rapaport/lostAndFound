@@ -15,7 +15,9 @@ import Map from "../form/Map";
 import { LostItemSchema } from "@/app/schemas/lostItemSchema";
 import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
 import categoryStore from "@/app/store/categoryStore";
-import analyzeTextWithModel from "@/app/utils/NERmodel";
+// import analyzeTextWithModel from "@/app/utils/NERmodel";
+import axios from "axios";
+import Token from "@/app/types/NER-model/token";
 
 const LostForm = () => {
   const [, setSelectedCategory] = useState<string>("");
@@ -83,6 +85,25 @@ const LostForm = () => {
     }
   };
 
+  const analyzeTextWithModel = async (sentence: string) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_RAILWAY_URL}/analyze`,
+        {
+          text: sentence,
+        }
+      );
+      const nouns: string = response.data.embeddings[0].tokens
+        .filter((token: Token) => token.morph.pos === "NOUN")
+        .map((token: Token) => token.lex)
+        .join(",");
+      return nouns;
+    } catch (error) {
+      console.error("Error:", error);
+      return null;
+    }
+  };
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,8 +114,7 @@ const LostForm = () => {
       currentCategory?.title === "שונות"
         ? await analyzeTextWithModel(selectedSubCategory)
         : selectedSubCategory;
-        console.log(analyzedSubCategory);
-        
+    console.log(analyzedSubCategory);
 
     const lostItem = {
       _id: new Types.ObjectId(),
@@ -113,9 +133,9 @@ const LostForm = () => {
     };
 
     try {
-      console.log("lost from form",lostItem);
-      if (!currentCategory ) return;
-      const newListItem = await createLostItem(lostItem,currentCategory);
+      console.log("lost from form", lostItem);
+      if (!currentCategory) return;
+      const newListItem = await createLostItem(lostItem, currentCategory);
       setCurrentLostItem(newListItem);
       router.push("/foundItems-list");
     } catch (error) {
