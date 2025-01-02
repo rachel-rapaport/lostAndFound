@@ -1,6 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
+// import
+//  analyzeTextWithModel
+// ,
+// { analyzeTextAndLog }
+// from "../utils/NERmodel";
+
+//
 import analyzeTextWithModel from "../utils/NERmodel";
+// import Token from "../types/NER-model/token";
 // import NERmodel from "../utils/NERmodel";
 
 // import userStore from "../store/userStore";
@@ -13,12 +22,24 @@ import analyzeTextWithModel from "../utils/NERmodel";
 // import useUserStore from "../store/userStore";
 
 const Homepage = () => {
-  const sentence = " ילד אוכל בננה"; 
-  analyzeTextWithModel(sentence).then((result) => {
-    if (result) {
-      console.log("Analysis Result:", result);
-    }
-  });
+  // (async () => {
+  //   const sentence = "ילד אוכל בננה";
+  //   await analyzeTextAndLog(sentence);
+  // })();
+
+  useEffect(() => {
+    const analyzeText = async () => {
+      const sentence = "ילד אוכל בננה";
+      const result = await analyzeTextWithModel(sentence);
+      
+
+      console.log(result);
+      // console.log(nouns);
+    };
+
+    analyzeText();
+  }, []); // Add dependencies if needed
+
   // const router = useRouter();
 
   // const { currentUser } = useUserStore();

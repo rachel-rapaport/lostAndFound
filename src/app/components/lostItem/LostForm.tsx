@@ -14,6 +14,8 @@ import lostItemStore from "../../store/lostItemStore";
 import Map from "../form/Map";
 import { LostItemSchema } from "@/app/schemas/lostItemSchema";
 import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
+import categoryStore from "@/app/store/categoryStore";
+import analyzeTextWithModel from "@/app/utils/NERmodel";
 
 const LostForm = () => {
   const [, setSelectedCategory] = useState<string>("");
@@ -29,6 +31,7 @@ const LostForm = () => {
     city: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const currentCategory = categoryStore((state) => state.currentCategory);
   const currentUser = userStore((state) => state.user);
   const setCurrentLostItem = lostItemStore((state) => state.setCurrentLostItem);
   const router = useRouter();
@@ -86,9 +89,16 @@ const LostForm = () => {
 
     if (!validateLostItem()) return;
 
+    const analyzedSubCategory =
+      currentCategory?.title === "שונות"
+        ? await analyzeTextWithModel(selectedSubCategory)
+        : selectedSubCategory;
+        console.log(analyzedSubCategory);
+        
+
     const lostItem = {
       _id: new Types.ObjectId(),
-      subCategoryId: selectedSubCategory,
+      subCategoryId: analyzedSubCategory ? analyzedSubCategory : "",
       colorId: selectedColor,
       userId: String(currentUser?._id),
       circles: selectedLocation === "map" ? circles : null,
@@ -103,7 +113,9 @@ const LostForm = () => {
     };
 
     try {
-      const newListItem = await createLostItem(lostItem);
+      console.log("lost from form",lostItem);
+      if (!currentCategory ) return;
+      const newListItem = await createLostItem(lostItem,currentCategory);
       setCurrentLostItem(newListItem);
       router.push("/foundItems-list");
     } catch (error) {
@@ -123,12 +135,32 @@ const LostForm = () => {
                 <CategoriesSelect onSelect={setSelectedCategory} />
               </div>
               <div>
-                <h3 className="section-title">תת-קטגוריה</h3>
-                <SubCategoriesSelect onSelect={setSelectedSubCategory} />
-                {errors.subCategoryId && (
-                  <p className="error-message">{errors.subCategoryId}</p>
+                {currentCategory?.title !== "שונות" ? (
+                  <>
+                    <h3 className="section-title">תת-קטגוריה</h3>
+                    <SubCategoriesSelect onSelect={setSelectedSubCategory} />
+                    {errors.subCategoryId && (
+                      <p className="error-message">{errors.subCategoryId}</p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <h3 className="section-title">
+                      הכנס תיאור ענייני של הפריט האבוד:{" "}
+                    </h3>
+                    <input
+                      type="text"
+                      placeholder="הכנס תיאור "
+                      className="block w-full px-3 py-2 border border-primary rounded-md shadow-sm focus:ring-primary sm:text-sm"
+                      onChange={(e) => setSelectedSubCategory(e.target.value)}
+                    />
+                    {errors.subCategoryId && (
+                      <p className="error-message">{errors.subCategoryId}</p>
+                    )}
+                  </>
                 )}
               </div>
+
               <div>
                 <h3 className="section-title">צבע</h3>
                 <ColorSelect onSelect={setSelectedColor} />

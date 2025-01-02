@@ -4,42 +4,40 @@ import SubCategoryModel from "@/app/lib/models/subCategory";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-
 //get category by id
 export async function GET(request: NextRequest) {
+  console.log("in api get category by id");
+  
   try {
     await connect();
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
+    console.log("from categpry get by id api", id);
 
     if (!id) {
-      return NextResponse.json(
-        { message: "ID is missing" },
-        { status: 400 }
-      )
+      return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
 
     //populate data from nested objects
     const data = await CategoryModel.aggregate([
       {
-        $match: { _id: new mongoose.Types.ObjectId(id) }
+        $match: { _id: new mongoose.Types.ObjectId(id) },
       },
       {
         $lookup: {
-          from: 'subcategories',
-          localField: 'subCategories',
-          foreignField: '_id',
-          as: 'subCategories'
-        }
+          from: "subcategories",
+          localField: "subCategories",
+          foreignField: "_id",
+          as: "subCategories",
+        },
       },
       {
         $project: {
-          subCategories: { _id: 1, title: 1 }
-        }
-      }
+          subCategories: { _id: 1, title: 1 },
+        },
+      },
     ]);
-
 
     if (!data) {
       return NextResponse.json(
@@ -52,7 +50,6 @@ export async function GET(request: NextRequest) {
       { message: "Category was successfully fetched", data: data },
       { status: 200 }
     );
-
   } catch (error) {
     return NextResponse.json(
       { message: "Error fetching category", error: error },
@@ -71,20 +68,20 @@ export async function PUT(request: NextRequest) {
     const id = url.pathname.split("/").pop();
 
     if (!id) {
-      return NextResponse.json(
-        { message: "ID is missing" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
 
     const { title } = await request.json();
-    const categoryToUpdate = await CategoryModel.findByIdAndUpdate(id, { title: title }, { new: true, runValidators: true });
+    const categoryToUpdate = await CategoryModel.findByIdAndUpdate(
+      id,
+      { title: title },
+      { new: true, runValidators: true }
+    );
 
     return NextResponse.json(
       { message: "Category was updated successfully", data: categoryToUpdate },
       { status: 200 }
     );
-
   } catch (error) {
     return NextResponse.json(
       { message: "Error updating category", error: error },
@@ -102,10 +99,7 @@ export async function DELETE(request: NextRequest) {
     const id = url.pathname.split("/").pop();
 
     if (!id) {
-      return NextResponse.json(
-        { message: "ID is missing" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
 
     const categoryToDelete = await CategoryModel.findByIdAndDelete(id);
@@ -127,7 +121,6 @@ export async function DELETE(request: NextRequest) {
       { message: "Category was successfully deleted", data: categoryToDelete },
       { status: 200 }
     );
-
   } catch (error) {
     return NextResponse.json(
       { message: "Error deleting category", error: error },
@@ -135,4 +128,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-

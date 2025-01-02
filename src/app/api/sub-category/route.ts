@@ -68,13 +68,13 @@ export async function POST(request: NextRequest) {
         await connect();
 
         const body = await request.json();
-        if (!await CategoryModel.exists({ _id: body.categoryId })) {
+        if (!await CategoryModel.exists({ _id: body.categoryId._id })) {
             return NextResponse.json({ message: "Invalid categoryId: Category does not exist" }, { status: 400 });
         }
         const newSubCategory = await SubCategoryModel.create(body);
         // Adds the new subcategory to the selected category's subcategory list
         await CategoryModel.findByIdAndUpdate(
-            body.categoryId,
+            body.categoryId._id,
             { $push: { "subCategories": newSubCategory._id } },
             { new: true }
         );

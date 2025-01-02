@@ -10,10 +10,13 @@ import userStore from "@/app/store/userStore";
 
 const FoundItemsList = () => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);
-  const filteredFoundItems = useFoundItemStore((state) => state.filteredFoundItems);
-  const setFilteredFoundItems = useFoundItemStore((state) => state.setFilteredFoundItems);
+  const filteredFoundItems = useFoundItemStore(
+    (state) => state.filteredFoundItems
+  );
+  const setFilteredFoundItems = useFoundItemStore(
+    (state) => state.setFilteredFoundItems
+  );
   const currentUser = userStore((state) => state.user);
-
   const fetchFoundItems = async () => {
     if (currentLostItem) {
       try {
@@ -33,7 +36,6 @@ const FoundItemsList = () => {
   useEffect(() => {
     fetchFoundItems();
   }, [currentLostItem, setFilteredFoundItems]);
-
 
   return (
     <div className="flex flex-wrap gap-4 justify-start">
