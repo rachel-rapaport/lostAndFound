@@ -48,16 +48,18 @@ const ThankForm = () => {
     }
 
     return (
-        <div className=' flex flex-col text-center w-[50%] mx-auto min-h-[70vh] justify-center'>
+        <div className=' flex flex-col text-center w-[28%] mx-auto min-h-[70vh] justify-center'>
             <div className='pb-[3vh]'>
                 <h1>נהנית מהשירות שלנו? נמצאה אבידתך?</h1>
                 <strong className='font-semibold'>נשמח שתספר כאן, ונפרסם באתר :)</strong>
             </div>
             <form onSubmit={handleSubmit} className='flex flex-col items-center gap-10'>
-                <textarea rows={6} cols={50} maxLength={maxNumOfChars} name="thank" value={formData.thank} onChange={(e) => handleChange(e.target.value)} className="border border-gray-300 p-2 rounded-md"></textarea>
-                <p>{numOfChars}/{maxNumOfChars}</p>
-                {errors.thank && <p className="error-message">{errors.thank}</p>}
-                <div className='w-[50%] flex justify-between'>
+                <textarea rows={7} cols={50} maxLength={maxNumOfChars} name="thank" value={formData.thank} onChange={(e) => handleChange(e.target.value)} className="border border-gray-300 p-2 rounded-md"></textarea>
+                <div className='flex flex-row w-full justify-between' dir='ltr'>
+                    <p>{numOfChars}/{maxNumOfChars}</p>
+                    {errors.thank && <p className="error-message">{errors.thank}</p>}
+                </div>
+                <div className='w-full flex justify-between'>
                     <button type="submit" className='primary-btn'>שלח</button>
                     <button type="button" className='secondary-btn' onClick={() => router.push('/home')}>מעדיף שלא</button>
                 </div>
