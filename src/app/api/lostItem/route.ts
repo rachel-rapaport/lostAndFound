@@ -5,10 +5,7 @@ import SubCategoryModel from "@/app/lib/models/subCategory";
 import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 import UserModel from "@/app/lib/models/user";
 import mongoose, { Types } from "mongoose";
-// import { getCategoryStore } from "@/app/store/categoryStore";
 import { SubCategory } from "@/app/types/props/subCategory";
-// import CategoryModel from "@/app/lib/models/category";
-import { createSubCategory } from "@/app/services/api/subcategoryService";
 
 //get all lost items
 export async function GET() {

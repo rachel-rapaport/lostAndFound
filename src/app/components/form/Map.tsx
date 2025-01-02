@@ -87,7 +87,7 @@ const Map: React.FC<{
     if (googleLoaded) {
       getUserLocation();
     }
-  }, [googleLoaded, getUserLocation]);
+  }, [googleLoaded]);
 
   return (
     <div>

@@ -66,7 +66,7 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
 
       }
     });
-  }, [roomId]);
+  }, [roomId,currentUser?._id]);
   console.log(currentUser?._id);
   const sendMessage = () => {
     if (!newMessage.trim()) return;

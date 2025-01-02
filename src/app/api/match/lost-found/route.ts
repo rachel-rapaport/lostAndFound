@@ -6,7 +6,6 @@ import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
 import { FoundItem } from "@/app/types/props/foundItem";
 // import { getVercelUrl } from "@/app/utils/vercelUrl";
 import FoundItemModel from "@/app/lib/models/foundItem";
-import { string } from "zod";
 
 export async function POST(request: NextRequest) {
   // const vercelUrl = getVercelUrl(request);
