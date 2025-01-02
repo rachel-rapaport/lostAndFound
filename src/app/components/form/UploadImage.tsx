@@ -23,7 +23,7 @@ const UploadImage: React.FC<{ setImage: (image: string) => void }> = ({ setImage
                     <button
                         type="button"
                         onClick={() => open()}
-                        className="secondary-btn"
+                        className="primary-btn"
                     >
                         העלה תמונה של הפריט
                     </button>

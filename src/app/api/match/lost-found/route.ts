@@ -17,6 +17,9 @@ export async function POST(request: NextRequest) {
 
     const lostItem = await request.json();
 
+    console.log("lost",lostItem);
+    
+
     const foundItems = await FoundItemModel.aggregate([
       {
         $lookup: {
@@ -104,6 +107,7 @@ export async function POST(request: NextRequest) {
     // Filter the found items based on the lost item properties and geographic matching
     const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
       //filter by category and color.
+
       const matchesQuery =
         String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId) &&
         String(lostItem.subCategoryId._id) === String(foundItem.subCategoryId._id);

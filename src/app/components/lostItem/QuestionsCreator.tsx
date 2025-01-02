@@ -37,7 +37,7 @@ const QuestionsCreator: React.FC<{ questions: Question[]; setQuestions: (questio
         }
 
         return (
-            <div className='flex flex-col w-[50%] mx-auto justify-center items-center'>
+            <div className='flex flex-col  mx-auto justify-start items-start p-4 border-2 border-primary rounded-lg'>
                 <strong className='font-semibold pb-12'>כתוב סימנים עבור אימות מול המאבד לגבי הפריט שמצאת: </strong>
                 {questions && <div className='flex flex-col w-full gap-10'>
                     {[...Array(questions.length)].map((_, questionIndex) => (

@@ -8,8 +8,8 @@ const UserSchema: Schema<User> = new Schema({
     password: { type: String, required: true },
     phone: { type: String, required: true },
     lostItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "LostItem" }],
-    foundItems: [{ type: String }],
-    blockedItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FoundItem" }],
+    foundItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "FoundItem" }],
+    blockedItems: [{ type: String }],
     alerts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Alert" }],
     chatRooms: [{ type: ChatSchema, _id: false }],
 });

@@ -76,7 +76,6 @@ export async function GET() {
           'userId.password': 1,
           'userId.phone':1,
           circles: 1,
-          image: 1,
           publicTransport: {
             _id: '$publicTransport._id',
             city: '$publicTransport.city',
@@ -109,6 +108,9 @@ export async function POST(req: NextRequest) {
     await connect();
 
     const body = await req.json();
+
+    console.log("inn api",body);
+    
 
     // Validate that the sub-category exists in the database
     if (!await SubCategoryModel.exists({ _id: body.subCategoryId })) {
@@ -222,7 +224,7 @@ export async function POST(req: NextRequest) {
   }
   catch (error) {
     return NextResponse.json(
-      { message: "Error creating lost item", error: error },
+      { message: "Error creating lost item", error: error.message },
       { status: 500 }
     );
   }
