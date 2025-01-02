@@ -41,11 +41,6 @@ body {
   @apply text-red-500 text-sm h-[20px];
 }
 
-/* hr */
-.hr {
-  @apply w-[calc(100%-20px)] border-[#EAEAEA] border-[0.5px];
-}
-
 /* select */
 .react-select__option--is-focused,
 .react-select__option--is-selected {
