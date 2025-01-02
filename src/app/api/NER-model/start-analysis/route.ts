@@ -1,4 +1,5 @@
 // locally great vercel nooooooooo
+import { getVercelUrl } from "@/app/utils/vercelUrl";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,10 +9,12 @@ const railwayUrl = process.env.NEXT_PUBLIC_RAILWAY_URL;
 
 export async function POST(request: NextRequest) {
   try {
+    const vercelUrl = getVercelUrl(request);
     const { text } = await request.json(); // Parse the body content from the request
     const response = await axios.post(`${railwayUrl}/analyze`, {
       text,
-    });    
+      vercelUrl,
+    });
     return NextResponse.json(response.data); // Send the response data back
   } catch (error: unknown) {
     console.log("Error during analysis:", error); // Detailed logging of the error
@@ -23,7 +26,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-
 // option 2 polling
 // import Result from "@/app/types/NER-model/result";
 // import axios from "axios";
@@ -34,7 +36,6 @@ export async function POST(request: NextRequest) {
 // const railwayUrl = process.env.NEXT_PUBLIC_RAILWAY_URL;
 // const taskStatuses: Record<string, { status: string; result?: Result }> = {};
 
-
 // export async function POST(request: NextRequest) {
 //   try {
 //     const { text } = await request.json();
@@ -42,8 +43,6 @@ export async function POST(request: NextRequest) {
 //     const taskId = Math.random().toString(36).substr(2, 9);
 
 //     taskStatuses[taskId] = { status: "Processing" };
-
-
 
 //     // Send the request to Railway to start the analysis (fire and forget)
 //     axios.post(`${railwayUrl}/analyze`, { text })
@@ -70,15 +69,13 @@ export async function POST(request: NextRequest) {
 // //     // Simulate asynchronous behavior, e.g., waiting for a result via webhook or file, etc.
 // //     await new Promise(resolve => setTimeout(resolve, 60000));  // Wait for 60 seconds
 // //     console.log(`Task with Job ID has completed. Logging result...`);
-    
-    
+
 // //     console.log("Final result for job ID", jobId);
-    
+
 // //   } catch (error) {
 // //     console.error('Error while logging task result:', error);
 // //   }
 // // }
-
 
 // option 1 - call back
 
@@ -86,8 +83,7 @@ export async function POST(request: NextRequest) {
 // import { NextRequest, NextResponse } from "next/server";
 
 // const railwayUrl = process.env.NEXT_PUBLIC_RAILWAY_URL;
-// const webhookUrl = process.env.NEXT_PUBLIC_WEBHOOK_URL; 
-
+// const webhookUrl = process.env.NEXT_PUBLIC_WEBHOOK_URL;
 
 // export async function POST(request: NextRequest) {
 //   try {

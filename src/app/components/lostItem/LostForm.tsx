@@ -111,7 +111,7 @@ const LostForm = () => {
 
     if (!validateLostItem()) return;
 
-    const analyzedSubCategory =
+    const  analyzedSubCategory = await 
       currentCategory?.title === "שונות"
         ? await analyzeTextWithModel(selectedSubCategory)
         : selectedSubCategory;
