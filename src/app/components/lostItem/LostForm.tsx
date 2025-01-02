@@ -91,7 +91,8 @@ const LostForm = () => {
         `${process.env.NEXT_PUBLIC_RAILWAY_URL}/analyze`,
         {
           text: sentence,
-        }
+        },
+        { timeout: 20000 }
       );
       const nouns: string = response.data.embeddings[0].tokens
         .filter((token: Token) => token.morph.pos === "NOUN")
@@ -99,7 +100,7 @@ const LostForm = () => {
         .join(",");
       return nouns;
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error from analyze sending:", error.message);
       return null;
     }
   };
