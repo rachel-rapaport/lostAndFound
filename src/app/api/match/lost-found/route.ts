@@ -90,69 +90,77 @@ export async function POST(request: NextRequest) {
         },
       },
     ]);
-const lostItem = lostItemCheckMatch.lostItem
-const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
-  console.log("Processing found item:", foundItem);
 
-  // Color Matching
-  const colorMatches =
-    lostItem.colorId?.groupId &&
-    foundItem.colorId?.groupId &&
-    String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
-  console.log("Color match:", colorMatches);
+    const lostItem = lostItemCheckMatch.lostItem;
 
-  let matchesQuery = false;
+    const normalizeId = (id: any) => (id ? String(id).trim() : null);
 
-  // Subcategory Logic
-  const normalizedCategoryId = String(lostItem.categoryId).trim();
-  if (normalizedCategoryId === "6756e2418b5ba2d221f44afb") {
-    const lostSubCategoryTitles = lostItem.subCategoryId?.title
-      ? lostItem.subCategoryId.title.split(",").map((title:string) => title.trim())
-      : [];
-    const foundSubCategoryTitles = foundItem.subCategoryId?.title
-      ? foundItem.subCategoryId.title.split(",").map((title) => title.trim())
-      : [];
-    console.log("Lost subcategory titles:", lostSubCategoryTitles);
-    console.log("Found subcategory titles:", foundSubCategoryTitles);
+    const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
+      console.log("Processing found item:", foundItem);
 
-    matchesQuery =
-      colorMatches &&
-      lostSubCategoryTitles.some((lostWord:string) =>
-        foundSubCategoryTitles.includes(lostWord)
-      );
-  } else {
-    const subCategoryMatches =
-      lostItem.subCategoryId?._id &&
-      foundItem.subCategoryId?._id &&
-      String(lostItem.subCategoryId._id) === String(foundItem.subCategoryId._id);
-    matchesQuery = colorMatches && subCategoryMatches;
-  }
-  console.log("Matches query after subcategory checks:", matchesQuery);
+      // Color Matching
+      const colorMatches =
+        normalizeId(lostItem.colorId?.groupId) ===
+        normalizeId(foundItem.colorId?.groupId);
+      console.log("Color match:", colorMatches);
 
-  // Location/Public Transport Filtering
-  if (matchesQuery) {
-    if (lostItem.circles && Array.isArray(lostItem.circles)) {
-      console.log("Lost item circles:", lostItem.circles);
-      console.log("Found item position:", foundItem.postion);
-      return lostItem.circles.some((circle: Circle) =>
-        checkIfPointInsideCircle(circle, foundItem.postion)
-      );
-    } else if (lostItem.publicTransport && foundItem.publicTransport) {
-      const pt = foundItem.publicTransport;
-      console.log("Lost item public transport:", lostItem.publicTransport);
-      console.log("Found item public transport:", pt);
-      return (
-        pt.typePublicTransportId?._id &&
-        String(pt.typePublicTransportId._id) ===
-          String(lostItem.publicTransport.typePublicTransportId?._id) &&
-        pt.city === lostItem.publicTransport.city &&
-        pt.line === lostItem.publicTransport.line
-      );
-    }
-  }
+      let matchesQuery = false;
 
-  return matchesQuery;
-});
+      // Subcategory Logic
+      const normalizedCategoryId = normalizeId(lostItem.categoryId);
+      if (normalizedCategoryId === "6756e2418b5ba2d221f44afb") {
+        const lostSubCategoryTitles = lostItem.subCategoryId?.title
+          ? lostItem.subCategoryId.title
+              .split(",")
+              .map((title: string) => title.trim().toLowerCase())
+          : [];
+        const foundSubCategoryTitles = foundItem.subCategoryId?.title
+          ? foundItem.subCategoryId.title
+              .split(",")
+              .map((title) => title.trim().toLowerCase())
+          : [];
+        console.log("Lost subcategory titles:", lostSubCategoryTitles);
+        console.log("Found subcategory titles:", foundSubCategoryTitles);
+
+        matchesQuery =
+          colorMatches &&
+          lostSubCategoryTitles.some((lostWord: string) =>
+            foundSubCategoryTitles.includes(lostWord)
+          );
+      } else {
+        const subCategoryMatches =
+          normalizeId(lostItem.subCategoryId?._id) ===
+          normalizeId(foundItem.subCategoryId?._id);
+        matchesQuery = colorMatches && subCategoryMatches;
+      }
+      console.log("Matches query after subcategory checks:", matchesQuery);
+
+      // Location/Public Transport Filtering
+      if (matchesQuery) {
+        if (lostItem.circles && Array.isArray(lostItem.circles)) {
+          console.log("Lost item circles:", lostItem.circles);
+          console.log("Found item position:", foundItem.postion);
+          return (
+            foundItem.postion &&
+            lostItem.circles.some((circle: Circle) =>
+              checkIfPointInsideCircle(circle, foundItem.postion)
+            )
+          );
+        } else if (lostItem.publicTransport && foundItem.publicTransport) {
+          const pt = foundItem.publicTransport;
+          console.log("Lost item public transport:", lostItem.publicTransport);
+          console.log("Found item public transport:", pt);
+          return (
+            normalizeId(pt.typePublicTransportId?._id) ===
+              normalizeId(lostItem.publicTransport.typePublicTransportId?._id) &&
+            pt.city === lostItem.publicTransport.city &&
+            pt.line === lostItem.publicTransport.line
+          );
+        }
+      }
+
+      return matchesQuery;
+    });
 
     return NextResponse.json(
       { message: "The filter was successfully applied", data: filteredFoundItems },
