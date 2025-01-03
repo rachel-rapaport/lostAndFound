@@ -6,6 +6,7 @@ import TypePublicTransportModel from "@/app/lib/models/typePublicTransport";
 import UserModel from "@/app/lib/models/user";
 import mongoose, { Types } from "mongoose";
 import { SubCategory } from "@/app/types/props/subCategory";
+import CategoryModel from "@/app/lib/models/category";
 
 //get all lost items
 export async function GET() {
@@ -150,6 +151,11 @@ export async function POST(req: NextRequest) {
         // const newSubCategory = await createSubCategory(newSubCategoryObj);
         const newSubCategory = await SubCategoryModel.create(newSubCategoryObj);
         console.log("newSubCategory", newSubCategory);
+        await CategoryModel.findByIdAndUpdate(
+          category._id,
+          { $push: { "subCategories": newSubCategory._id } },
+          { new: true }
+      );
 
         body = {
           ...body,
