@@ -28,6 +28,18 @@ const LoginForm = () => {
   const setUser = userStore((state) => state.setUser);
 
   useEffect(() => {
+    const redirectUrl = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("redirectUrl="))
+      ?.split("=")[1];
+
+    if (redirectUrl) {
+      // Redirect to the saved URL after successful login
+      router.push(redirectUrl);
+      document.cookie = "redirectUrl=; Max-Age=0"; // Clear the redirect URL cookie
+    } else {
+      router.push("/home");
+    }
     const clearData = () => {
       setFullName("");
       setEmail("");

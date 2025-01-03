@@ -35,29 +35,28 @@ export async function middleware(req: NextRequest) {
       }
     } catch (error) {
       console.error("Invalid token:", error);
-      // clear global store
-      console.log(userStore.getState().user);
 
+      // Clear global store and token on failure
       userStore.getState().clearUser();
       userStore.getState().setAlerts([]);
-      // Clear token and redirect to login
+
+      // Save the current URL before redirecting to login
       const res = NextResponse.redirect(new URL("/login", req.url));
+      res.cookies.set("redirectUrl", req.url); // Save the current URL in a cookie
       res.cookies.delete("token");
+
       return res;
     }
   } else {
     // If no token and not on the login page, redirect to login
-    // if (pathname !== "/login") {    
-      console.log(userStore.getState().user);
+    userStore.getState().clearUser();
+    userStore.getState().setAlerts([]);
 
-      userStore.getState().clearUser();
-      userStore.getState().setAlerts([]);
-      console.log(userStore.getState().user);
-
-      console.log("No token, redirecting to /login");
-      return NextResponse.redirect(new URL("/login", req.url));
-    // }
+    const res = NextResponse.redirect(new URL("/login", req.url));
+    res.cookies.set("redirectUrl", req.url); // Save the current URL in a cookie
+    return res;
   }
+
   if (pathname === "/login" && token) {
     console.log("Token exists, redirecting to /home");
     return NextResponse.redirect(new URL("/home", req.url));
@@ -73,8 +72,3 @@ export async function middleware(req: NextRequest) {
 
   return NextResponse.next();
 }
-
-// Configuring middleware to specific paths
-export const config = {
-  matcher: ["/((?!login|_next).*)"], // Exclude "/login" and Next.js static files
-};
