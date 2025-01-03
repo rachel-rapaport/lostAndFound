@@ -20,6 +20,8 @@ const FoundItemsList = () => {
   const fetchFoundItems = async () => {
     if (currentLostItem) {
       try {
+        console.log("sending to match from found match list", currentLostItem);
+        
         const found = await matchLostFound(currentLostItem);
         setFilteredFoundItems(found);
         setFilteredFoundItems(found);

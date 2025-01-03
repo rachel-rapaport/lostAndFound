@@ -110,19 +110,19 @@ export async function POST(request: NextRequest) {
         String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
       let matchesQuery = false;
 
-      // Check if the category is 3
+      // Check if the category is others
       if (
         String(lostItem.subCategoryId.categoryId) === "6756e2418b5ba2d221f44afb"
       ) {
-        // If category ID is 3, check for matching words in subcategory titles
+        // If category ID is others, check for matching words in subcategory titles
         const lostSubCategoryTitles = lostItem.subCategoryId.title
           .split(",")
           .map((title: string) => title.trim());
         const foundSubCategoryTitles = foundItem.subCategoryId.title
           .split(",")
           .map((title: string) => title.trim());
-        console.log("lost", lostSubCategoryTitles);
-        console.log("found", foundSubCategoryTitles);
+        console.log("lost from match api", lostSubCategoryTitles);
+        console.log("found from match api", foundSubCategoryTitles);
 
         // Return true if color matches and at least one word matches between subcategory titles
         matchesQuery =
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
             foundSubCategoryTitles.some((foundWord) => foundWord === lostWord)
           );
       } else {
-        // If category ID is not 3, use the original logic to compare subCategoryId._id
+        // If category ID is not others, use the original logic to compare subCategoryId._id
         const subCategoryMatches =
           String(lostItem.subCategoryId._id) ===
           String(foundItem.subCategoryId._id);
