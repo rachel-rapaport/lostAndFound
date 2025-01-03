@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
     await connect();
 
     const lostItem = await request.json();
+    console.log("lost item", lostItem);
 
     const foundItems = await FoundItemModel.aggregate([
       {
@@ -38,6 +39,17 @@ export async function POST(request: NextRequest) {
       },
       {
         $unwind: { path: "$subCategoryId", preserveNullAndEmptyArrays: true },
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "subCategoryId.categoryId", // Ensure that categoryId is populated
+          foreignField: "_id",
+          as: "category", // Create a new field to hold category information
+        },
+      },
+      {
+        $unwind: { path: "$category", preserveNullAndEmptyArrays: true }, // Correct path here
       },
       {
         $lookup: {
@@ -76,6 +88,10 @@ export async function POST(request: NextRequest) {
           subCategoryId: {
             _id: "$subCategoryId._id",
             title: "$subCategoryId.title",
+            categoryId: {
+              _id: "$category._id", // Correct path here
+              title: "$category.title",
+            },
           },
           colorId: 1,
           "userId._id": 1,
@@ -109,11 +125,15 @@ export async function POST(request: NextRequest) {
       const colorMatches =
         String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
       let matchesQuery = false;
+      console.log("match color", colorMatches);
+
+      // console.log("found item sub id",foundItem);
 
       // Check if the category is others
-      if (
-        String(lostItem.subCategoryId.categoryId) === "6756e2418b5ba2d221f44afb"
-      ) {
+      // console.log("lost before in filter", lostItem);
+      // console.log("id sub", lostItem.categoryId);
+
+      if (lostItem.categoryId === "6756e2418b5ba2d221f44afb") {
         // If category ID is others, check for matching words in subcategory titles
         const lostSubCategoryTitles = lostItem.subCategoryId.title
           .split(",")
