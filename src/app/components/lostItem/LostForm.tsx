@@ -111,11 +111,11 @@ const LostForm = () => {
 
     if (!validateLostItem()) return;
 
-    const  analyzedSubCategory =  
+    const analyzedSubCategory =
       currentCategory?.title === "שונות"
         ? await analyzeTextWithModel(selectedSubCategory)
         : selectedSubCategory;
-    console.log("analyzed sub category from lost form",analyzedSubCategory);
+    console.log("analyzed sub category from lost form", analyzedSubCategory);
 
     const lostItem = {
       _id: new Types.ObjectId(),
@@ -135,6 +135,8 @@ const LostForm = () => {
 
     try {
       console.log("lost from form", lostItem);
+      console.log("current category", currentCategory);
+
       if (!currentCategory) return;
       const newListItem = await createLostItem(lostItem, currentCategory);
       setCurrentLostItem(newListItem);
