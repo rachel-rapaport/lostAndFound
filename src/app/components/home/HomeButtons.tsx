@@ -5,16 +5,20 @@ const HomeButtons: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="flex justify-center gap-x-14 my-10">
+    <div className="flex flex-col sm:flex-row justify-center gap-y-5 sm:gap-x-14 my-10">
       {/* כפתור דיווח על אבידה */}
-      <button className="bg-primary font-extrabold text-xl py-6 px-16 rounded-full border-4 border-secondary shadow-2xl transform transition-all hover:shadow-[0_10px_25px_rgba(0,0,0,0.7)]"
-      onClick={()=> router.replace("/lost-item")}>
+      <button
+        className="bg-primary font-extrabold text-lg sm:text-xl py-4 sm:py-6 px-10 sm:px-16 rounded-full border-4 border-secondary shadow-2xl transform transition-all hover:shadow-[0_10px_25px_rgba(0,0,0,0.7)]"
+        onClick={() => router.push("/lost-item")}
+      >
         דיווח על אבידה
       </button>
 
       {/* כפתור דיווח על מציאה */}
-      <button className="bg-primary font-extrabold text-xl py-6 px-16 rounded-full border-4 border-secondary shadow-2xl transform transition-all hover:shadow-[0_10px_25px_rgba(0,0,0,0.7)]"
-      onClick={()=> router.replace("/found-item")}>
+      <button
+        className="bg-primary font-extrabold text-lg sm:text-xl py-4 sm:py-6 px-10 sm:px-16 rounded-full border-4 border-secondary shadow-2xl transform transition-all hover:shadow-[0_10px_25px_rgba(0,0,0,0.7)]"
+        onClick={() => router.push("/found-item")}
+      >
         דיווח על מציאה
       </button>
     </div>

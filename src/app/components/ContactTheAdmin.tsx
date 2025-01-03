@@ -65,8 +65,8 @@ const ContactTheAdmin = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className='flex w-[800px] min-h[300px] justify-between bg-secondary p-[50px] shadow-md'>
-            <div className='flex flex-col w-[80%]'>
+        <form onSubmit={handleSubmit} className='flex flex-col md:flex-row gap-6 w-full max-w-4xl mx-auto bg-secondary p-6 shadow-md'>
+            <div className='flex flex-col w-full gap-y-4'>
                 <input type="text" placeholder='שם מלא' name='name' value={formData.name} onChange={handleChange} className='contact-input' />
                 {errors.name && <p className='error-message'>{errors.name}</p>}
                 <input type="text" placeholder='אימייל' name='email' value={formData.email} onChange={handleChange} className='contact-input' />
@@ -74,12 +74,12 @@ const ContactTheAdmin = () => {
                 <input type="text" placeholder='היי, רציתי לפנות בנושא...' name='content' value={formData.content} onChange={handleChange} className='contact-input' />
                 {errors.content && <p className='error-message'>{errors.content}</p>}
             </div>
-            <button type='submit' className='flex bg-primary rounded-full h-[50px] min-w-[50px] self-end justify-center items-center' title='שלח'>
+            <button type='submit' className='flex bg-primary rounded-full h-[50px] min-w-[50px] self-end justify-center items-center w-full sm:w-auto'>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6 transform scale-x-[-1]">
                     <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
                 </svg>
             </button>
-        </form >
+        </form>
     )
 }
 

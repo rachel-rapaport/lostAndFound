@@ -10,7 +10,7 @@ const Video = () => {
   }, []);
 
   return (
-    <div className="relative flex justify-center top-1">
+    <div className="relative flex justify-center items-center w-full ">
       <video
         ref={videoRef}
         className="rounded-lg shadow-xl border-4 border-primary"

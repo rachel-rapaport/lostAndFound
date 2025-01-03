@@ -20,6 +20,8 @@ const ColorSelect: React.FC<{
     enabled: colorsFromStore === null,
   });
 
+  const [selectedColorId, setSelectedColorId] = React.useState<string | null>(null); // סטייט לצבע שנבחר
+
   // Update the store with fetched colors if the store doesn't already have them
   useEffect(() => {
     if (colors && colorsFromStore === null) {
@@ -35,17 +37,23 @@ const ColorSelect: React.FC<{
   // Determine the colors to display (from store or fetched data)
   const displayColors = colorsFromStore ?? colors;
 
+  const handleColorSelect = (colorId: string) => {
+    setSelectedColorId(colorId); // עדכון הסטייט עם הצבע שנבחר
+    onSelect(colorId); // קריאה לפונקציה שהועברה כפרופס
+  };
+
   return (
     <div className="p-4 border-2 border-primary rounded-lg">
       <div className="flex flex-wrap justify-center gap-6 mt-6">
         {displayColors.map((color: Color) => {
+          const isSelected = selectedColorId === String(color._id); // בדיקה אם הצבע הנוכחי נבחר
           const isSpecialColor =
-            String(color._id) === "00000000a165f3133be41d3b";
+            String(color._id) === "00000000a165f3133be41d3b"; // מזהה הצבע המיוחד
           return (
             <div
               key={String(color._id)}
-              className="flex flex-col items-center cursor-pointer hover:scale-105 "
-              onClick={() => onSelect(String(color._id))}
+              className="flex flex-col items-center cursor-pointer hover:scale-105"
+              onClick={() => handleColorSelect(String(color._id))}
             >
               {isSpecialColor ? (
                 <Image
@@ -55,12 +63,12 @@ const ColorSelect: React.FC<{
                     "https://res.cloudinary.com/dcsowksj2/image/upload/v1735118707/png-clipart-color-wheel-complementary-colors-primary-color-magenta-colours-miscellaneous-purple_bfvoue.png"
                   }
                   alt={color.name}
-                  className="w-12 h-12 rounded-full border-black border object-cover "
+                  className={`w-12 h-12 rounded-full border-black border object-cover ${isSelected ? "scale-125" : ""}`}
                 />
               ) : (
                 <div
                   style={{ backgroundColor: color.hexadecimal }}
-                  className="w-12 h-12 rounded-full border-black border"
+                  className={`w-12 h-12 rounded-full border-black border ${isSelected ? "scale-125" : ""}`}
                 />
               )}
               <span className="mt-2 text-center text-sm">{color.name}</span>

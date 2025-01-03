@@ -1,12 +1,12 @@
+import React from 'react';
 import LostForm from '@/app/components/lostItem/LostForm'
-import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <LostForm/>
+      <LostForm />
     </div>
   )
 }
 
-export default page
+export default page;

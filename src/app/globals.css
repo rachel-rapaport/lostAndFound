@@ -5,7 +5,7 @@
 
 *,
 body {
-  @apply font-fredoka;
+  @apply font-fredoka text-secondary;
 }
 
 .inner-body {
@@ -37,9 +37,6 @@ input{
 
 .disabled-btn {
   @apply btn bg-[#EAEAEA] text-[#B8B8B8] cursor-not-allowed font-fredoka;
-}
-.round-btn{
-  @apply flex bg-primary rounded-full h-[50px] min-w-[50px] self-end justify-center items-center;
 }
 
 /* error */
@@ -115,7 +112,7 @@ input:checked+label .indicator {
   @apply block;
 }
 
-.state:checked ~ .label .text {
+.state:checked~.label .text {
   @apply opacity-100;
 }
 
@@ -136,11 +133,11 @@ input:checked+label .indicator {
   @apply w-4 h-4 hidden rounded-full bg-primary;
 }
 
-.state:checked ~ .label .indicator::after {
+.state:checked~.label .indicator::after {
   @apply opacity-100 transition-opacity transition-transform duration-200 opacity-100 hover:opacity-50 ease-linear hover:ease-out transform hover:scale-105;
 }
 
-.state:focus ~ .label .text {
+.state:focus~.label .text {
   @apply opacity-100 transform translate-x-[8px];
 }
 
@@ -148,11 +145,11 @@ input:checked+label .indicator {
   @apply opacity-100 scale-105;
 }
 
-input:checked + label .indicator {
+input:checked+label .indicator {
   @apply block;
 }
 
-.state:checked ~ .label .text {
+.state:checked~.label .text {
   @apply opacity-100;
 }
 
@@ -181,5 +178,24 @@ input:checked + label .indicator {
   .animate-updown {
     animation: updown 1s ease-in-out infinite;
   }
+
+  /*  */
+  .chat-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  @media (min-width: 768px) {
+    .chat-container {
+      flex-wrap: nowrap; /* כל האלמנטים יישארו בשורה אחת */
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .chat-container {
+      flex-wrap: wrap; /* האלמנטים יסתדרו בשורות נפרדות */
+    }
+  }
+  
 
 

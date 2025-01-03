@@ -73,7 +73,7 @@ const QuestionsCreator: React.FC<{ questions: Question[]; setQuestions: (questio
                     ))}
                     <button
                         type="button"
-                        className={`flex text-white justify-center text-sm p-[5px] gap-2 rounded-md ${questions.length < maxNumOfQuestions ? 'bg-secondary' : 'bg-[#B8B8B8] cursor-not-allowed'}`}
+                        className={`flex justify-center text-sm p-[5px] gap-2 rounded-md ${questions.length < maxNumOfQuestions ? 'bg-primary' : 'bg-[#B8B8B8] cursor-not-allowed'}`}
                         onClick={addQuestion}
                         title='הוסף שאלה'
                     >

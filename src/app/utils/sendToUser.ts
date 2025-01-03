@@ -1,7 +1,7 @@
+import { createAlert } from '@/app/services/api/alertService';
+import { sendPhoneCall } from '@/app/services/api/phoneCallService';
+import { sendEmailToUser } from '@/app/services/api/sendEmailService';
 import { User } from '@/app/types/props/user';
-import { sendEmailToUser } from '../services/api/sendEmailService';
-import { createAlert } from '../services/api/alertService';
-import { sendPhoneCall } from '../services/api/phoneCallService';
 
 
 export const afterFilter = (user: User, status: string, link: string) => {
@@ -34,13 +34,13 @@ export const afterFilter = (user: User, status: string, link: string) => {
             sendEmailToUser(user.email, contentChat.subject, contentChat.htmlContent);
             doc = parser.parseFromString(contentChat.htmlContent, "text/html");
             sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
-            createAlert(String(user._id), contentChat.subject,link)
+            createAlert(String(user._id), contentChat.subject, link)
             break;
         case "foundItem":
             sendEmailToUser(user.email, contentItem.subject, contentItem.htmlContent);
             doc = parser.parseFromString(contentItem.htmlContent, "text/html");
             sendPhoneCall(user.phone, doc.body.textContent || doc.body.innerText)
-            createAlert(String(user._id), contentItem.subject,link)
+            createAlert(String(user._id), contentItem.subject, link)
     }
 }
 

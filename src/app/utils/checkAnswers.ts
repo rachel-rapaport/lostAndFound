@@ -1,7 +1,7 @@
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { blockItemForUser } from './blockItemForUser';
-import userStore from '../store/userStore';
-import useFoundItemStore from '../store/foundItemStore';
+import userStore from '@/app/store/userStore';
+import useFoundItemStore from '@/app/store/foundItemStore';
 
 export const checkAnswers = (answers: string[], router: AppRouterInstance) => {
 

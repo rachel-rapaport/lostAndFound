@@ -20,12 +20,26 @@ export async function GET() {
       {
         $project: {
           _id: 1,
-          title:1,
+          title: 1,
           subCategories: {
-            _id: 1,
-            title: 1
+            $map: {
+              input: {
+                $sortArray: {
+                  input: "$subCategories",
+                  sortBy: { title: 1 }
+                }
+              },
+              as: "subCategory",
+              in: {
+                _id: "$$subCategory._id",
+                title: "$$subCategory.title"
+              }
+            }
           }
         }
+      },
+      {
+        $sort: { title: 1 }
       }
     ]);
 

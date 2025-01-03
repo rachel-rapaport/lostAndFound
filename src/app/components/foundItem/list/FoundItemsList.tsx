@@ -45,7 +45,7 @@ const FoundItemsList = () => {
   }, [currentLostItem, setFilteredFoundItems]);
 
   return (
-    <div className="flex flex-wrap gap-4 justify-start">
+    <div className="flex flex-wrap gap-4 justify-center">
    {filteredFoundItems && filteredFoundItems.length > 0 ? (
     filteredFoundItems.map((item: FoundItem, index: number) => {
       const isBlocked =
@@ -65,7 +65,7 @@ const FoundItemsList = () => {
     })
   ) : (
     // תוכן חלופי במקרה שאין פריטים במערך
-    <div className="flex items-center justify-center mt-16">
+    <div className="flex items-center justify-center mt-16 left-0">
     <div className="text-center space-y-4 p-6">
       <h1 className="text-2xl font-bold"> 
            אופס!

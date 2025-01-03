@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getVercelUrl } from "@/app/utils/vercelUrl";
 import { getUserStore } from "@/app/store/userStore";
+import { getVercelUrl } from "@/app/utils/vercelUrl";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 

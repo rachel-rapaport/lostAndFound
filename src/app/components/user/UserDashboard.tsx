@@ -31,7 +31,7 @@ const UserDashboard: React.FC = () => {
     <div className="max-w-7xl mx-auto p-6 space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* User Info Section */}
-        <div className="col-span-1 bg-white p-6 rounded-lg shadow-md order-last lg:order-first">
+        <div className="col-span-1 p-6 rounded-lg  order-last lg:order-first">
           <h2 className="text-2xl font-semibold">פרטים אישיים:</h2>
           <div className="space-y-4 mt-4">
             <p>
@@ -59,7 +59,7 @@ const UserDashboard: React.FC = () => {
 
         <div className="col-span-2 space-y-6">
           {/* Lost Items Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className=" p-6 rounded-lg ">
             <h2 className="text-2xl font-semibold">פריטים שאבדו</h2>
             {currentUser?.lostItems && currentUser?.lostItems.length > 0 ? (
               <div className="space-y-4 mt-4">

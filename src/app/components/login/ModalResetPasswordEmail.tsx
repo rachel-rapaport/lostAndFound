@@ -3,7 +3,6 @@ import { z } from "zod";
 import { resetPasswordSchema } from "@/app/schemas/loginSchemaZod";
 import { getVercelUrlWithoutRequest } from "@/app/utils/vercelUrl";
 import { sendEmailForResetPassword } from "@/app/utils/sendToUser";
-
 interface PasswordResetModalProps {
   isOpen: boolean;
   onClose: () => void;

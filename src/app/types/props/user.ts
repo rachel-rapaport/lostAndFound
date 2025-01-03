@@ -14,5 +14,5 @@ export interface User {
     foundItems?: FoundItem[];
     blockedItems?: string[];
     alerts?: Alert[];
-    chatRooms? : Chat[]
+    chatRooms?: Chat[]
 }

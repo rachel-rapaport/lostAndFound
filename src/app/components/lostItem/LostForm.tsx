@@ -106,7 +106,7 @@ const LostForm = () => {
       const newListItem = await createLostItem(lostItem);
       // Set in store
       setCurrentLostItem(newListItem);
-      router.push("/foundItems-list");
+      router.replace("/foundItems-list");
     } catch (error) {
       console.error("Error submitting lost item:", error);
     }

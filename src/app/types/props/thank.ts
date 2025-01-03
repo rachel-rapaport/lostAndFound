@@ -1,5 +1,7 @@
-export interface Thank{
-    _id: string;
+import { Types } from "mongoose";
+
+export interface Thank {
+    _id?: Types.ObjectId;
     userName: string;
-    contect: string;
+    content: string;
 }
