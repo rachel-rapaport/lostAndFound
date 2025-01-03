@@ -1,115 +1,77 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { Types } from "mongoose";
-import { useRouter } from "next/navigation";
-import { z } from "zod";
-import PublicTransportation from "../form/PublicTransportation";
+'use client'
+import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
+import React, { useState } from "react";
 import CategoriesSelect from "../form/select/CategoriesSelect";
 import SubCategoriesSelect from "../form/select/SubCategoriesSelect";
 import ColorSelect from "../form/select/ColorSelect";
-import { Circle } from "../../types/props/circle";
-import userStore from "../../store/userStore";
-import { createLostItem } from "../../services/api/lostItemService";
-import lostItemStore from "../../store/lostItemStore";
-import Map from "../form/Map";
-import { LostItemSchema } from "@/app/schemas/lostItemSchema";
-import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
-import categoryStore from "@/app/store/categoryStore";
-// import analyzeTextWithModel from "@/app/utils/NERmodel";
+import PublicTransportation from "../form/PublicTransportation";
+import { Question } from "@/app/types/props/question";
+import UploadImage from "../form/UploadImage";
+import QuestionsCreator from "../lostItem/QuestionsCreator";
+import { Postion } from "@/app/types/props/postion";
+import Location from "../form/Location";
+import { Types } from "mongoose";
+import userStore from "@/app/store/userStore";
+import { createFoundItem } from "@/app/services/api/foundItemsService";
+import useFoundItemStore from "@/app/store/foundItemStore";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import Token from "@/app/types/NER-model/token";
+import categoryStore from "@/app/store/categoryStore";
 
-const LostForm = () => {
+
+const FoundItemForm = () => {
   const [, setSelectedCategory] = useState<string>("");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<
     "map" | "transport" | null
   >(null);
-  const [circles, setCircles] = useState<Circle[]>([]);
   const [transportData, setTransportData] = useState<PublicTransportRequest>({
     typePublicTransportId: "",
     line: "",
     city: "",
   });
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const currentCategory = categoryStore((state) => state.currentCategory);
+  const [location, setLocation] = useState<Postion>({
+    latitude: 0,
+    longitude: 0,
+  });
+  const [questions, setQuestions] = useState<Question[]>([
+    { question: "", answers: [""] },
+  ]);
+  const [image, setImage] = useState("");
+  const [description, setDescription] = useState("");
+
+  const setCurrentFoundItem = useFoundItemStore((state)=>state.setCurrentFoundItem)
   const currentUser = userStore((state) => state.user);
-  const setCurrentLostItem = lostItemStore((state) => state.setCurrentLostItem);
+  const currentCategory = categoryStore((state) => state.currentCategory);
+
   const router = useRouter();
 
-  // useEffect hook to clear errors when fields are updated
-  useEffect(() => {
-    if (selectedColor) {
-      setErrors((prevErrors) => ({ ...prevErrors, colorId: "" }));
-    }
-    if (selectedSubCategory) {
-      setErrors((prevErrors) => ({ ...prevErrors, subCategoryId: "" }));
-    }
-    if (circles.length > 0) {
-      setErrors((prevErrors) => ({ ...prevErrors, circles: "" }));
-    }
-    if (
-      transportData.city != "" &&
-      transportData.line != "" &&
-      transportData.typePublicTransportId != ""
-    ) {
-      setErrors((prevErrors) => ({ ...prevErrors, publicTransport: "" }));
-    }
-  }, [selectedColor, selectedSubCategory, circles, transportData]);
-
-  // Validation function for the lost item form using Zod schema
-  const validateLostItem = () => {
-    try {
-      LostItemSchema.parse({
-        subCategoryId: selectedSubCategory,
-        colorId: selectedColor,
-        selectedLocation,
-        circles: selectedLocation === "map" ? circles : undefined,
-        publicTransport:
-          selectedLocation === "transport" ? transportData : undefined,
-      });
-      setErrors({});
-      return true;
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const fieldErrors: { [key: string]: string } = {};
-        error.errors.forEach((e) => {
-          if (e.path.length) {
-            fieldErrors[e.path[0]] = e.message;
-          }
-        });
-        setErrors(fieldErrors);
-      }
-      return false;
-    }
-  };
 
   const analyzeTextWithModel = async (sentence: string) => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_RAILWAY_URL}/analyze`,
-        {
-          text: sentence,
-        },
-        { timeout: 40000 }
-      );
-      const nouns: string = response.data.embeddings[0].tokens
-        .filter((token: Token) => token.morph.pos === "NOUN")
-        .map((token: Token) => token.lex)
-        .join(",");
-      return nouns;
-    } catch (error) {
-      console.error("Error from analyze sending:", error.message);
-      return null;
-    }
-  };
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_RAILWAY_URL}/analyze`,
+          {
+            text: sentence,
+          },
+          { timeout: 40000 }
+        );
+        const nouns: string = response.data.embeddings[0].tokens
+          .filter((token: Token) => token.morph.pos === "NOUN")
+          .map((token: Token) => token.lex)
+          .join(",");
+        return nouns;
+      } catch (error) {
+        console.error("Error from analyze sending:", error.message);
+        return null;
+      }
+    };
 
-  // Handle form submission
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!validateLostItem()) return;
 
     const analyzedSubCategory =
       currentCategory?.title === "שונות"
@@ -117,12 +79,12 @@ const LostForm = () => {
         : selectedSubCategory;
     console.log("analyzed sub category from lost form", analyzedSubCategory);
 
-    const lostItem = {
+    const foundItem = {
       _id: new Types.ObjectId(),
       subCategoryId: analyzedSubCategory ? analyzedSubCategory : "",
       colorId: selectedColor,
       userId: String(currentUser?._id),
-      circles: selectedLocation === "map" ? circles : null,
+      postion: selectedLocation === "map" ? location : null,
       publicTransport:
         selectedLocation === "transport"
           ? {
@@ -131,15 +93,17 @@ const LostForm = () => {
               city: transportData.city,
             }
           : null,
+      descripition: description,
+      image: image,
+      questions: questions,
     };
 
-    try {
-      console.log("lost from form", lostItem);
+    console.log("in", foundItem);
 
-      if (!currentCategory) return;
-      const newListItem = await createLostItem(lostItem, currentCategory);
-      setCurrentLostItem(newListItem);
-      router.push("/foundItems-list");
+    try {
+      const newFoundItem = await createFoundItem(foundItem,currentCategory);
+      setCurrentFoundItem(newFoundItem)
+      router.push("/found-item-after")
     } catch (error) {
       console.error("Error submitting lost item:", error);
     }
@@ -148,7 +112,7 @@ const LostForm = () => {
   return (
     <div className="h-full overflow-y-auto no-scrollbar">
       <div className="m-4 h-full overflow-y-auto no-scrollbar">
-        <h2 className="text-3xl font-bold text-center mb-4">פריט אבוד</h2>
+        <h2 className="text-3xl font-bold text-center mb-4">פריט נמצא</h2>
         <form className="space-y-6 text-right" onSubmit={handleSubmit}>
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="w-full lg:w-1/3 space-y-6">
@@ -161,9 +125,9 @@ const LostForm = () => {
                   <>
                     <h3 className="section-title">תת-קטגוריה</h3>
                     <SubCategoriesSelect onSelect={setSelectedSubCategory} />
-                    {errors.subCategoryId && (
+                    {/* {errors.subCategoryId && (
                       <p className="error-message">{errors.subCategoryId}</p>
-                    )}
+                    )} */}
                   </>
                 ) : (
                   <>
@@ -176,22 +140,21 @@ const LostForm = () => {
                       className="block w-full px-3 py-2 border border-primary rounded-md shadow-sm focus:ring-primary sm:text-sm"
                       onChange={(e) => setSelectedSubCategory(e.target.value)}
                     />
-                    {errors.subCategoryId && (
+                    {/* {errors.subCategoryId && (
                       <p className="error-message">{errors.subCategoryId}</p>
-                    )}
+                    )} */}
                   </>
                 )}
               </div>
-
               <div>
                 <h3 className="section-title">צבע</h3>
                 <ColorSelect onSelect={setSelectedColor} />
-                {errors.colorId && (
+                {/* {errors.colorId && (
                   <p className="error-message">{errors.colorId}</p>
-                )}
+                )} */}
               </div>
             </div>
-            <div className="lg:w-2/3">
+            <div className="w-full lg:w-2/3 ">
               {selectedLocation === null && (
                 <div>
                   <h3 className="section-title">מיקום</h3>
@@ -208,12 +171,12 @@ const LostForm = () => {
                       onClick={() => setSelectedLocation("map")}
                       className="primary-btn w-full lg:w-auto"
                     >
-                      מיקום גאוגרפי
+                      מיקום
                     </button>
                   </div>
-                  {errors.selectedLocation && (
+                  {/* {errors.selectedLocation && (
                     <p className="error-message">{errors.selectedLocation}</p>
-                  )}
+                  )} */}
                 </div>
               )}
 
@@ -223,22 +186,47 @@ const LostForm = () => {
                     transportData={transportData}
                     setTransportData={setTransportData}
                   />
-                  {errors.publicTransport && (
+                  {/* {errors.publicTransport && (
                     <p className="error-message">{errors.publicTransport}</p>
-                  )}
+                  )} */}
                 </>
               )}
               {selectedLocation === "map" && (
                 <>
-                  <Map circles={circles} setCircles={setCircles} />
-                  {errors.circles && (
-                    <p className="error-message">{errors.circles}</p>
-                  )}
+                  <Location setLocation={setLocation} />
                 </>
               )}
+              <div className="pt-4">
+                <h3 className="section-title">תאור</h3>
+                <input
+                  type="text"
+                  placeholder="כתוב תיאור קצר על הפריט שמצאת"
+                  value={description}
+                  className="w-full h-9 form-input "
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+              <div className="pt-6">
+                <h3 className="section-title">תמונה</h3>
+                <UploadImage setImage={setImage} />
+              </div>
+              <div className="pt-6">
+                <h3 className="section-title">סימנים</h3>
+                {/* <button
+              type="button"
+              className="primary-btn"
+              onClick={handleScrollToQuestions} // פותח את המודל בלחיצה
+            >
+              הוסף סימנים
+            </button> */}
+
+                <QuestionsCreator
+                  questions={questions}
+                  setQuestions={setQuestions}
+                />
+              </div>
             </div>
           </div>
-
           <div className="flex flex-col items-center">
             <button type="submit" className="secondary-btn">
               שלח
@@ -250,4 +238,4 @@ const LostForm = () => {
   );
 };
 
-export default LostForm;
+export default FoundItemForm;

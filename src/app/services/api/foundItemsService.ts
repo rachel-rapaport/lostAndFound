@@ -1,3 +1,4 @@
+import { Category } from "@/app/types/props/category";
 import { FoundItem } from "../../types/props/foundItem";
 import axios from "axios";
 
@@ -39,9 +40,13 @@ export const getFoundItemById = async (id: string) => {
 // };
 
 // create new found item
-export const createFoundItem = async (foundItem: FoundItem) => {
+export const createFoundItem = async (foundItem: FoundItem,
+  currentCategory: Category) => {
   try {
-    const response = await axios.post("/api/foundItem", foundItem);
+    const response = await axios.post("/api/foundItem",  {
+      ...foundItem,
+      category: currentCategory, 
+    });
     return response.data;
   } catch (error) {
     console.log("Error creating foundItem:", error);
