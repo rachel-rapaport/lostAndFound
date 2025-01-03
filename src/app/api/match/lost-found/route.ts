@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
 
       // Subcategory Logic
       console.log("lost item categoryId:", lostItemCheckMatch.categoryId);
-      if (lostItem.lostItemCheckMatch === "6756e2418b5ba2d221f44afb") {
+      if (lostItemCheckMatch.categoryId === "6756e2418b5ba2d221f44afb") {
         const lostSubCategoryTitles = lostItem.subCategoryId?.title
           ? lostItem.subCategoryId.title
               .split(",")
