@@ -91,65 +91,68 @@ export async function POST(request: NextRequest) {
       },
     ]);
 const lostItem = lostItemCheckMatch.lostItem
-    const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
-      console.log("Found item:", foundItem);
+const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
+  console.log("Processing found item:", foundItem);
 
-      // Color Matching
-      const colorMatches =
-        lostItem.colorId?.groupId &&
-        foundItem.colorId?.groupId &&
-        String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
+  // Color Matching
+  const colorMatches =
+    lostItem.colorId?.groupId &&
+    foundItem.colorId?.groupId &&
+    String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
+  console.log("Color match:", colorMatches);
 
-      console.log("Color match:", colorMatches);
+  let matchesQuery = false;
 
-      let matchesQuery = false;
+  // Subcategory Logic
+  const normalizedCategoryId = String(lostItem.categoryId).trim();
+  if (normalizedCategoryId === "6756e2418b5ba2d221f44afb") {
+    const lostSubCategoryTitles = lostItem.subCategoryId?.title
+      ? lostItem.subCategoryId.title.split(",").map((title:string) => title.trim())
+      : [];
+    const foundSubCategoryTitles = foundItem.subCategoryId?.title
+      ? foundItem.subCategoryId.title.split(",").map((title) => title.trim())
+      : [];
+    console.log("Lost subcategory titles:", lostSubCategoryTitles);
+    console.log("Found subcategory titles:", foundSubCategoryTitles);
 
-      if (lostItem.categoryId === "6756e2418b5ba2d221f44afb") {
-        // Matching Subcategory Titles
-        const lostSubCategoryTitles = lostItem.subCategoryId?.title
-          ? lostItem.subCategoryId.title.split(",").map((title: string) => title.trim())
-          : [];
-        const foundSubCategoryTitles = foundItem.subCategoryId?.title
-          ? foundItem.subCategoryId.title.split(",").map((title: string) => title.trim())
-          : [];
-        matchesQuery =
-          colorMatches &&
-          lostSubCategoryTitles.some((lostWord: string) =>
-            foundSubCategoryTitles.some((foundWord) => foundWord === lostWord)
-          );
-      } else {
-        // Subcategory ID Matching
-        const subCategoryMatches =
-          lostItem.subCategoryId?._id &&
-          foundItem.subCategoryId?._id &&
-          String(lostItem.subCategoryId._id) === String(foundItem.subCategoryId._id);
+    matchesQuery =
+      colorMatches &&
+      lostSubCategoryTitles.some((lostWord:string) =>
+        foundSubCategoryTitles.includes(lostWord)
+      );
+  } else {
+    const subCategoryMatches =
+      lostItem.subCategoryId?._id &&
+      foundItem.subCategoryId?._id &&
+      String(lostItem.subCategoryId._id) === String(foundItem.subCategoryId._id);
+    matchesQuery = colorMatches && subCategoryMatches;
+  }
+  console.log("Matches query after subcategory checks:", matchesQuery);
 
-        matchesQuery = colorMatches && subCategoryMatches;
+  // Location/Public Transport Filtering
+  if (matchesQuery) {
+    if (lostItem.circles && Array.isArray(lostItem.circles)) {
+      console.log("Lost item circles:", lostItem.circles);
+      console.log("Found item position:", foundItem.postion);
+      return lostItem.circles.some((circle: Circle) =>
+        checkIfPointInsideCircle(circle, foundItem.postion)
+      );
+    } else if (lostItem.publicTransport && foundItem.publicTransport) {
+      const pt = foundItem.publicTransport;
+      console.log("Lost item public transport:", lostItem.publicTransport);
+      console.log("Found item public transport:", pt);
+      return (
+        pt.typePublicTransportId?._id &&
+        String(pt.typePublicTransportId._id) ===
+          String(lostItem.publicTransport.typePublicTransportId?._id) &&
+        pt.city === lostItem.publicTransport.city &&
+        pt.line === lostItem.publicTransport.line
+      );
+    }
+  }
 
-        if (matchesQuery) {
-          if (lostItem.circles && Array.isArray(lostItem.circles)) {
-            // Filter by Location
-            if (foundItem.postion) {
-              return lostItem.circles.some((circle: Circle) =>
-                checkIfPointInsideCircle(circle, foundItem.postion)
-              );
-            }
-          } else if (lostItem.publicTransport && foundItem.publicTransport) {
-            // Filter by Public Transport
-            const pt = foundItem.publicTransport;
-            return (
-              pt.typePublicTransportId?._id &&
-              String(pt.typePublicTransportId._id) ===
-                String(lostItem.publicTransport.typePublicTransportId?._id) &&
-              pt.city === lostItem.publicTransport.city &&
-              pt.line === lostItem.publicTransport.line
-            );
-          }
-        }
-      }
-
-      return matchesQuery;
-    });
+  return matchesQuery;
+});
 
     return NextResponse.json(
       { message: "The filter was successfully applied", data: filteredFoundItems },
