@@ -34,7 +34,7 @@ export const createLostItem = async (
   try {
     const response = await axios.post("/api/lostItem", {
       ...lostItem,
-      category: currentCategory, // Include the category in the request body
+      category: currentCategory, 
     });
     console.log(response.data.data[0]);
     return response.data.data[0];

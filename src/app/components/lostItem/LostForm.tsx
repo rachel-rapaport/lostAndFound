@@ -92,7 +92,7 @@ const LostForm = () => {
         {
           text: sentence,
         },
-        { timeout: 20000 }
+        { timeout: 40000 }
       );
       const nouns: string = response.data.embeddings[0].tokens
         .filter((token: Token) => token.morph.pos === "NOUN")
@@ -111,11 +111,11 @@ const LostForm = () => {
 
     if (!validateLostItem()) return;
 
-    const  analyzedSubCategory = await 
+    const  analyzedSubCategory =  
       currentCategory?.title === "שונות"
         ? await analyzeTextWithModel(selectedSubCategory)
         : selectedSubCategory;
-    console.log(analyzedSubCategory);
+    console.log("analyzed sub category from lost form",analyzedSubCategory);
 
     const lostItem = {
       _id: new Types.ObjectId(),
