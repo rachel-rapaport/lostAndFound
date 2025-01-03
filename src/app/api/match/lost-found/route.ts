@@ -1,21 +1,16 @@
 import connect from "@/app/lib/db/mongo";
 import { Circle } from "@/app/types/props/circle";
-// import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
 import { FoundItem } from "@/app/types/props/foundItem";
-// import { getVercelUrl } from "@/app/utils/vercelUrl";
 import FoundItemModel from "@/app/lib/models/foundItem";
 
 export async function POST(request: NextRequest) {
-  // const vercelUrl = getVercelUrl(request);
-  // const baseUrl = vercelUrl
-
   try {
     await connect();
 
     const lostItem = await request.json();
-    console.log("lost item", lostItem);
+    console.log("Lost item:", lostItem);
 
     const foundItems = await FoundItemModel.aggregate([
       {
@@ -26,9 +21,7 @@ export async function POST(request: NextRequest) {
           as: "userId",
         },
       },
-      {
-        $unwind: { path: "$userId", preserveNullAndEmptyArrays: true },
-      },
+      { $unwind: { path: "$userId", preserveNullAndEmptyArrays: true } },
       {
         $lookup: {
           from: "subcategories",
@@ -37,20 +30,16 @@ export async function POST(request: NextRequest) {
           as: "subCategoryId",
         },
       },
-      {
-        $unwind: { path: "$subCategoryId", preserveNullAndEmptyArrays: true },
-      },
+      { $unwind: { path: "$subCategoryId", preserveNullAndEmptyArrays: true } },
       {
         $lookup: {
           from: "categories",
-          localField: "subCategoryId.categoryId", // Ensure that categoryId is populated
+          localField: "subCategoryId.categoryId",
           foreignField: "_id",
-          as: "category", // Create a new field to hold category information
+          as: "category",
         },
       },
-      {
-        $unwind: { path: "$category", preserveNullAndEmptyArrays: true }, // Correct path here
-      },
+      { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
       {
         $lookup: {
           from: "colors",
@@ -59,9 +48,7 @@ export async function POST(request: NextRequest) {
           as: "colorId",
         },
       },
-      {
-        $unwind: { path: "$colorId", preserveNullAndEmptyArrays: true },
-      },
+      { $unwind: { path: "$colorId", preserveNullAndEmptyArrays: true } },
       {
         $lookup: {
           from: "typepublictransports",
@@ -70,18 +57,7 @@ export async function POST(request: NextRequest) {
           as: "publicTransportType",
         },
       },
-      {
-        $unwind: {
-          path: "$publicTransportType",
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: "$typePublicTransportId",
-          preserveNullAndEmptyArrays: true,
-        },
-      },
+      { $unwind: { path: "$publicTransportType", preserveNullAndEmptyArrays: true } },
       {
         $project: {
           _id: 1,
@@ -89,7 +65,7 @@ export async function POST(request: NextRequest) {
             _id: "$subCategoryId._id",
             title: "$subCategoryId.title",
             categoryId: {
-              _id: "$category._id", // Correct path here
+              _id: "$category._id",
               title: "$category.title",
             },
           },
@@ -104,7 +80,6 @@ export async function POST(request: NextRequest) {
           descripition: 1,
           questions: 1,
           publicTransport: {
-            _id: "$publicTransport._id",
             city: "$publicTransport.city",
             typePublicTransportId: {
               _id: "$publicTransportType._id",
@@ -116,86 +91,72 @@ export async function POST(request: NextRequest) {
       },
     ]);
 
-    console.log("lost item", lostItem);
-    console.log(
-      "---------------------------------------------------------------"
-    );
-
-    // const foundItemResponse = await axios.get(`${baseUrl}/api/foundItem`);
-    // const foundItems = foundItemResponse.data.data
-
-    // Filter the found items based on the lost item properties and geographic matching
     const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
-      console.log("dound item", foundItem);
+      console.log("Found item:", foundItem);
 
-      //filter by category and color Always check if the colorId.groupId matches
+      // Color Matching
       const colorMatches =
-      lostItem.colorId?.groupId && foundItem.colorId?.groupId && 
-      String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
-  
+        lostItem.colorId?.groupId &&
+        foundItem.colorId?.groupId &&
+        String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
+
+      console.log("Color match:", colorMatches);
+
       let matchesQuery = false;
-      console.log("match color", colorMatches);
-
-      // console.log("found item sub id",foundItem);
-
-      // Check if the category is others
-      // console.log("lost before in filter", lostItem);
-      // console.log("id sub", lostItem.categoryId);
 
       if (lostItem.categoryId === "6756e2418b5ba2d221f44afb") {
-        // If category ID is others, check for matching words in subcategory titles
-        const lostSubCategoryTitles = lostItem.subCategoryId.title
-          .split(",")
-          .map((title: string) => title.trim());
-        const foundSubCategoryTitles = foundItem.subCategoryId.title
-          .split(",")
-          .map((title: string) => title.trim());
-        // console.log("lost from match api", lostSubCategoryTitles);
-        // console.log("found from match api", foundSubCategoryTitles);
-
-        // Return true if color matches and at least one word matches between subcategory titles
+        // Matching Subcategory Titles
+        const lostSubCategoryTitles = lostItem.subCategoryId?.title
+          ? lostItem.subCategoryId.title.split(",").map((title: string) => title.trim())
+          : [];
+        const foundSubCategoryTitles = foundItem.subCategoryId?.title
+          ? foundItem.subCategoryId.title.split(",").map((title: string) => title.trim())
+          : [];
         matchesQuery =
           colorMatches &&
           lostSubCategoryTitles.some((lostWord: string) =>
             foundSubCategoryTitles.some((foundWord) => foundWord === lostWord)
           );
       } else {
-        // If category ID is not others, use the original logic to compare subCategoryId._id
+        // Subcategory ID Matching
         const subCategoryMatches =
-          String(lostItem.subCategoryId._id) ===
-          String(foundItem.subCategoryId._id);
-        matchesQuery = colorMatches && subCategoryMatches;
-      }
+          lostItem.subCategoryId?._id &&
+          foundItem.subCategoryId?._id &&
+          String(lostItem.subCategoryId._id) === String(foundItem.subCategoryId._id);
 
-      // Return true if color matches and subcategory matches
-      if (matchesQuery) {
-        if (lostItem.circles) {
-          //filter by location
-          if (foundItem.postion) {
-            return lostItem.circles.some((circle: Circle) =>
-              checkIfPointInsideCircle(circle, foundItem.postion)
+        matchesQuery = colorMatches && subCategoryMatches;
+
+        if (matchesQuery) {
+          if (lostItem.circles && Array.isArray(lostItem.circles)) {
+            // Filter by Location
+            if (foundItem.postion) {
+              return lostItem.circles.some((circle: Circle) =>
+                checkIfPointInsideCircle(circle, foundItem.postion)
+              );
+            }
+          } else if (lostItem.publicTransport && foundItem.publicTransport) {
+            // Filter by Public Transport
+            const pt = foundItem.publicTransport;
+            return (
+              pt.typePublicTransportId?._id &&
+              String(pt.typePublicTransportId._id) ===
+                String(lostItem.publicTransport.typePublicTransportId?._id) &&
+              pt.city === lostItem.publicTransport.city &&
+              pt.line === lostItem.publicTransport.line
             );
           }
-        } else {
-          //filter by public transport
-          const pt = foundItem.publicTransport;
-          return (
-            pt &&
-            String(pt.typePublicTransportId._id) ===
-              lostItem.publicTransport.typePublicTransportId._id &&
-            pt.city === lostItem.publicTransport.city &&
-            pt.line === lostItem.publicTransport.line
-          );
         }
       }
+
+      return matchesQuery;
     });
 
     return NextResponse.json(
-      { message: "the filter was successfully", data: filteredFoundItems },
+      { message: "The filter was successfully applied", data: filteredFoundItems },
       { status: 200 }
     );
   } catch (error) {
-    console.log(error.message);
+    console.error("Error:", error.message);
     return NextResponse.json(
       { message: "Error filtering lost items", error: error.message },
       { status: 500 }
