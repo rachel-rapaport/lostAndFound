@@ -22,16 +22,21 @@ const FoundItemsList = () => {
     if (currentLostItem) {
       try {
         console.log("sending to match from found match list", currentLostItem);
-        const result = await getSubCategoryById(String(currentLostItem.subCategoryId._id))
-        const subCategory= result.data
-        console.log(subCategory);
+        const result = await getSubCategoryById(String(currentLostItem.subCategoryId._id));
+        const subCategory = result.data;
         
-        const categoryId = String(subCategory?.categoryId?._id);
-        console.log(categoryId,"categogety id to sent to match");
+        if (subCategory?.categoryId && subCategory.categoryId._id) {
+          const categoryId = String(subCategory.categoryId._id); // Make sure we're accessing _id correctly
+          console.log(categoryId, "category id to send to match");
+          const found = await matchLostFound(currentLostItem,categoryId);
+          setFilteredFoundItems(found);
+        } else {
+          console.error("Category ID is missing or not properly populated.");
+        }
         
-        const found = await matchLostFound(currentLostItem,categoryId);
-        setFilteredFoundItems(found);
-        setFilteredFoundItems(found);
+        
+     
+        // setFilteredFoundItems(found);
       } catch (error) {
         console.error("Error fetching found items:", error);
       }
