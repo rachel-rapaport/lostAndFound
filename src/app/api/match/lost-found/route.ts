@@ -116,6 +116,11 @@ export async function POST(request: NextRequest) {
       },
     ]);
 
+    console.log("lost item", lostItem);
+    console.log(
+      "---------------------------------------------------------------"
+    );
+
     // const foundItemResponse = await axios.get(`${baseUrl}/api/foundItem`);
     // const foundItems = foundItemResponse.data.data
 
@@ -125,7 +130,9 @@ export async function POST(request: NextRequest) {
 
       //filter by category and color Always check if the colorId.groupId matches
       const colorMatches =
-        String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
+      lostItem.colorId?.groupId && foundItem.colorId?.groupId && 
+      String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
+  
       let matchesQuery = false;
       console.log("match color", colorMatches);
 
