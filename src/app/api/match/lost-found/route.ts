@@ -59,7 +59,12 @@ export async function POST(request: NextRequest) {
           as: "publicTransportType",
         },
       },
-      { $unwind: { path: "$publicTransportType", preserveNullAndEmptyArrays: true } },
+      {
+        $unwind: {
+          path: "$publicTransportType",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $project: {
           _id: 1,
@@ -110,13 +115,17 @@ export async function POST(request: NextRequest) {
       let matchesQuery = false;
 
       // Subcategory Logic
-      console.log("lost item categoryId:", lostItem.categoryId);
-      if (lostItem.categoryId === "6756e2418b5ba2d221f44afb") {
+      console.log("lost item categoryId:", lostItemCheckMatch.categoryId);
+      if (lostItem.lostItemCheckMatch === "6756e2418b5ba2d221f44afb") {
         const lostSubCategoryTitles = lostItem.subCategoryId?.title
-          ? lostItem.subCategoryId.title.split(",").map((title: string) => title.trim())
+          ? lostItem.subCategoryId.title
+              .split(",")
+              .map((title: string) => title.trim())
           : [];
         const foundSubCategoryTitles = foundItem.subCategoryId?.title
-          ? foundItem.subCategoryId.title.split(",").map((title) => title.trim())
+          ? foundItem.subCategoryId.title
+              .split(",")
+              .map((title) => title.trim())
           : [];
         console.log("Lost subcategory titles:", lostSubCategoryTitles);
         console.log("Found subcategory titles:", foundSubCategoryTitles);
@@ -131,7 +140,8 @@ export async function POST(request: NextRequest) {
         const subCategoryMatches =
           lostItem.subCategoryId?._id &&
           foundItem.subCategoryId?._id &&
-          String(lostItem.subCategoryId._id) === String(foundItem.subCategoryId._id);
+          String(lostItem.subCategoryId._id) ===
+            String(foundItem.subCategoryId._id);
         matchesQuery = colorMatches && subCategoryMatches;
         console.log("Matches query after subcategory checks:", matchesQuery);
       }
@@ -163,7 +173,10 @@ export async function POST(request: NextRequest) {
 
     console.log("Filtered found items:", filteredFoundItems.length);
     return NextResponse.json(
-      { message: "The filter was successfully applied", data: filteredFoundItems },
+      {
+        message: "The filter was successfully applied",
+        data: filteredFoundItems,
+      },
       { status: 200 }
     );
   } catch (error) {
