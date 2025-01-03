@@ -2,7 +2,9 @@
 import React from 'react';
 import { CldUploadWidget } from "next-cloudinary";
 
-const UploadImage: React.FC<{ setImage: (image: string) => void }> = ({ setImage }) => {
+const UploadImage: React.FC<{
+    handleChange: (name: string, value: string) => void
+}> = ({ handleChange }) => {
 
     return (
         <CldUploadWidget
@@ -10,7 +12,7 @@ const UploadImage: React.FC<{ setImage: (image: string) => void }> = ({ setImage
             signatureEndpoint="/api/upload/image"
             onSuccess={(result) => {
                 if (typeof result.info === "object" && "secure_url" in result.info) {
-                    setImage(result.info.secure_url);
+                    handleChange("image", result.info.secure_url);
                 }
             }}
             options={{

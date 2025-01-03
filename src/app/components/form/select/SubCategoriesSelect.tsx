@@ -1,22 +1,18 @@
 import React, { useState } from "react";
-import Select from "react-select";
+import Select, { SingleValue } from "react-select";
 import categoryStore from "@/app/store/categoryStore";
 import { SubCategory } from "@/app/types/props/subCategory";
 import { SelectProps } from "@/app/types/selectProps";
+import { foundItemSchema } from "@/app/schemas/formItemSchema";
+import { z } from 'zod';
 
 const SubCategoriesSelect: React.FC<{
-  onSelect: (selectedSubCategoryId: string) => void;
-}> = ({ onSelect }) => {
-  const [selectedValue, setSelectedValue] = useState<SelectProps | null>(null);
+  formData: z.infer<typeof foundItemSchema>,
+  handleChange: (name: string, value: string) => void
+}> = ({ formData, handleChange }) => {
+
   const currentCategory = categoryStore((state) => state.currentCategory);
-
   const subCategories = currentCategory?.subCategories || [];
-
-  // Handle the change event for the Select component
-  const handleChange = (selectedOption: SelectProps | null) => {
-    setSelectedValue(selectedOption);
-    onSelect(selectedOption ? selectedOption.value : "");
-  };
 
   // Convert the subCategories to the format required by react-select
   const subCategoryOptions: SelectProps[] = subCategories.map(
@@ -26,12 +22,22 @@ const SubCategoriesSelect: React.FC<{
     })
   );
 
+  // Find the currently selected sub-category option
+  const [selectedValue, setSelectedValue] = useState(subCategoryOptions.find(option => option.value === formData.subCategoryId) || null);
+
+  // Handle the change event for the Select component
+  const handleChangeSubCategory = (selectedOption: SingleValue<SelectProps>) => {
+    setSelectedValue(selectedOption);
+    handleChange("subCategoryId", selectedOption ? selectedOption.value : "");
+  };
+
   return (
     <div>
       <Select
-        options={subCategoryOptions}
+        name="subCategoryId"
         value={selectedValue}
-        onChange={handleChange}
+        options={subCategoryOptions}
+        onChange={handleChangeSubCategory}
         placeholder="בחר תת-קטגוריה"
         isSearchable={false}
         isDisabled={subCategories.length === 0}

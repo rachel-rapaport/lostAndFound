@@ -6,9 +6,7 @@ import { Category } from "@/app/types/props/category";
 import { SelectProps } from "@/app/types/selectProps";
 import categoryStore from "@/app/store/categoryStore";
 
-const CategoriesSelect: React.FC<{
-  onSelect: (selectedCategoryId: string) => void;
-}> = ({ onSelect }) => {
+const CategoriesSelect=() =>{
   const [selectedValue, setSelectedValue] = useState("");
   const categoriesFromStore = categoryStore((state) => state.categories);
   const setCategories = categoryStore((state) => state.setCategories);
@@ -39,7 +37,6 @@ const CategoriesSelect: React.FC<{
   const handleChange = (selectedOption: SelectProps) => {
     const selectedCategoryId = selectedOption?.value;
     setSelectedValue(selectedCategoryId);
-    onSelect(selectedCategoryId);
 
     // Find the selected category object and update the current category in the store
     const selectedCategory =

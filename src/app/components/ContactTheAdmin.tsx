@@ -4,14 +4,11 @@ import { z } from 'zod';
 import { sendEmailToAdmin } from '../services/api/sendEmailService';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
+import { emailSchema } from '../schemas/emailSchema';
 
 const ContactTheAdmin = () => {
 
-    const emailSchema = z.object({
-        name: z.string().min(2, "קצר מידי").nonempty("שדה חובה"),
-        email: z.string().email("אימייל לא תקין").nonempty("שדה חובה"),
-        content: z.string().min(20, "נדרשים לפחות 20 תווים לתוכן ההודעה").nonempty("שדה חובה")
-    });
+
     const [formData, setFormData] = useState<z.infer<typeof emailSchema>>({ name: "", email: "", content: "" });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const router = useRouter();

@@ -5,6 +5,7 @@ import { maxNumOfChars, thankSchema } from '@/app/schemas/thankSchemaZod';
 import { createThank } from '@/app/services/api/thankService';
 import userStore from '@/app/store/userStore';
 import { useRouter } from 'next/navigation';
+import { countCharacters } from '@/app/utils/countCharacters';
 
 const ThankForm = () => {
     const [formData, setFormData] = useState<z.infer<typeof thankSchema>>({ thank: "" });
@@ -12,10 +13,6 @@ const ThankForm = () => {
     const currentUser = userStore((state) => state.user);
     const [numOfChars, setNumOfChars] = useState(0);
     const router = useRouter();
-
-    function countCharacters(str: string) {
-        return str.length;
-    }
 
     const handleChange = (content: string) => {
         setFormData({ thank: content });

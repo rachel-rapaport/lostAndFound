@@ -6,8 +6,8 @@ import { Color } from "@/app/types/props/color";
 import Image from "next/image";
 
 const ColorSelect: React.FC<{
-  onSelect: (selectedColorId: string) => void;
-}> = ({ onSelect }) => {
+  handleChange: (name: string, value: string) => void
+}> = ({ handleChange }) => {
   const colorsFromStore = colorStore((state) => state.colors);
   const setColors = colorStore((state) => state.setColors);
   const {
@@ -36,7 +36,7 @@ const ColorSelect: React.FC<{
   const displayColors = colorsFromStore ?? colors;
 
   return (
-    <div className="p-4 border-2 border-primary rounded-lg">
+    <div className="p-4 border-[1px] border-primary rounded-lg">
       <div className="flex flex-wrap justify-center gap-6 mt-6">
         {displayColors.map((color: Color) => {
           const isSpecialColor =
@@ -45,7 +45,7 @@ const ColorSelect: React.FC<{
             <div
               key={String(color._id)}
               className="flex flex-col items-center cursor-pointer hover:scale-105 "
-              onClick={() => onSelect(String(color._id))}
+              onClick={() => handleChange("colorId", String(color._id))}
             >
               {isSpecialColor ? (
                 <Image
