@@ -7,10 +7,12 @@ import FoundItemModel from "@/app/lib/models/foundItem";
 
 export async function POST(request: NextRequest) {
   try {
+    console.log("Connecting to the database...");
     await connect();
+    console.log("Connected to the database.");
 
     const lostItemCheckMatch = await request.json();
-    console.log("Lost item:", lostItemCheckMatch);
+    console.log("Lost item check match received:", lostItemCheckMatch);
 
     const foundItems = await FoundItemModel.aggregate([
       {
@@ -90,34 +92,32 @@ export async function POST(request: NextRequest) {
         },
       },
     ]);
+    console.log("Found items retrieved:", foundItems.length);
 
     const lostItem = lostItemCheckMatch.lostItem;
-
-    const normalizeId = (id: any) => (id ? String(id).trim() : null);
+    console.log("Lost item details:", lostItem);
 
     const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
       console.log("Processing found item:", foundItem);
 
       // Color Matching
       const colorMatches =
-        normalizeId(lostItem.colorId?.groupId) ===
-        normalizeId(foundItem.colorId?.groupId);
+        lostItem.colorId?.groupId &&
+        foundItem.colorId?.groupId &&
+        String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
       console.log("Color match:", colorMatches);
 
       let matchesQuery = false;
 
       // Subcategory Logic
-      const normalizedCategoryId = normalizeId(lostItem.categoryId);
+      const normalizedCategoryId = String(lostItem.categoryId).trim();
+      console.log("Normalized lost item categoryId:", normalizedCategoryId);
       if (normalizedCategoryId === "6756e2418b5ba2d221f44afb") {
         const lostSubCategoryTitles = lostItem.subCategoryId?.title
-          ? lostItem.subCategoryId.title
-              .split(",")
-              .map((title: string) => title.trim().toLowerCase())
+          ? lostItem.subCategoryId.title.split(",").map((title: string) => title.trim())
           : [];
         const foundSubCategoryTitles = foundItem.subCategoryId?.title
-          ? foundItem.subCategoryId.title
-              .split(",")
-              .map((title) => title.trim().toLowerCase())
+          ? foundItem.subCategoryId.title.split(",").map((title) => title.trim())
           : [];
         console.log("Lost subcategory titles:", lostSubCategoryTitles);
         console.log("Found subcategory titles:", foundSubCategoryTitles);
@@ -127,32 +127,32 @@ export async function POST(request: NextRequest) {
           lostSubCategoryTitles.some((lostWord: string) =>
             foundSubCategoryTitles.includes(lostWord)
           );
+        console.log("Matches query after subcategory logic:", matchesQuery);
       } else {
         const subCategoryMatches =
-          normalizeId(lostItem.subCategoryId?._id) ===
-          normalizeId(foundItem.subCategoryId?._id);
+          lostItem.subCategoryId?._id &&
+          foundItem.subCategoryId?._id &&
+          String(lostItem.subCategoryId._id) === String(foundItem.subCategoryId._id);
         matchesQuery = colorMatches && subCategoryMatches;
+        console.log("Matches query after subcategory checks:", matchesQuery);
       }
-      console.log("Matches query after subcategory checks:", matchesQuery);
 
       // Location/Public Transport Filtering
       if (matchesQuery) {
         if (lostItem.circles && Array.isArray(lostItem.circles)) {
           console.log("Lost item circles:", lostItem.circles);
           console.log("Found item position:", foundItem.postion);
-          return (
-            foundItem.postion &&
-            lostItem.circles.some((circle: Circle) =>
-              checkIfPointInsideCircle(circle, foundItem.postion)
-            )
+          return lostItem.circles.some((circle: Circle) =>
+            checkIfPointInsideCircle(circle, foundItem.postion)
           );
         } else if (lostItem.publicTransport && foundItem.publicTransport) {
           const pt = foundItem.publicTransport;
           console.log("Lost item public transport:", lostItem.publicTransport);
           console.log("Found item public transport:", pt);
           return (
-            normalizeId(pt.typePublicTransportId?._id) ===
-              normalizeId(lostItem.publicTransport.typePublicTransportId?._id) &&
+            pt.typePublicTransportId?._id &&
+            String(pt.typePublicTransportId._id) ===
+              String(lostItem.publicTransport.typePublicTransportId?._id) &&
             pt.city === lostItem.publicTransport.city &&
             pt.line === lostItem.publicTransport.line
           );
@@ -162,6 +162,7 @@ export async function POST(request: NextRequest) {
       return matchesQuery;
     });
 
+    console.log("Filtered found items:", filteredFoundItems.length);
     return NextResponse.json(
       { message: "The filter was successfully applied", data: filteredFoundItems },
       { status: 200 }
