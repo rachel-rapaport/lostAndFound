@@ -120,17 +120,24 @@ export async function POST(req: NextRequest) {
     console.log("category", category);
 
     let body = restOfBody;
+    let existingSubCategory;
     console.log("body", body);
 
     // Validate that the sub-category exists in the database
     console.log(
-      "Checking if subcategory exists with _title:",
+      "Checking if subcategory exists:",
       body.subCategoryId
     );
-
-    const existingSubCategory = await SubCategoryModel.findOne({
+if(category?.title==="שונות"){
+     existingSubCategory = await SubCategoryModel.findOne({
       title: body.subCategoryId,
     });
+  }
+  else{
+     existingSubCategory = await SubCategoryModel.findOne({
+      _id: body.subCategoryId,
+    });
+  }
 
     if (existingSubCategory) {
       console.log("Existing SubCategory found:", existingSubCategory);
