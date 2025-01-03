@@ -20,3 +20,15 @@ export const createSubCategory = async (subCategory:SubCategory) => {
     throw new Error("Failed to create subcategory");
   }
 };
+
+
+// get color by id
+export const getSubCategoryById = async (id: string) => {
+  try {
+    const response = await axios.get(`/api/sub-category/${id}`);
+    console.log(response);
+    return response.data;
+  } catch {
+    throw new Error("Failed to get subcategory by id")
+  }
+};

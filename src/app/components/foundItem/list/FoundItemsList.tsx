@@ -7,6 +7,7 @@ import { FoundItem } from "@/app/types/props/foundItem";
 import useFoundItemStore from "@/app/store/foundItemStore";
 import CardBlocked from "./CardBlocked";
 import userStore from "@/app/store/userStore";
+import { getSubCategoryById } from "@/app/services/api/subcategoryService";
 
 const FoundItemsList = () => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);
@@ -21,10 +22,12 @@ const FoundItemsList = () => {
     if (currentLostItem) {
       try {
         console.log("sending to match from found match list", currentLostItem);
-        const categoryId = String(currentLostItem.subCategoryId.categoryId._id);
+        const result = await getSubCategoryById(String(currentLostItem.subCategoryId._id))
+        const subCategory= result.data
+        console.log(subCategory);
+        const categoryId = String(subCategory.categoryId._id);
         console.log(categoryId,"categogety id to sent to match");
         
-
         const found = await matchLostFound(currentLostItem,categoryId);
         setFilteredFoundItems(found);
         setFilteredFoundItems(found);
