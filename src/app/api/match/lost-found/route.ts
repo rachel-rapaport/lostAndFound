@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
               title: "$category.title",
             },
           },
-          colorId: 1,
+          colorId: { _id: "$colorId._id", groupId: "$colorId.groupId" },
           "userId._id": 1,
           "userId.fullName": 1,
           "userId.email": 1,
@@ -121,6 +121,8 @@ export async function POST(request: NextRequest) {
 
     // Filter the found items based on the lost item properties and geographic matching
     const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
+      console.log("dound item", foundItem);
+
       //filter by category and color Always check if the colorId.groupId matches
       const colorMatches =
         String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
