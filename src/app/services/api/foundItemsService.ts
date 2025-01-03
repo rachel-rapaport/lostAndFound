@@ -1,4 +1,4 @@
-import { FoundItemRequest } from "@/app/types/request/foundItemRequest";
+import { Category } from "@/app/types/props/category";
 import { FoundItem } from "../../types/props/foundItem";
 import axios from "axios";
 
@@ -27,16 +27,32 @@ export const getFoundItemById = async (id: string) => {
 };
 
 // create new found item
-export const createFoundItem = async (foundItem: FoundItemRequest) => {
+export const createFoundItem = async (foundItem: FoundItem,
+  currentCategory: Category) => {
   try {
-    const response = await axios.post("/api/foundItem", foundItem);
-    console.log(response.data.data[0]);
-    return response.data.data[0];
-  } catch{
-    throw new Error("Failed to create foundItem");
-
+    const response = await axios.post("/api/foundItem",  {
+      ...foundItem,
+      category: currentCategory, 
+    });
+    return response.data;
+  } catch {
+    throw new Error("Failed to get foundItems");
   }
 };
+// export const createFoundItem = async (foundItemData: FoundItem) => {
+//   const { publicTransport, ...foundItemRest } = foundItemData;
+//   const publicTransportData = await TypePublicTransportModel.create(
+//     publicTransport
+//   );
+
+//   const foundItem = new FoundItemModel({
+//     ...foundItemRest,
+//     publicTransport: publicTransportData._id,
+//   });
+
+//   return await foundItem.save();
+// };
+
 
 // update found item by id
 export const updateFoundItemById = async (id: string, foundItem: FoundItem) => {

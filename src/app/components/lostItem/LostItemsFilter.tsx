@@ -51,7 +51,7 @@ const LostItemsFilter = () => {
   }, [filteredLostItems]);
 
   const goHome = () => {
-    router.push("/");
+    router.push("/home");
   };
 
   return (

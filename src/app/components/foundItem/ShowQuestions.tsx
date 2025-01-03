@@ -32,10 +32,10 @@ const ShowQuestions = (props: { id: string }) => {
     }, [id, currentFoundItem, setCurrentFoundItem]);
 
     useEffect(() => {
-        setFormData({ answers: new Array(currentFoundItem?.questions.length || 0).fill('') });
+        setFormData({ answers: new Array(currentFoundItem?.questions?.length || 0).fill('') });
 
         if (currentFoundItem) {
-            const shuffled = currentFoundItem.questions.map((question) => ({
+            const shuffled = currentFoundItem?.questions?.map((question) => ({
                 question: question.question,
                 answers: _.shuffle(question.answers),
             }));

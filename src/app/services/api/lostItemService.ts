@@ -1,5 +1,6 @@
 import axios from "axios";
 import { LostItemRequest } from "@/app/types/request/lostItemRequest";
+import { Category } from "@/app/types/props/category";
 
 // get all lost items
 export const getLostItems = async () => {
@@ -14,7 +15,6 @@ export const getLostItems = async () => {
   }
 };
 
-
 // get lost item by id
 export const getLostItemById = async (id: string) => {
   try {
@@ -27,9 +27,15 @@ export const getLostItemById = async (id: string) => {
 };
 
 // create new lost item
-export const createLostItem = async (lostItem: LostItemRequest) => {
+export const createLostItem = async (
+  lostItem: LostItemRequest,
+  currentCategory: Category
+) => {
   try {
-    const response = await axios.post("/api/lostItem", lostItem);
+    const response = await axios.post("/api/lostItem", {
+      ...lostItem,
+      category: currentCategory, 
+    });
     console.log(response.data.data[0]);
     return response.data.data[0];
   } catch {
@@ -38,7 +44,10 @@ export const createLostItem = async (lostItem: LostItemRequest) => {
 };
 
 // update lost item by id
-export const updateLostItemById = async (id: string, lostItem: LostItemRequest) => {
+export const updateLostItemById = async (
+  id: string,
+  lostItem: LostItemRequest
+) => {
   try {
     const response = await axios.put(`/api/lostItem/${id}`, lostItem);
     return response.data;
@@ -50,11 +59,8 @@ export const updateLostItemById = async (id: string, lostItem: LostItemRequest) 
 // delete lost item by id
 export const deleteLostItemById = async (id: string) => {
   try {
-    console.log('before axios in service');
-    
     const response = await axios.delete(`/api/lostItem/${id}`);
-    console.log("after axios in service");
-    
+
     return response.data;
   } catch {
     throw new Error("Failed to delete lostItem");

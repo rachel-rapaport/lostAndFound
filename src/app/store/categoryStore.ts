@@ -8,4 +8,6 @@ const categoryStore = create<CategoryStore>((set) => ({
     setCurrentCategory: (currentCategory) => set(() => ({ currentCategory }))
 }))
 
+export const getCategoryStore = () => categoryStore.getState();
+
 export default categoryStore

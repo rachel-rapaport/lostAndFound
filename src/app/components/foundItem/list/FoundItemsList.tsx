@@ -8,6 +8,7 @@ import useFoundItemStore from "@/app/store/foundItemStore";
 import CardBlocked from "./CardBlocked";
 import userStore from "@/app/store/userStore";
 import { useRouter } from "next/navigation";
+import { getSubCategoryById } from "@/app/services/api/subcategoryService";
 
 const FoundItemsList = () => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);
@@ -17,6 +18,7 @@ const FoundItemsList = () => {
   const setFilteredFoundItems = useFoundItemStore(
     (state) => state.setFilteredFoundItems
   );
+
   const currentUser = userStore((state) => state.user);
   const router = useRouter();
 
@@ -27,9 +29,23 @@ const FoundItemsList = () => {
   const fetchFoundItems = async () => {
     if (currentLostItem) {
       try {
-        const found = await matchLostFound(currentLostItem);
-        setFilteredFoundItems(found);
-        setFilteredFoundItems(found);
+        console.log("sending to match from found match list", currentLostItem);
+        const result = await getSubCategoryById(String(currentLostItem.subCategoryId._id));
+        const subCategory = result.data[0]
+        
+        
+        if (subCategory?.categoryId && subCategory.categoryId._id) {
+          const categoryId = String(subCategory.categoryId._id); // Make sure we're accessing _id correctly
+          console.log(categoryId, "category id to send to match");
+          const found = await matchLostFound(currentLostItem,categoryId);
+          setFilteredFoundItems(found);
+        } else {
+          console.error("Category ID is missing or not properly populated.");
+        }
+        
+        
+     
+        // setFilteredFoundItems(found);
       } catch (error) {
         console.error("Error fetching found items:", error);
       }
@@ -92,3 +108,4 @@ const FoundItemsList = () => {
 };
 
 export default FoundItemsList;
+

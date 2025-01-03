@@ -36,6 +36,8 @@ export async function middleware(req: NextRequest) {
     } catch (error) {
       console.error("Invalid token:", error);
       // clear global store
+      console.log(userStore.getState().user);
+
       userStore.getState().clearUser();
       userStore.getState().setAlerts([]);
       // Clear token and redirect to login
@@ -45,10 +47,16 @@ export async function middleware(req: NextRequest) {
     }
   } else {
     // If no token and not on the login page, redirect to login
-    if (pathname !== "/login") {
+    // if (pathname !== "/login") {    
+      console.log(userStore.getState().user);
+
+      userStore.getState().clearUser();
+      userStore.getState().setAlerts([]);
+      console.log(userStore.getState().user);
+
       console.log("No token, redirecting to /login");
       return NextResponse.redirect(new URL("/login", req.url));
-    }
+    // }
   }
   if (pathname === "/login" && token) {
     console.log("Token exists, redirecting to /home");
@@ -69,4 +77,6 @@ export async function middleware(req: NextRequest) {
 // Configuring middleware to specific paths
 export const config = {
   matcher: ["/((?!login|_next).*)"], // Exclude "/login" and Next.js static files
+
+
 };
