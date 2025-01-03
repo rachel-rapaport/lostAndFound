@@ -22,6 +22,8 @@ const FoundItemsList = () => {
       try {
         console.log("sending to match from found match list", currentLostItem);
         const categoryId = String(currentLostItem.subCategoryId.categoryId._id);
+        console.log(categoryId,"categogety id to sent to match");
+        
 
         const found = await matchLostFound(currentLostItem,categoryId);
         setFilteredFoundItems(found);
