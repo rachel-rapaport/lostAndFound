@@ -9,8 +9,8 @@ export async function POST(request: NextRequest) {
   try {
     await connect();
 
-    const lostItem = await request.json();
-    console.log("Lost item:", lostItem);
+    const lostItemCheckMatch = await request.json();
+    console.log("Lost item:", lostItemCheckMatch);
 
     const foundItems = await FoundItemModel.aggregate([
       {
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         },
       },
     ]);
-
+const lostItem = lostItemCheckMatch.lostItem
     const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
       console.log("Found item:", foundItem);
 
