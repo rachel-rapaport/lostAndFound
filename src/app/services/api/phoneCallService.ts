@@ -8,7 +8,7 @@ export const sendPhoneCall = async (phone: string, message: string) => {
             return response.data;
     }
 
-    catch (error) {
+    catch {
         console.error("Failed to send phone call. Please try again later")
         
     }
