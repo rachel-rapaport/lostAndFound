@@ -23,7 +23,7 @@ const FoundItemsList = () => {
       try {
         console.log("sending to match from found match list", currentLostItem);
         const result = await getSubCategoryById(String(currentLostItem.subCategoryId._id));
-        const subCategory = result.data.data;
+        const subCategory = result.data[0]
         
         
         if (subCategory?.categoryId && subCategory.categoryId._id) {
