@@ -123,13 +123,25 @@ export async function POST(req: NextRequest) {
     console.log("body", body);
 
     // Validate that the sub-category exists in the database
-    console.log("Checking if subcategory exists with _title:", body.subCategoryId);
+    console.log(
+      "Checking if subcategory exists with _title:",
+      body.subCategoryId
+    );
 
     const existingSubCategory = await SubCategoryModel.findOne({
       title: body.subCategoryId,
     });
+
     if (existingSubCategory) {
       console.log("Existing SubCategory found:", existingSubCategory);
+
+      if (category?.title === "שונות") {
+        // Add the existing subcategory of others to the body
+        body = {
+          ...body,
+          subCategoryId: existingSubCategory._id,
+        };
+      }
     } else {
       console.log("SubCategory does not exist. Proceeding to create...");
 
@@ -148,14 +160,14 @@ export async function POST(req: NextRequest) {
         };
         console.log("newSubCategoryObj", newSubCategoryObj);
 
-        // const newSubCategory = await createSubCategory(newSubCategoryObj);
         const newSubCategory = await SubCategoryModel.create(newSubCategoryObj);
         console.log("newSubCategory", newSubCategory);
+
         await CategoryModel.findByIdAndUpdate(
           category._id,
-          { $push: { "subCategories": newSubCategory._id } },
+          { $push: { subCategories: newSubCategory._id } },
           { new: true }
-      );
+        );
 
         body = {
           ...body,
