@@ -7,7 +7,6 @@ import { FoundItem } from "@/app/types/props/foundItem";
 import useFoundItemStore from "@/app/store/foundItemStore";
 import CardBlocked from "./CardBlocked";
 import userStore from "@/app/store/userStore";
-import { getCategoryById } from "@/app/services/api/categoryService";
 
 const FoundItemsList = () => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);

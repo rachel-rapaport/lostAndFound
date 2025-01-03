@@ -141,8 +141,8 @@ export async function POST(request: NextRequest) {
         const foundSubCategoryTitles = foundItem.subCategoryId.title
           .split(",")
           .map((title: string) => title.trim());
-        console.log("lost from match api", lostSubCategoryTitles);
-        console.log("found from match api", foundSubCategoryTitles);
+        // console.log("lost from match api", lostSubCategoryTitles);
+        // console.log("found from match api", foundSubCategoryTitles);
 
         // Return true if color matches and at least one word matches between subcategory titles
         matchesQuery =
