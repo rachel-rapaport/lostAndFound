@@ -1,6 +1,7 @@
 import { Category } from "@/app/types/props/category";
 import { FoundItem } from "../../types/props/foundItem";
 import axios from "axios";
+import { FoundItemRequest } from "@/app/types/request/foundItemRequest";
 
 // get all found items
 export const getFoundItems = async () => {
@@ -27,8 +28,8 @@ export const getFoundItemById = async (id: string) => {
 };
 
 // create new found item
-export const createFoundItem = async (foundItem: FoundItem,
-  currentCategory: Category) => {
+export const createFoundItem = async (foundItem: FoundItemRequest,
+  currentCategory: Category | null) => {
   try {
     const response = await axios.post("/api/foundItem",  {
       ...foundItem,
