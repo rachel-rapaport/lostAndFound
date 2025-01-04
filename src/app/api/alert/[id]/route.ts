@@ -97,6 +97,7 @@ export async function DELETE(request: NextRequest) {
         { new: true }
       );
     }
+
     const alertToDelete = await AlertModel.findByIdAndDelete(id);
     if (!alertToDelete) {
       return NextResponse.json(

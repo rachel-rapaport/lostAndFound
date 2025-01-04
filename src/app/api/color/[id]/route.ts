@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
     if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
+
     const color = await ColorModel.findById(id);
 
     if (!color) {
@@ -84,7 +85,6 @@ export async function DELETE(request: NextRequest) {
     if (!deletedColor) {
       return NextResponse.json({ error: "color not found" }, { status: 404 });
     }
-    console.log("deleted success");
 
     return NextResponse.json(
       { message: "color was successfully deleted", data: deletedColor },

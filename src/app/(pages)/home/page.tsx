@@ -4,7 +4,7 @@ import Homepage from "@/app/components/Homepage";
 const page = () => {
   return (
     <>
-      <Homepage />
+    home
     </>
   );
 };

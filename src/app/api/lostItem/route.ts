@@ -116,34 +116,23 @@ export async function POST(req: NextRequest) {
 
     // Extract category from the request body
     const { category, ...restOfBody } = bodyData;
-    console.log("category", category);
 
     let body = restOfBody;
     let existingSubCategory;
-    console.log("body", body);
-
-    console.log("inn api",body);
-    
 
     // Validate that the sub-category exists in the database
-    console.log(
-      "Checking if subcategory exists:",
-      body.subCategoryId
-    );
-if(category?.title==="שונות"){
-     existingSubCategory = await SubCategoryModel.findOne({
-      title: body.subCategoryId,
-    });
-  }
-  else{
-     existingSubCategory = await SubCategoryModel.findOne({
-      _id: body.subCategoryId,
-    });
-  }
+    if (category?.title === "שונות") {
+      existingSubCategory = await SubCategoryModel.findOne({
+        title: body.subCategoryId,
+      });
+    }
+    else {
+      existingSubCategory = await SubCategoryModel.findOne({
+        _id: body.subCategoryId,
+      });
+    }
 
     if (existingSubCategory) {
-      console.log("Existing SubCategory found:", existingSubCategory);
-
       if (category?.title === "שונות") {
         // Add the existing subcategory of others to the body
         body = {
@@ -152,8 +141,6 @@ if(category?.title==="שונות"){
         };
       }
     } else {
-      console.log("SubCategory does not exist. Proceeding to create...");
-
       if (category?.title !== "שונות") {
         return NextResponse.json(
           { message: "Invalid subCategoryId: sub category does not exist" },
@@ -167,10 +154,7 @@ if(category?.title==="שונות"){
           lostItems: [],
           foundItems: [],
         };
-        console.log("newSubCategoryObj", newSubCategoryObj);
-
         const newSubCategory = await SubCategoryModel.create(newSubCategoryObj);
-        console.log("newSubCategory", newSubCategory);
 
         await CategoryModel.findByIdAndUpdate(
           category._id,
@@ -182,7 +166,6 @@ if(category?.title==="שונות"){
           ...body,
           subCategoryId: newSubCategory._id,
         };
-        console.log("body lost item", body);
       }
     }
 
@@ -219,6 +202,7 @@ if(category?.title==="שונות"){
       { $push: { lostItems: newLostItem._id } },
       { new: true }
     );
+    
     const data = await LostItemModel.aggregate([
       {
         $match: { _id: new mongoose.Types.ObjectId(newLostItem._id) },

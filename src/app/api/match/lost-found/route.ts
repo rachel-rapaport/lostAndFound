@@ -7,12 +7,9 @@ import { checkIfPointInsideCircle } from "@/app/utils/geolocationUtils";
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("Connecting to the database...");
     await connect();
-    console.log("Connected to the database.");
 
     const lostItemCheckMatch = await request.json();
-    console.log("Lost item check match received:", lostItemCheckMatch);
 
     const foundItems = await FoundItemModel.aggregate([
       {
@@ -97,81 +94,70 @@ export async function POST(request: NextRequest) {
         },
       },
     ]);
-    console.log("Found items retrieved:", foundItems.length);
 
     const lostItem = lostItemCheckMatch.lostItem;
-    console.log("Lost item details:", lostItem);
 
+    // Filter the found items based on the found item properties and geographic matching
     const filteredFoundItems = foundItems.filter((foundItem: FoundItem) => {
-      console.log("Processing found item:", foundItem);
-
       // Color Matching
       const colorMatches =
         lostItem.colorId?.groupId &&
         foundItem.colorId?.groupId &&
         String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
-      console.log("Color match:", colorMatches);
 
       let matchesQuery = false;
 
-      // Subcategory Logic
-      console.log("lost item categoryId:", lostItemCheckMatch.categoryId);
+      // Subcategory Logic if other
       if (lostItemCheckMatch.categoryId === "6756e2418b5ba2d221f44afb") {
+        //split the sub category 
         const lostSubCategoryTitles = lostItem.subCategoryId?.title
           ? lostItem.subCategoryId.title
-              .split(",")
-              .map((title: string) => title.trim())
+            .split(",")
+            .map((title: string) => title.trim())
           : [];
         const foundSubCategoryTitles = foundItem.subCategoryId?.title
           ? foundItem.subCategoryId.title
-              .split(",")
-              .map((title) => title.trim())
+            .split(",")
+            .map((title) => title.trim())
           : [];
-        console.log("Lost subcategory titles:", lostSubCategoryTitles);
-        console.log("Found subcategory titles:", foundSubCategoryTitles);
 
+        //check if the at least word match
         matchesQuery =
           colorMatches &&
           lostSubCategoryTitles.some((lostWord: string) =>
             foundSubCategoryTitles.includes(lostWord)
           );
-        console.log("Matches query after subcategory logic:", matchesQuery);
+        // Subcategory Logic if not other
       } else {
         const subCategoryMatches =
           lostItem.subCategoryId?._id &&
           foundItem.subCategoryId?._id &&
           String(lostItem.subCategoryId._id) ===
-            String(foundItem.subCategoryId._id);
+          String(foundItem.subCategoryId._id);
         matchesQuery = colorMatches && subCategoryMatches;
-        console.log("Matches query after subcategory checks:", matchesQuery);
       }
 
       // Location/Public Transport Filtering
       if (matchesQuery) {
+        //filter by the position
         if (lostItem.circles && Array.isArray(lostItem.circles)) {
-          console.log("Lost item circles:", lostItem.circles);
-          console.log("Found item position:", foundItem.postion);
           return lostItem.circles.some((circle: Circle) =>
             checkIfPointInsideCircle(circle, foundItem.postion)
           );
+          //filter by public transport
         } else if (lostItem.publicTransport && foundItem.publicTransport) {
           const pt = foundItem.publicTransport;
-          console.log("Lost item public transport:", lostItem.publicTransport);
-          console.log("Found item public transport:", pt);
           return (
             pt.typePublicTransportId?._id &&
             String(pt.typePublicTransportId._id) ===
-              String(lostItem.publicTransport.typePublicTransportId?._id) &&
+            String(lostItem.publicTransport.typePublicTransportId?._id) &&
             pt.city === lostItem.publicTransport.city &&
             pt.line === lostItem.publicTransport.line
           );
         }
       }
-
-      return matchesQuery;
     });
 
-    console.log("Filtered found items:", filteredFoundItems.length);
     return NextResponse.json(
       {
         message: "The filter was successfully applied",
@@ -179,8 +165,8 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     );
+
   } catch (error) {
-    console.error("Error:", error.message);
     return NextResponse.json(
       { message: "Error filtering lost items", error: error.message },
       { status: 500 }

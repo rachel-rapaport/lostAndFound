@@ -6,17 +6,21 @@ import { NextRequest, NextResponse } from "next/server";
 
 //get category by id
 export async function GET(request: NextRequest) {
-  console.log("in api get category by id");
-  
   try {
     await connect();
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
-    console.log("from categpry get by id api", id);
 
     if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
+    }
+
+    if (!await CategoryModel.exists({ _id: id })) {
+      return NextResponse.json(
+        { message: `Category with id ${id} not found` },
+        { status: 404 }
+      );
     }
 
     //populate data from nested objects

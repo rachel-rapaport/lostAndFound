@@ -1,11 +1,12 @@
 import React from "react";
-import UserDashboard from "@/app/components/user/UserDashboard";
+import ContactTheAdmin from "@/app/components/ContactTheAdmin";
 
 const page = () => {
   return (
     <>
-      <UserDashboard />
+      <ContactTheAdmin />
     </>
   );
 };
+
 export default page;

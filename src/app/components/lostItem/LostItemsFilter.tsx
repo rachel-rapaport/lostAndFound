@@ -1,5 +1,6 @@
 "use client";
 import { matchFoundLost } from "@/app/services/api/matchService";
+import { getSubCategoryById } from "@/app/services/api/subcategoryService";
 import useFoundItemStore from "@/app/store/foundItemStore";
 import lostItemStore from "@/app/store/lostItemStore";
 import userStore from "@/app/store/userStore";
@@ -23,8 +24,18 @@ const LostItemsFilter = () => {
   const fetchLostItems = async () => {
     if (currentFoundItem) {
       try {
-        const lost = await matchFoundLost(currentFoundItem);
-        setFilteredLostItems(lost);
+        const result = await getSubCategoryById(
+          String(currentFoundItem.subCategoryId._id)
+        );
+        const subCategory = result.data[0];
+
+        if (subCategory?.categoryId && subCategory.categoryId._id) {
+          const categoryId = String(subCategory.categoryId._id); // Make sure we're accessing _id correctly
+          const lost = await matchFoundLost(currentFoundItem, categoryId);
+          setFilteredLostItems(lost);
+        } else {
+          console.error("Category ID is missing or not properly populated.");
+        }
       } catch (error) {
         console.error("Error fetching lost items:", error);
       }
@@ -56,24 +67,19 @@ const LostItemsFilter = () => {
 
   return (
     <div className="flex items-center justify-center mt-16">
-    <div className="text-center space-y-4 p-6">
-      <h1 className="text-2xl font-bold">
-        תודה שהקדשת מזמנך לעלות את הפריט
-      </h1>
-      <p className="text-lg">
-        המערכת מסננת ברגעים אלו פריטים אבודים תואמים.
-        <br />
-        עקוב במייל או בהתראות באתר על הזמנות לצ&aposאט - יכול להיות שמצאנו את בעל
-        האבידה...
-      </p>
-      <button
-        onClick={goHome}
-        className="primary-btn"
-      >
-        חזרה לדף הבית
-      </button>
+      <div className="text-center space-y-4 p-6">
+        <h1 className="text-2xl font-bold">תודה שהקדשת מזמנך לעלות את הפריט</h1>
+        <p className="text-lg">
+          המערכת מסננת ברגעים אלו פריטים אבודים תואמים.
+          <br />
+          עקוב במייל או בהתראות באתר על הזמנות לצ&aposאט - יכול להיות שמצאנו את
+          בעל האבידה...
+        </p>
+        <button onClick={goHome} className="primary-btn">
+          חזרה לדף הבית
+        </button>
+      </div>
     </div>
-  </div>
   );
 };
 

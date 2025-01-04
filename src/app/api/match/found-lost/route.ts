@@ -10,8 +10,7 @@ export async function POST(request: NextRequest) {
   try {
     await connect();
 
-    const foundItem = await request.json();
-    console.log("Found item check match received:", foundItem);
+    const foundItemCheckMatch = await request.json();
 
     const lostItems = await LostItemModel.aggregate([
       {
@@ -106,64 +105,50 @@ export async function POST(request: NextRequest) {
         },
       },
     ]);
-    // const foundItem = foundItemCheckMatch.foundItem;
-    console.log("Lost item details:", foundItem);
+
+    const foundItem = foundItemCheckMatch.foundItem
+
     // Filter the lost items based on the found item properties and geographic matching
     const filteredLostItems = lostItems.filter((lostItem: LostItem) => {
-      //filter by category and color.
-      console.log("lostItem.colorId.groupId", lostItem.colorId.groupId);
-      console.log("foundItem.colorId.groupId", foundItem.colorId);
-      console.log(
-        "colorId",
-        String(lostItem.colorId.groupId) === String(foundItem.colorId)
-      );
-      console.log("lostItem.subCategoryId._id", lostItem.subCategoryId._id);
-      console.log("foundItem.subCategoryId._id", foundItem.subCategoryId);
-      console.log(
-        "subCategoryId",
-        String(lostItem.subCategoryId._id) === String(foundItem.subCategoryId)
-      );
-
+      //filter by  color.
       const colorMatches =
         lostItem.colorId?.groupId &&
         foundItem.colorId?.groupId &&
         String(lostItem.colorId.groupId) === String(foundItem.colorId.groupId);
-      console.log("Color match:", colorMatches);
 
       let matchesQuery = false;
 
-      // Subcategory Logic
-      console.log("lost item categoryId:", foundItem.categoryId);
-      if (foundItem.categoryId === "6756e2418b5ba2d221f44afb") {
+      // Subcategory Logic if other
+      if (foundItemCheckMatch.categoryId === "6756e2418b5ba2d221f44afb") {
+        //split the sub category 
         const lostSubCategoryTitles = lostItem.subCategoryId?.title
           ? lostItem.subCategoryId.title
-              .split(",")
-              .map((title: string) => title.trim())
+            .split(",")
+            .map((title: string) => title.trim())
           : [];
         const foundSubCategoryTitles = foundItem.subCategoryId?.title
           ? foundItem.subCategoryId.title
-              .split(",")
-              .map((title:string) => title.trim())
+            .split(",")
+            .map((title: string) => title.trim())
           : [];
-        console.log("Lost subcategory titles:", lostSubCategoryTitles);
-        console.log("Found subcategory titles:", foundSubCategoryTitles);
 
+        //check if the at least word match
         matchesQuery =
           colorMatches &&
           foundSubCategoryTitles.some((lostWord: string) =>
             lostSubCategoryTitles.includes(lostWord)
           );
-        console.log("Matches query after subcategory logic:", matchesQuery);
+        // Subcategory Logic if not other
       } else {
         const subCategoryMatches =
           lostItem.subCategoryId?._id &&
           foundItem.subCategoryId?._id &&
           String(lostItem.subCategoryId._id) ===
-            String(foundItem.subCategoryId._id);
+          String(foundItem.subCategoryId._id);
         matchesQuery = colorMatches && subCategoryMatches;
-        console.log("Matches query after subcategory checks:", matchesQuery);
       }
 
+      //filter by the position
       if (matchesQuery) {
         if (foundItem.postion) {
           //filter by location
@@ -178,7 +163,7 @@ export async function POST(request: NextRequest) {
           return (
             pt &&
             String(pt.typePublicTransportId._id) ===
-              foundItem.publicTransport.typePublicTransportId._id &&
+            foundItem.publicTransport.typePublicTransportId._id &&
             pt.city === foundItem.publicTransport.city &&
             pt.line === foundItem.publicTransport.line
           );

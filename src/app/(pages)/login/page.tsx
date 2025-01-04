@@ -7,7 +7,7 @@ const page = () => {
       <div className=" rounded-lg shadow-lg w-full max-w-lg">
         <LoginForm />
       </div>
-   </div>
+    </div>
   );
 };
 export default page;

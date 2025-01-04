@@ -1,7 +1,5 @@
-"use client";
 import { ResetPassword } from "@/app/components/login/ResetPassword";
 import React from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const page = ({
   searchParams,
@@ -10,14 +8,10 @@ const page = ({
 }) => {
   const email = searchParams.email;
 
-  const queryClient = new QueryClient();
-
   return (
-    <QueryClientProvider client={queryClient}>
-        <div>
-          <ResetPassword email={email}></ResetPassword>
-        </div>
-    </QueryClientProvider>
+    <div>
+      <ResetPassword email={email}></ResetPassword>
+    </div>
   );
 };
 export default page;

@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
     }
 
     const newAlert = await AlertModel.create(body);
-    console.log("new ", newAlert);
 
     // Update the user to associate them with the new alert
     await UserModel.findByIdAndUpdate(

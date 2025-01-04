@@ -17,7 +17,7 @@ export const matchLostFound = async (lostItem: LostItem, categoryId:string) => {
     }
 }
 
-export const matchFoundLost = async (foundItem: FoundItem) => {
+export const matchFoundLost = async (foundItem: FoundItem,categoryId:string) => {
     console.log("in server", foundItem);
 
     try {

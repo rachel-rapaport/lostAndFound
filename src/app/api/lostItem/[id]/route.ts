@@ -22,6 +22,14 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    if (!await LostItemModel.exists({ _id: id })) {
+      return NextResponse.json(
+        { message: `Lost item with id ${id} not found` },
+        { status: 404 }
+      );
+    }
+
+
     //populate data from nested objects
     const data = await LostItemModel.aggregate([
       {
@@ -87,7 +95,7 @@ export async function GET(request: NextRequest) {
           'userId.fullName': 1,
           'userId.email': 1,
           'userId.password': 1,
-          'userId.phone':1,
+          'userId.phone': 1,
           circles: 1,
           publicTransport: {
             _id: '$publicTransport._id',

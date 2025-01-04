@@ -4,7 +4,7 @@ import { AdminDashboard } from "../../components/admin-components/AdminDashboard
 const page = () => {
   return (
     <>
-      <AdminDashboard/>
+      <AdminDashboard />
     </>
   );
 };
