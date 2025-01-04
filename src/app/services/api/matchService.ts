@@ -21,7 +21,10 @@ export const matchFoundLost = async (foundItem: FoundItem,categoryId:string) => 
     console.log("in server", foundItem);
 
     try {
-        const response = await axios.post("/api/match/found-lost", foundItem)
+        const response = await axios.post("/api/match/found-lost",{
+            foundItem,
+            categoryId
+        } )
         console.log(response.data.data);
         return response.data.data
     } catch (error) {
