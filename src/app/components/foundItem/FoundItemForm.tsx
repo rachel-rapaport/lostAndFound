@@ -102,7 +102,7 @@ const FoundItemForm = () => {
 
     try {
       const newFoundItem = await createFoundItem(foundItem,currentCategory);
-      setCurrentFoundItem(newFoundItem)
+      setCurrentFoundItem(newFoundItem.data[0])
       router.push("/found-item-after")
     } catch (error) {
       console.error("Error submitting lost item:", error);

@@ -22,6 +22,8 @@ const LostItemsFilter = () => {
   const router = useRouter();
 
   const fetchLostItems = async () => {
+    console.log("currentFoundItem",currentFoundItem);
+    
     if (currentFoundItem) {
       try {
         const result = await getSubCategoryById(
