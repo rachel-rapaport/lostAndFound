@@ -98,7 +98,10 @@ const LostForm = () => {
         .filter((token: Token) => token.morph.pos === "NOUN")
         .map((token: Token) => token.lex)
         .join(",");
+        console.log("res",response);
+
       return nouns;
+      
     } catch (error) {
       console.error("Error from analyze sending:", error.message);
       return null;
@@ -115,7 +118,7 @@ const LostForm = () => {
       currentCategory?.title === "שונות"
         ? await analyzeTextWithModel(selectedSubCategory)
         : selectedSubCategory;
-    console.log("analyzed sub category from lost form", analyzedSubCategory);
+    console.log(" sub category from lost form", analyzedSubCategory);
 
     const lostItem = {
       _id: new Types.ObjectId(),

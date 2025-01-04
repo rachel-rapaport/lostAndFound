@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 const Footer = () => {
     const router = useRouter();
 return (
-        <footer className='bg-secondary w-full p-[50px] mb-0 h-auto'>
+        <footer className='fixed  bg-secondary w-full p-[50px] mb-0 h-auto'>
             <div className='flex w-full sm:justify-end'>
                 <div className='flex flex-col sm:flex-row w-[80%] justify-between mx-auto'>
                     <h1 onClick={() => router.push('/')} className="text-2xl sm:text-3xl font-bold text-white pl-[30%] cursor-pointer">מציאון</h1>
