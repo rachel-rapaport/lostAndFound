@@ -99,6 +99,7 @@ const LostForm = () => {
         .map((token: Token) => token.lex)
         .join(",");
         console.log("res",response);
+        console.log("nouns",nouns);
 
       return nouns;
       
