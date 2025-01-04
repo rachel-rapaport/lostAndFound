@@ -8,8 +8,9 @@ body {
   @apply font-fredoka text-secondary;
 }
 
+
 .inner-body {
-  @apply p-[50px] text-right;
+  @apply p-[50px] text-right min-h-[80vh] flex items-center justify-center;
 }
 
 input{
@@ -196,6 +197,15 @@ input:checked+label .indicator {
       flex-wrap: wrap; /* האלמנטים יסתדרו בשורות נפרדות */
     }
   }
+
+  /* Footer */
+.footer-li {
+  @apply text-white cursor-pointer;
+}
+
+.footer-icon {
+  @apply cursor-pointer w-[24px] h-[24px];
+}
   
 
 

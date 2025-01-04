@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import Header from "./components/layOut/Header";
 import Script from "next/script";
+import Footer from "./components/layOut/Footer";
 
 const LayoutContent: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -29,6 +30,7 @@ export default function RootLayout({
       <LayoutContent>
         <Header />
         <div className="inner-body">{children}</div>
+        <Footer/>
       </LayoutContent>
     </html>
   );
