@@ -94,16 +94,16 @@ const FoundItemsTable = ({ userEmails }: { userEmails: string[] }) => {
                 <td className="table-cell px-2 py-1">{item.userId.email}</td>
                 <td className="table-cell px-2 py-1">{item.colorId?.name}</td>
                 <td className="table-cell px-2 py-1">
-                  {`${item.postion.latitude}, ${item.postion.longitude}`}
+                  {`${item.postion?.latitude}, ${item.postion?.longitude}`}
                 </td>
                 <td className="table-cell px-2 py-1">
-                  {item.publicTransport.typePublicTransportId.title}
+                  {item.publicTransport?.typePublicTransportId?.title}
                 </td>
                 <td className="table-cell px-2 py-1">
-                  {item.publicTransport.city}
+                  {item.publicTransport?.city}
                 </td>
                 <td className="table-cell px-2 py-1">
-                  {item.publicTransport.line}
+                  {item.publicTransport?.line}
                 </td>
                 <td
                   className="table-cell cursor-pointer max-w-xs overflow-hidden"
@@ -168,11 +168,11 @@ const FoundItemsTable = ({ userEmails }: { userEmails: string[] }) => {
             </p>
             <p>
               <strong>מיקום:</strong>{" "}
-              {`${item.postion.latitude}, ${item.postion.longitude}`}
+              {`${item.postion?.latitude}, ${item.postion?.longitude}`}
             </p>
             <p>
               <strong>סוג תחבורה ציבורית:</strong>{" "}
-              {item.publicTransport.typePublicTransportId.title || "-"}
+              {item.publicTransport?.typePublicTransportId?.title || "-"}
             </p>
             <p>
               <strong>עיר:</strong> {item.publicTransport.city || "-"}
