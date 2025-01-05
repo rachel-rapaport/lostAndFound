@@ -208,3 +208,11 @@ input:checked+label .indicator {
 .footer-icon {
   @apply cursor-pointer w-[24px] h-[24px];
 }
+
+/* about */
+.about-string{
+  @apply text-lg text-center mb-8 font-semibold;
+}
+.about-p{
+  @apply text-lg text-center mb-8;
+}
