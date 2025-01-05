@@ -55,6 +55,6 @@ export const sendEmailToAdmin = async (
       throw new Error("Failed to send email");
     }
   } catch  {
-    throw new Error("Failed to send email. Please try again later.", error.message);
+    throw new Error("Failed to send email. Please try again later.");
   }
 }
