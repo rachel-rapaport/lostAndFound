@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       vercelUrl,
     });
     return NextResponse.json(response.data); // Send the response data back
-  } catch (error: unknown) {
+  } catch  {
     return NextResponse.json(
       { error: "Failed to analyze text" },
       { status: 500 }

@@ -26,7 +26,7 @@ export const sendEmailToUser = async (
     } else {
       throw new Error("Failed to send email: Received status code");
     }
-  } catch (error) {
+  } catch{
     throw new Error("Failed to send email. Please try again later.");
   }
 };
@@ -54,7 +54,7 @@ export const sendEmailToAdmin = async (
     } else {
       throw new Error("Failed to send email");
     }
-  } catch (error) {
+  } catch  {
     throw new Error("Failed to send email. Please try again later.", error.message);
   }
 }

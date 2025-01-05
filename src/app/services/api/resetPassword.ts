@@ -27,4 +27,6 @@ export const sendEmailTo = async (resetEmail: string, resetUrl: string) => {
       },
     }
   );
+
+  return response
 }

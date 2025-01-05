@@ -6,7 +6,7 @@ export const logout = async () => {
     const response = await axios.post("/api/sign/logout");
     userStore.getState().setAlerts([]);
     return response.data;
-  } catch (error) {
+  } catch{
     throw new Error("Error creating foundItem");
   }
 };
