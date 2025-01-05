@@ -101,6 +101,10 @@ const LostForm = () => {
         console.log("res",response);
         console.log("nouns",nouns);
 
+        if(nouns == undefined){
+          return "שונות"
+        }
+
       return nouns;
       
     } catch (error) {
