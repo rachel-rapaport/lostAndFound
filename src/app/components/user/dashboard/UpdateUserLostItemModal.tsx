@@ -27,7 +27,7 @@ const UpdateUserLostItemModal = ({
 }: {
   lostItemToEdit?: LostItem;
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [, setSelectedCategory] = useState<string>("");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<
