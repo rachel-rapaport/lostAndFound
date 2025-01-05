@@ -10,9 +10,11 @@ const CategoriesSelect: React.FC<{
   onSelect: (selectedCategoryId: string) => void;
 }> = ({ onSelect }) => {
   const [selectedValue, setSelectedValue] = useState("");
+
   const categoriesFromStore = categoryStore((state) => state.categories);
   const setCategories = categoryStore((state) => state.setCategories);
   const setCurrentCategory = categoryStore((state) => state.setCurrentCategory);
+
   const {
     data: categories,
     isLoading,

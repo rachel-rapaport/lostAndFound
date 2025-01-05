@@ -10,12 +10,14 @@ const TypePublicTransportSelect: React.FC<{
   onSelect: (selectedTypesId: string) => void;
 }> = ({ onSelect }) => {
   const [selectedValue, setSelectedValue] = useState<string>("");
+
   const typePublicTransportsFromStore = typePublicTransportStore(
     (state) => state.typePublicTransports
   );
   const setTypePublicTransports = typePublicTransportStore(
     (state) => state.setTypePublicTransports
   );
+
   const {
     data: typePublicTransports,
     isLoading,
@@ -40,7 +42,7 @@ const TypePublicTransportSelect: React.FC<{
   if (isLoading) return <div>טוען...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
   if ((typePublicTransportsFromStore ?? typePublicTransports)?.length === 0)
-    return <div>No typePublicTransports available</div>;
+    return <div>לא נמצא תחבורה ציבורית</div>;
 
   // Handle the change event for the Select component
   const handleChange = (selectedOption: SelectProps | null) => {

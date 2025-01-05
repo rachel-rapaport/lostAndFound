@@ -8,8 +8,8 @@ const SubCategoriesSelect: React.FC<{
   onSelect: (selectedSubCategoryId: string) => void;
 }> = ({ onSelect }) => {
   const [selectedValue, setSelectedValue] = useState<SelectProps | null>(null);
-  const currentCategory = categoryStore((state) => state.currentCategory);
 
+  const currentCategory = categoryStore((state) => state.currentCategory);
   const subCategories = currentCategory?.subCategories || [];
 
   // Handle the change event for the Select component

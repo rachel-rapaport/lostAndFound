@@ -6,7 +6,9 @@ import { PublicTransportRequest } from "../../types/request/PublicTransportReque
 
 const PublicTransportation: React.FC<{
   transportData: PublicTransportRequest;
-  setTransportData: React.Dispatch<React.SetStateAction<PublicTransportRequest>>;
+  setTransportData: React.Dispatch<
+    React.SetStateAction<PublicTransportRequest>
+  >;
 }> = ({ transportData, setTransportData }) => {
   const handleTypeSelect = (typeId: string) => {
     setTransportData({

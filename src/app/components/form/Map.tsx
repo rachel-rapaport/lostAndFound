@@ -1,5 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import { GoogleMap, LoadScript, DrawingManager, Marker } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  LoadScript,
+  DrawingManager,
+  Marker,
+} from "@react-google-maps/api";
 import { Circle } from "../../types/props/circle";
 
 const Map: React.FC<{
@@ -7,10 +12,14 @@ const Map: React.FC<{
   setCircles: (circles: Circle[]) => void;
 }> = ({ circles, setCircles }) => {
   const [googleLoaded, setGoogleLoaded] = useState(false);
-  const [userLocation, setUserLocation] = useState<google.maps.LatLng | null>(null);
+  const [userLocation, setUserLocation] = useState<google.maps.LatLng | null>(
+    null
+  );
   const [drawingMode, setDrawingMode] = useState<boolean>(false);
-  const [drawingManager, setDrawingManager] = useState<google.maps.drawing.DrawingManager | null>(null);
+  const [drawingManager, setDrawingManager] =
+    useState<google.maps.drawing.DrawingManager | null>(null);
   const [mapKey, setMapKey] = useState(0);
+
   const mapRef = useRef<google.maps.Map | null>(null);
 
   // Function to get the user's current location using the browser's geolocation API

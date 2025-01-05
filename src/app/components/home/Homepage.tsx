@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect } from "react";
-import HomeButtons from "./home/HomeButtons";
-import Video from "./home/Video";
-import ThankList from "./thanks/ThankList";
-import About from "./About";
+import HomeButtons from "./HomeButtons";
+import Video from "./Video";
+import ThankList from "../thanks/ThankList";
+import About from "../about/About";
 
 const Homepage = () => {
   useEffect(() => {

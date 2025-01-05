@@ -24,8 +24,8 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
   const currentLostItem = lostItemStore((state) => state.currentLostItem);
   const currentFoundItem = useFoundItemStore((state) => state.currentFoundItem);
   const currentUser = userStore((state) => state.user);
-  const router = useRouter();
 
+  // Effect to listen for changes in the chat and update messages based on the room ID
   useEffect(() => {
     const messagesRef = ref(database, `chats/${roomId}`);
 
@@ -42,6 +42,9 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
     });
   }, [roomId]);
 
+  const router = useRouter();
+
+  // Function to send a new message to the chat
   const sendMessage = () => {
     if (!newMessage.trim()) return;
 
@@ -58,6 +61,7 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
     setNewMessage("");
   };
 
+  // Function to delete items from the database and mark the item as returned
   const returnItem = async () => {
     try {
       await deleteLostItemById(String(currentLostItem?._id));
@@ -69,7 +73,7 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className=" w-full  mb-0">
       <div className="space-y-2">
         {messages.map((message, index) => (
           <div
@@ -99,7 +103,7 @@ const Chat: React.FC<{ roomId: string }> = ({ roomId }) => {
         ))}
       </div>
 
-      <div className="fixed bottom-0 left-0 w-full z-10 bg-white shadow-lg">
+      <div className=" bottom-0 left-0 w-full z-10">
         <div className="chat-container items-center gap-x-4 gap-y-4 px-4 py-2">
           {userLost === String(currentUser?._id) && (
             <>

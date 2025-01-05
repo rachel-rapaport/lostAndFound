@@ -8,8 +8,12 @@ import Image from "next/image";
 const ColorSelect: React.FC<{
   onSelect: (selectedColorId: string) => void;
 }> = ({ onSelect }) => {
+
+  const [selectedColorId, setSelectedColorId] = React.useState<string | null>(null); 
+
   const colorsFromStore = colorStore((state) => state.colors);
   const setColors = colorStore((state) => state.setColors);
+  
   const {
     data: colors,
     isLoading,
@@ -20,7 +24,7 @@ const ColorSelect: React.FC<{
     enabled: colorsFromStore === null,
   });
 
-  const [selectedColorId, setSelectedColorId] = React.useState<string | null>(null); // סטייט לצבע שנבחר
+  
 
   // Update the store with fetched colors if the store doesn't already have them
   useEffect(() => {
@@ -32,23 +36,23 @@ const ColorSelect: React.FC<{
   if (isLoading) return <div>טוען...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
   if ((colorsFromStore ?? colors)?.length === 0)
-    return <div>No colors available</div>;
+    return <div>צבעים לא זמין</div>;
 
   // Determine the colors to display (from store or fetched data)
   const displayColors = colorsFromStore ?? colors;
 
   const handleColorSelect = (colorId: string) => {
-    setSelectedColorId(colorId); // עדכון הסטייט עם הצבע שנבחר
-    onSelect(colorId); // קריאה לפונקציה שהועברה כפרופס
+    setSelectedColorId(colorId); 
+    onSelect(colorId);
   };
 
   return (
     <div className="p-4 border-2 border-primary rounded-lg">
       <div className="flex flex-wrap justify-center gap-6 mt-6">
         {displayColors.map((color: Color) => {
-          const isSelected = selectedColorId === String(color._id); // בדיקה אם הצבע הנוכחי נבחר
+          const isSelected = selectedColorId === String(color._id); 
           const isSpecialColor =
-            String(color._id) === "00000000a165f3133be41d3b"; // מזהה הצבע המיוחד
+            String(color._id) === "00000000a165f3133be41d3b"; 
           return (
             <div
               key={String(color._id)}

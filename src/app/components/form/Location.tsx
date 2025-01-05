@@ -1,23 +1,25 @@
 import { Postion } from "@/app/types/props/postion";
 import { useState, useEffect } from "react";
 
-const Location: React.FC<{setLocation: React.Dispatch<React.SetStateAction<Postion>>;
-}> = ({setLocation }) => {
-    const massageSuccessfull = "המיקום הנוכחי שלך עודכן"
+const Location: React.FC<{
+  setLocation: React.Dispatch<React.SetStateAction<Postion>>;
+}> = ({ setLocation }) => {
+  const massageSuccessfull = "המיקום הנוכחי שלך עודכן";
+  
   const [massage, setMassage] = useState<string>(massageSuccessfull);
 
   // Function to get user location
   const getUserLocation = () => {
     if (!navigator.geolocation) {
-        setMassage("הדפדפן שלך לא תומך בשירותי מיקום.");
+      setMassage("הדפדפן שלך לא תומך בשירותי מיקום.");
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
         });
         setMassage(massageSuccessfull); // Reset error on success
       },
@@ -35,8 +37,8 @@ const Location: React.FC<{setLocation: React.Dispatch<React.SetStateAction<Posti
 
   return (
     <div className=" items-center justify-center">
-        <h3 className="section-title">מיקום</h3>
-        <h4 className="text-center">{massage}</h4>
+      <h3 className="section-title">מיקום</h3>
+      <h4 className="text-center">{massage}</h4>
     </div>
   );
 };

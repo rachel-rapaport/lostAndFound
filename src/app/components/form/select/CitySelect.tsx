@@ -10,8 +10,10 @@ const CitySelect: React.FC<{ onSelect: (selectedColorId: string) => void }> = ({
   onSelect,
 }) => {
   const [selectedValue, setSelectedValue] = useState("");
+
   const citiesFromStore = cityStore((state) => state.cities);
   const setCities = cityStore((state) => state.setCities);
+
   const {
     data: cities,
     isLoading,
@@ -32,7 +34,7 @@ const CitySelect: React.FC<{ onSelect: (selectedColorId: string) => void }> = ({
   if (isLoading) return <div>טוען...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
   if ((citiesFromStore ?? cities)?.length === 0)
-    return <div>No cities available</div>;
+    return <div>ערים לא זמין</div>;
 
   // Handle the change event for the Select component
   const handleChange = (selectedOption: SelectProps) => {
