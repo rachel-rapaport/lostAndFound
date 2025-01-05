@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
-export interface TypePublicTransport{
+export interface TypePublicTransport {
     _id: Types.ObjectId;
     title: string | null;
 }

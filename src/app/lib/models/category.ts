@@ -1,8 +1,8 @@
 import { Category } from "@/app/types/props/category";
 import mongoose, { Model, Schema } from "mongoose"
 
-const CategorySchema: Schema<Category>= new Schema({
-    title: { type: String, required: true, unique:true},
+const CategorySchema: Schema<Category> = new Schema({
+    title: { type: String, required: true, unique: true },
     subCategories: [{ type: mongoose.Schema.Types.ObjectId, ref: "SubCategory" }]
 })
 

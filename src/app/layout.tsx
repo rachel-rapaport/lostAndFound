@@ -13,7 +13,8 @@ const LayoutContent: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <body>{children}
+      <body>
+        {children}
         <Script src="https://cdn.enable.co.il/licenses/enable-L355685mrln16cfb-0125-67060/init.js"></Script>
       </body>
     </QueryClientProvider>
@@ -30,7 +31,7 @@ export default function RootLayout({
       <LayoutContent>
         <Header />
         <div className="inner-body">{children}</div>
-        <Footer/>
+        <Footer />
       </LayoutContent>
     </html>
   );

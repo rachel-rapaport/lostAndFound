@@ -4,13 +4,16 @@ import userStore from "../store/userStore";
 import { updateUserById } from "../services/api/userService";
 import { Chat } from "../types/props/chat";
 
+//Initiates a chat room between the current user and another user.
 export const initiateChat = async (otherUser: User) => {
     const { user } = userStore.getState();
     const roomId = await createChatRoom(String(user && user._id), String(otherUser._id));
     return roomId;
 }
 
-export const addChatRoom = async (chatRoom: Chat, otherUser :User) => {
+
+// Adds a chat room to both the current user and another user's chatRooms array.
+export const addChatRoom = async (chatRoom: Chat, otherUser: User) => {
     const { user, setUser } = userStore.getState();
     if (!user) {
         throw new Error("User not found in store");
@@ -26,10 +29,7 @@ export const addChatRoom = async (chatRoom: Chat, otherUser :User) => {
     const response = await updateUserById(String(user._id), updatedUser)
     const responseTwo = await updateUserById(String(otherUser._id), updatedOtherUser)
 
-    console.log("inn",responseTwo.data);
-    
-
-    if (response&&responseTwo) {
+    if (response && responseTwo) {
         setUser(updatedUser)
         return response;
     } else {
@@ -37,26 +37,24 @@ export const addChatRoom = async (chatRoom: Chat, otherUser :User) => {
     }
 }
 
-export const closeChat = async (roomId: string)=>{
+
+// Closes a chat room for the current user by marking it as unavailable
+export const closeChat = async (roomId: string) => {
     const { user, setUser } = userStore.getState();
     if (!user) {
         throw new Error("User not found in store");
     }
-     // עדכון ה-chatRooms
-     const updatedChatRooms = user.chatRooms?.map(chatRoom =>
+    const updatedChatRooms = user.chatRooms?.map(chatRoom =>
         chatRoom.roomId === roomId ? { ...chatRoom, available: false } : chatRoom
     ) || [];
 
-
-
-    // יצירת אובייקט משתמש מעודכן
     const updatedUser: User = {
         ...user,
         chatRooms: updatedChatRooms,
     };
-    
+
     const response = await updateUserById(String(user._id), updatedUser)
-    
+
     if (response) {
         setUser(updatedUser)
         return response;

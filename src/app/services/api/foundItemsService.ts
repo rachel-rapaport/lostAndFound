@@ -6,12 +6,11 @@ import { FoundItemRequest } from "@/app/types/request/foundItemRequest";
 // get all found items
 export const getFoundItems = async () => {
   try {
-    const response = await axios.get("/api/foundItem",{
+    const response = await axios.get("/api/foundItem", {
       withCredentials: true,
     });
-    console.log(response);
     return response.data;
-  } catch{
+  } catch {
     throw new Error("Failed to get foundItems");
   }
 };
@@ -20,9 +19,8 @@ export const getFoundItems = async () => {
 export const getFoundItemById = async (id: string) => {
   try {
     const response = await axios.get(`/api/foundItem/${id}`);
-    console.log(response);
     return response.data;
-  } catch{
+  } catch {
     throw new Error("Failed to get foundItem");
   }
 };
@@ -31,36 +29,22 @@ export const getFoundItemById = async (id: string) => {
 export const createFoundItem = async (foundItem: FoundItemRequest,
   currentCategory: Category | null) => {
   try {
-    const response = await axios.post("/api/foundItem",  {
+    const response = await axios.post("/api/foundItem", {
       ...foundItem,
-      category: currentCategory, 
+      category: currentCategory,
     });
     return response.data;
   } catch {
     throw new Error("Failed to get foundItems");
   }
 };
-// export const createFoundItem = async (foundItemData: FoundItem) => {
-//   const { publicTransport, ...foundItemRest } = foundItemData;
-//   const publicTransportData = await TypePublicTransportModel.create(
-//     publicTransport
-//   );
-
-//   const foundItem = new FoundItemModel({
-//     ...foundItemRest,
-//     publicTransport: publicTransportData._id,
-//   });
-
-//   return await foundItem.save();
-// };
-
 
 // update found item by id
 export const updateFoundItemById = async (id: string, foundItem: FoundItem) => {
   try {
     const response = await axios.put(`/api/foundItem/${id}`, foundItem);
     return response.data;
-  } catch{
+  } catch {
     throw new Error("Failed to updating foundItem");
   }
 };
@@ -71,7 +55,7 @@ export const deleteFoundItemById = async (id: string) => {
   try {
     const response = await axios.delete(`/api/foundItem/${id}`);
     return response.data;
-  } catch{
+  } catch {
     throw new Error("Failed to deleting foundItem")
   }
 };

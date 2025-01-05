@@ -14,8 +14,7 @@ export const getCategoryById = async (id: string) => {
   try {
     const response = await axios.get(`api/category/${id}`);
     return response.data.data;
-  } catch (error) {
-    console.log("error from category service",error.message);
+  } catch {
     throw new Error("Failed to get category by id");
   }
 };

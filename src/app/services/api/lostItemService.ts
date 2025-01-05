@@ -8,7 +8,6 @@ export const getLostItems = async () => {
     const response = await axios.get("/api/lostItem", {
       withCredentials: true,
     });
-    console.log(response);
     return response.data;
   } catch {
     throw new Error("Failed to get lostItems");
@@ -19,7 +18,6 @@ export const getLostItems = async () => {
 export const getLostItemById = async (id: string) => {
   try {
     const response = await axios.get(`/api/lostItem/${id}`);
-    console.log(response);
     return response.data;
   } catch {
     throw new Error("Failed to get lostItem by id");
@@ -34,9 +32,8 @@ export const createLostItem = async (
   try {
     const response = await axios.post("/api/lostItem", {
       ...lostItem,
-      category: currentCategory, 
+      category: currentCategory,
     });
-    console.log(response.data.data[0]);
     return response.data.data[0];
   } catch {
     throw new Error("Failed to create lostItem");

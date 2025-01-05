@@ -4,9 +4,9 @@ import { PublicTransportRequest } from "./PublicTransportRequest";
 
 export interface LostItemRequest {
     _id: Types.ObjectId;
-    subCategoryId: string; 
-    colorId: string;  
-    userId: string;  
+    subCategoryId: string;
+    colorId: string;
+    userId: string;
     circles: Circle[] | null;
-    publicTransport: PublicTransportRequest | null;  
+    publicTransport: PublicTransportRequest | null;
 } 

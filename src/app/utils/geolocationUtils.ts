@@ -17,15 +17,15 @@ function computeDistance(center: { lat: number, lng: number }, point: { latitude
     return R * c;  // Returns distance in meters
 }
 
- // Function to check if a position point is inside a geographic circle
+// Function to check if a position point is inside a geographic circle
 export const checkIfPointInsideCircle = (
     circle: Circle,
     position: Postion
 ) => {
-    console.log("circle",circle);
-    console.log("PoPostion",position);
-    
-    
+    console.log("circle", circle);
+    console.log("PoPostion", position);
+
+
     // Compute distance from position to circle center
     const distance = computeDistance(circle.center, position);
 

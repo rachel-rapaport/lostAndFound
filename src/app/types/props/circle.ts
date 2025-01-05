@@ -1,7 +1,7 @@
 export interface Circle {
-    center: {
-      lat: number;
-      lng: number;
-    };
-    radius: number;
+  center: {
+    lat: number;
+    lng: number;
+  };
+  radius: number;
 }

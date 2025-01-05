@@ -6,8 +6,6 @@ export async function signupAuthenticationCookies(
   password: string
 ) {
   try {
-    // console.log("in service sign up", email, 'password',password, fullName, 'phone',phone);
-
     const response = await axios.post(
       "/api/sign/signUp",
       {
@@ -27,8 +25,7 @@ export async function signupAuthenticationCookies(
     if (response && response.data && response.data.token) {
       return response;
     }
-  } catch (error) {
-    console.error("Error in signupAuthenticationCookies:", error);
-    return false;
+  } catch {
+    throw new Error("Error in signupAuthenticationCookies");
   }
 }

@@ -19,15 +19,14 @@ export async function loginAuthenticationCookies(
         user: response.data.user,
       };
     } else if (response.status === 200) {
-      console.log("User already logged in");
 
       // If the user is already logged in, just return the user data
       return {
         token: response.data.token,
       };
     }
-  } catch (error) {
-    console.log("Error from service", error);
+  } catch {
+    throw new Error("Failed");
     return false;
   }
 }

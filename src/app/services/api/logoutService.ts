@@ -7,7 +7,6 @@ export const logout = async () => {
     userStore.getState().setAlerts([]);
     return response.data;
   } catch (error) {
-    console.log("Error creating foundItem:", error);
-    throw error;
+    throw new Error("Error creating foundItem");
   }
 };

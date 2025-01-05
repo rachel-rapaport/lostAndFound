@@ -13,8 +13,8 @@ body {
   @apply p-[50px] text-right min-h-[80vh] flex items-center justify-center;
 }
 
-input{
-  @apply  text-right border-2 border-primary rounded-md
+input {
+  @apply text-right border-2 border-primary rounded-md
 }
 
 @layer utilities {
@@ -163,42 +163,44 @@ input:checked+label .indicator {
   @apply outline-none ring-0;
 }
 
-/*  */
-  @keyframes updown {
-    0% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px); /* מיקום למעלה */
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
-  
-  .animate-updown {
-    animation: updown 1s ease-in-out infinite;
+/* arrow button */
+@keyframes updown {
+  0% {
+    transform: translateY(0);
   }
 
-  /*  */
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-updown {
+  animation: updown 1s ease-in-out infinite;
+}
+
+/* chat */
+.chat-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
   .chat-container {
-    display: flex;
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 767px) {
+  .chat-container {
     flex-wrap: wrap;
   }
-  
-  @media (min-width: 768px) {
-    .chat-container {
-      flex-wrap: nowrap; /* כל האלמנטים יישארו בשורה אחת */
-    }
-  }
-  
-  @media (max-width: 767px) {
-    .chat-container {
-      flex-wrap: wrap; /* האלמנטים יסתדרו בשורות נפרדות */
-    }
-  }
+}
 
-  /* Footer */
+/* Footer */
 .footer-li {
   @apply text-white cursor-pointer;
 }
@@ -206,6 +208,3 @@ input:checked+label .indicator {
 .footer-icon {
   @apply cursor-pointer w-[24px] h-[24px];
 }
-  
-
-

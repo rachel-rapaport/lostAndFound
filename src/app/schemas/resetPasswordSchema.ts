@@ -12,5 +12,5 @@ export const resetPasswordSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "הסיסמאות אינן תואמות.",
-    path: ["confirmPassword"], // This specifies which field the error belongs to
+    path: ["confirmPassword"],
   });

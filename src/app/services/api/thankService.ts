@@ -15,7 +15,6 @@ export const getThanks = async () => {
 export const getThankById = async (id: string) => {
     try {
         const response = await axios.get(`/api/thank/${id}`);
-        console.log(response);
         return response.data;
     } catch {
         throw new Error("Failed to get thank by id")
@@ -45,8 +44,6 @@ export const updateThankById = async (id: string, thank: Thank) => {
 // delete thank by id
 export const deleteThankById = async (id: string) => {
     try {
-        console.log("in delete");
-
         const response = await axios.delete(`/api/thank/${id}`);
         console.log(response.data);
 

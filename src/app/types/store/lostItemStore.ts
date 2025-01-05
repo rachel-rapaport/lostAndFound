@@ -5,5 +5,5 @@ export interface LostItemStore {
   setCurrentLostItem: (lostItem: LostItem | null) => void;
   filteredLostItems: LostItem[] | null;
   setFilteredLostItems: (lostItems: LostItem[] | null) => void;
-  getFilteredLostItemById: (id:string)=>LostItem|null;
+  getFilteredLostItemById: (id: string) => LostItem | null;
 }

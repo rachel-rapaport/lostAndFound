@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const sendEmailTo = async (resetEmail:string, resetUrl:string) => {
+export const sendEmailTo = async (resetEmail: string, resetUrl: string) => {
 
-const response = await axios.post(
+  const response = await axios.post(
     '/api/send/email',
     {
       to: resetEmail,
@@ -27,6 +27,4 @@ const response = await axios.post(
       },
     }
   );
-  console.log(response);
-  
 }
