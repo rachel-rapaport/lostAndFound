@@ -10,6 +10,7 @@ const UserDashboard: React.FC = () => {
 
   const currentUser = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
+
   const handleSave = (updatedData: {
     _id: Types.ObjectId;
     fullName: string;
@@ -18,7 +19,6 @@ const UserDashboard: React.FC = () => {
     phone: string;
   }) => {
     if (currentUser && currentUser._id) {
-      console.log("User updated:", updatedData);
       updateUserById(currentUser._id.toString(), updatedData);
       setUser(updatedData);
       setIsModalOpen(false);
@@ -30,7 +30,6 @@ const UserDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* User Info Section */}
         <div className="col-span-1 p-6 rounded-lg  order-last lg:order-first">
           <h2 className="text-2xl font-semibold">פרטים אישיים:</h2>
           <div className="space-y-4 mt-4">

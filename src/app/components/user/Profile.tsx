@@ -8,12 +8,11 @@ import { Types } from "mongoose";
 
 export const Profile = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const profileRef = useRef<HTMLDivElement | null>(null);
 
-  // Fetch user and setUser from the store
   const currentUser = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
+
+  const profileRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,6 +32,8 @@ export const Profile = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
+
+  const router = useRouter();
 
   // Toggle menu visibility
   const toggleMenu = () => {

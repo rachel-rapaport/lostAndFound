@@ -13,17 +13,32 @@ import React, { useEffect, useState } from "react";
 
 const LostItemsFilter = () => {
   const [send, setSend] = useState(true);
+
   const currentFoundItem = useFoundItemStore((state) => state.currentFoundItem);
   const filteredLostItems = lostItemStore((state) => state.filteredLostItems);
   const setFilteredLostItems = lostItemStore(
     (state) => state.setFilteredLostItems
   );
   const currentUser = userStore((state) => state.user);
+
+  // Fetch lost items when the current found item changes
+  useEffect(() => {
+    fetchLostItems();
+  }, [currentFoundItem, setFilteredLostItems]);
+
+  // Send user notifications after filtering the lost items
+  useEffect(() => {
+    if (filteredLostItems && currentUser && send) {
+      console.log(11);
+      setSend(false);
+      filteredLostItems.map((item: LostItem) => sendUser(item.userId));
+    }
+  }, [filteredLostItems]);
+
   const router = useRouter();
 
+  // Function to fetch lost items based on the current found item
   const fetchLostItems = async () => {
-    console.log("currentFoundItem",currentFoundItem);
-    
     if (currentFoundItem) {
       try {
         const result = await getSubCategoryById(
@@ -32,7 +47,7 @@ const LostItemsFilter = () => {
         const subCategory = result.data[0];
 
         if (subCategory?.categoryId && subCategory.categoryId._id) {
-          const categoryId = String(subCategory.categoryId._id); // Make sure we're accessing _id correctly
+          const categoryId = String(subCategory.categoryId._id);
           const lost = await matchFoundLost(currentFoundItem, categoryId);
           setFilteredLostItems(lost);
         } else {
@@ -44,6 +59,7 @@ const LostItemsFilter = () => {
     }
   };
 
+  // Function to send notifications to the user
   const sendUser = (user: User) => {
     const chatRoomLink = `${getVercelUrlWithoutRequest()}/questions/${
       currentFoundItem?._id
@@ -51,20 +67,9 @@ const LostItemsFilter = () => {
     afterFilter(user, "foundItem", chatRoomLink);
   };
 
-  useEffect(() => {
-    fetchLostItems();
-  }, [currentFoundItem, setFilteredLostItems]);
-
-  useEffect(() => {
-    if (filteredLostItems && currentUser && send) {
-      console.log(11);
-      setSend(false);
-      filteredLostItems.map((item: LostItem) => sendUser(item.userId));
-    }
-  }, [filteredLostItems]);
-
+  // Function to navigate back to the home page
   const goHome = () => {
-    router.push("/home");
+    router.push("/");
   };
 
   return (
@@ -74,7 +79,7 @@ const LostItemsFilter = () => {
         <p className="text-lg">
           המערכת מסננת ברגעים אלו פריטים אבודים תואמים.
           <br />
-          עקוב במייל או בהתראות באתר על הזמנות לצ&aposאט - יכול להיות שמצאנו את
+          עקוב במייל או בהתראות באתר על הזמנות לצ&apos;אט - יכול להיות שמצאנו את
           בעל האבידה...
         </p>
         <button onClick={goHome} className="primary-btn">

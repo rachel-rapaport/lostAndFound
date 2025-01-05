@@ -1,12 +1,12 @@
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const CardBlocked=() => {
-    const router = useRouter();
-    
-    const handleClick = () => {
-        router.replace('/block-item-for-user');
-      };
+const CardBlocked = () => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.replace("/block-item-for-user");
+  };
 
   return (
     <div

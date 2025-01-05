@@ -7,7 +7,6 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   let isAdmin = false;
 
-  console.log(`Request to: ${pathname}`);
 
   // Exclude specific routes and Next.js static files
   if (pathname.startsWith("/api/") || pathname.startsWith("/reset-password")) {
@@ -36,7 +35,6 @@ export async function middleware(req: NextRequest) {
     } catch (error) {
       console.error("Invalid token:", error);
       // clear global store
-      console.log(userStore.getState().user);
 
       userStore.getState().clearUser();
       userStore.getState().setAlerts([]);
@@ -48,13 +46,10 @@ export async function middleware(req: NextRequest) {
   } else {
     // If no token and not on the login page, redirect to login
     // if (pathname !== "/login") {    
-      console.log(userStore.getState().user);
 
       userStore.getState().clearUser();
       userStore.getState().setAlerts([]);
-      console.log(userStore.getState().user);
 
-      console.log("No token, redirecting to /login");
       return NextResponse.redirect(new URL("/login", req.url));
     // }
   }

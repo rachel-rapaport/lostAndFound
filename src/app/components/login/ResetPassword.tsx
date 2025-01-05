@@ -1,4 +1,3 @@
-// Form to reset the user account password- get and and upadte
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
@@ -13,12 +12,12 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [success, setSuccess] = useState("");
 
   const router = useRouter();
+
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -45,7 +44,7 @@ export const ResetPassword: React.FC<{ email: string }> = ({ email }) => {
     }
   }, [data]);
 
-  if (!email) return <div>An error occured. No Email provided.</div>;
+  if (!email) return <div>מייל לא זמין.</div>;
   if (isLoading) return <div>טוען...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 

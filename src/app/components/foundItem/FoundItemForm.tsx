@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
 import React, { useState } from "react";
 import CategoriesSelect from "../form/select/CategoriesSelect";
@@ -18,7 +18,6 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Token from "@/app/types/NER-model/token";
 import categoryStore from "@/app/store/categoryStore";
-
 
 const FoundItemForm = () => {
   const [, setSelectedCategory] = useState<string>("");
@@ -42,34 +41,35 @@ const FoundItemForm = () => {
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
 
-  const setCurrentFoundItem = useFoundItemStore((state)=>state.setCurrentFoundItem)
+  const setCurrentFoundItem = useFoundItemStore(
+    (state) => state.setCurrentFoundItem
+  );
   const currentUser = userStore((state) => state.user);
   const currentCategory = categoryStore((state) => state.currentCategory);
 
   const router = useRouter();
 
-
+  // Analyzes text using an external model for extracting nouns
   const analyzeTextWithModel = async (sentence: string) => {
-      try {
-        const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_RAILWAY_URL}/analyze`,
-          {
-            text: sentence,
-          },
-          { timeout: 40000 }
-        );
-        const nouns: string = response.data.embeddings[0].tokens
-          .filter((token: Token) => token.morph.pos === "NOUN")
-          .map((token: Token) => token.lex)
-          .join(",");
-        return nouns;
-      } catch (error) {
-        console.error("Error from analyze sending:", error.message);
-        return null;
-      }
-    };
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_RAILWAY_URL}/analyze`,
+        {
+          text: sentence,
+        },
+        { timeout: 40000 }
+      );
+      const nouns: string = response.data.embeddings[0].tokens
+        .filter((token: Token) => token.morph.pos === "NOUN")
+        .map((token: Token) => token.lex)
+        .join(",");
+      return nouns;
+    } catch  {
+      return null;
+    }
+  };
 
-
+  // Analyzes text using an external model for extracting nouns
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -77,8 +77,6 @@ const FoundItemForm = () => {
       currentCategory?.title === "שונות"
         ? await analyzeTextWithModel(selectedSubCategory)
         : selectedSubCategory;
-    console.log("analyzed sub category from lost form", analyzedSubCategory);
-
     const foundItem = {
       _id: new Types.ObjectId(),
       subCategoryId: analyzedSubCategory ? analyzedSubCategory : "",
@@ -97,13 +95,10 @@ const FoundItemForm = () => {
       image: image,
       questions: questions,
     };
-
-    console.log("in", foundItem);
-
     try {
-      const newFoundItem = await createFoundItem(foundItem,currentCategory);
-      setCurrentFoundItem(newFoundItem.data[0])
-      router.push("/found-item-after")
+      const newFoundItem = await createFoundItem(foundItem, currentCategory);
+      setCurrentFoundItem(newFoundItem.data[0]);
+      router.push("/found-item-after");
     } catch (error) {
       console.error("Error submitting lost item:", error);
     }
@@ -125,9 +120,6 @@ const FoundItemForm = () => {
                   <>
                     <h3 className="section-title">תת-קטגוריה</h3>
                     <SubCategoriesSelect onSelect={setSelectedSubCategory} />
-                    {/* {errors.subCategoryId && (
-                      <p className="error-message">{errors.subCategoryId}</p>
-                    )} */}
                   </>
                 ) : (
                   <>
@@ -140,18 +132,12 @@ const FoundItemForm = () => {
                       className="block w-full px-3 py-2 border border-primary rounded-md shadow-sm focus:ring-primary sm:text-sm"
                       onChange={(e) => setSelectedSubCategory(e.target.value)}
                     />
-                    {/* {errors.subCategoryId && (
-                      <p className="error-message">{errors.subCategoryId}</p>
-                    )} */}
                   </>
                 )}
               </div>
               <div>
                 <h3 className="section-title">צבע</h3>
                 <ColorSelect onSelect={setSelectedColor} />
-                {/* {errors.colorId && (
-                  <p className="error-message">{errors.colorId}</p>
-                )} */}
               </div>
             </div>
             <div className="w-full lg:w-2/3 ">
@@ -174,9 +160,6 @@ const FoundItemForm = () => {
                       מיקום
                     </button>
                   </div>
-                  {/* {errors.selectedLocation && (
-                    <p className="error-message">{errors.selectedLocation}</p>
-                  )} */}
                 </div>
               )}
 
@@ -186,9 +169,6 @@ const FoundItemForm = () => {
                     transportData={transportData}
                     setTransportData={setTransportData}
                   />
-                  {/* {errors.publicTransport && (
-                    <p className="error-message">{errors.publicTransport}</p>
-                  )} */}
                 </>
               )}
               {selectedLocation === "map" && (
@@ -212,14 +192,6 @@ const FoundItemForm = () => {
               </div>
               <div className="pt-6">
                 <h3 className="section-title">סימנים</h3>
-                {/* <button
-              type="button"
-              className="primary-btn"
-              onClick={handleScrollToQuestions} // פותח את המודל בלחיצה
-            >
-              הוסף סימנים
-            </button> */}
-
                 <QuestionsCreator
                   questions={questions}
                   setQuestions={setQuestions}

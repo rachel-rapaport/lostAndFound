@@ -1,22 +1,9 @@
 import React, { useState } from "react";
 import { z } from "zod";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import { User } from "../../types/props/user";
 import { signUpSchema } from "../../schemas/loginSchemaZod";
 import { Types } from "mongoose";
-
-interface UpdateUserModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (data: {
-    _id: Types.ObjectId;
-    fullName: string;
-    email: string;
-    password: string;
-    phone: string;
-  }) => void;
-  initialUserData: User;
-}
+import { UpdateUserModalProps } from "@/app/types/UpdateUserModalProps";
 
 const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
   isOpen,

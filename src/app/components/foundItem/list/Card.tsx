@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation"; // לשימוש בניווט
+import { useRouter } from "next/navigation";
 
 const Card: React.FC<{ counter: number; id: string }> = ({ counter, id }) => {
   const router = useRouter();

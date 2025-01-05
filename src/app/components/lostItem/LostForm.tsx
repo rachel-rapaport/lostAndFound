@@ -15,7 +15,6 @@ import Map from "../form/Map";
 import { LostItemSchema } from "@/app/schemas/lostItemSchema";
 import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
 import categoryStore from "@/app/store/categoryStore";
-// import analyzeTextWithModel from "@/app/utils/NERmodel";
 import axios from "axios";
 import Token from "@/app/types/NER-model/token";
 
@@ -33,10 +32,10 @@ const LostForm = () => {
     city: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   const currentCategory = categoryStore((state) => state.currentCategory);
   const currentUser = userStore((state) => state.user);
   const setCurrentLostItem = lostItemStore((state) => state.setCurrentLostItem);
-  const router = useRouter();
 
   // useEffect hook to clear errors when fields are updated
   useEffect(() => {
@@ -57,6 +56,8 @@ const LostForm = () => {
       setErrors((prevErrors) => ({ ...prevErrors, publicTransport: "" }));
     }
   }, [selectedColor, selectedSubCategory, circles, transportData]);
+
+  const router = useRouter();
 
   // Validation function for the lost item form using Zod schema
   const validateLostItem = () => {
@@ -98,15 +99,10 @@ const LostForm = () => {
         .filter((token: Token) => token.morph.pos === "NOUN")
         .map((token: Token) => token.lex)
         .join(",");
-        console.log("res",response);
-        console.log("nouns",nouns);
-
-        if(nouns == undefined){
-          return "שונות"
-        }
-
+      if (nouns == undefined) {
+        return "שונות";
+      }
       return nouns;
-      
     } catch (error) {
       console.error("Error from analyze sending:", error.message);
       return null;
@@ -116,15 +112,11 @@ const LostForm = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validateLostItem()) return;
-
     const analyzedSubCategory =
       currentCategory?.title === "שונות"
         ? await analyzeTextWithModel(selectedSubCategory)
         : selectedSubCategory;
-    console.log(" sub category from lost form", analyzedSubCategory);
-
     const lostItem = {
       _id: new Types.ObjectId(),
       subCategoryId: analyzedSubCategory ? analyzedSubCategory : "",
@@ -134,16 +126,13 @@ const LostForm = () => {
       publicTransport:
         selectedLocation === "transport"
           ? {
-            typePublicTransportId: transportData.typePublicTransportId,
-            line: transportData.line,
-            city: transportData.city,
-          }
+              typePublicTransportId: transportData.typePublicTransportId,
+              line: transportData.line,
+              city: transportData.city,
+            }
           : null,
     };
-
     try {
-      console.log("lost from form", lostItem);
-
       if (!currentCategory) return;
       const newListItem = await createLostItem(lostItem, currentCategory);
       setCurrentLostItem(newListItem);
