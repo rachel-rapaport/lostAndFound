@@ -90,6 +90,7 @@ export async function GET(request: NextRequest) {
     }
 }
 
+// upadte by id
 export async function PUT(request: NextRequest) {
     try {
         await connect();

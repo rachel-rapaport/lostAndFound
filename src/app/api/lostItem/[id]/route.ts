@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
+    console.log(id);
+    
 
     if (!id) {
       return NextResponse.json(
@@ -22,11 +24,21 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    if (!await LostItemModel.exists({ _id: id})) {
+    
+      return NextResponse.json(
+        { message: `Lost item with id ${id} not found` },
+        { status: 404 }
+      );
+    }
+
+
     //populate data from nested objects
     const data = await LostItemModel.aggregate([
       {
         $match: { _id: new mongoose.Types.ObjectId(id) }
-      },
+      }
+      ,
       {
         $lookup: {
           from: 'users',
@@ -109,6 +121,8 @@ export async function GET(request: NextRequest) {
         { status: 404 }
       );
     }
+    console.log(data);
+    
     return NextResponse.json(
       { message: "lostItem were successfully fetched", data: data },
       { status: 200 }

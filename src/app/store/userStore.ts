@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import { User } from "../types/props/user";
 import { Alert } from "../types/props/alert";
 import { getAlertById } from "../services/api/alertService";
+import { LostItem } from "../types/props/lostItem";
 
 interface CurrentUserState {
   setAlerts: (alerts: Alert[]) => void;
@@ -11,6 +12,8 @@ interface CurrentUserState {
   clearUser: () => void;
   alerts: Alert[] | null;
   getAlerts: () => Promise<void>;
+  updateUserLostItems: (updatedLostItems: LostItem[]) => void; 
+
 }
 
 const userStore = create(
@@ -62,7 +65,19 @@ const userStore = create(
           set({ alerts: [] });
         }
       },
+      updateUserLostItems: (updatedLostItems: LostItem[]) => {
+        const currentUser = get().user;
+        if (currentUser) {
+          set({
+            user: {
+              ...currentUser,
+              lostItems: updatedLostItems,
+            },
+          });
+        }
+      },
     }),
+    
     {
       name: "userData", // Name for localStorage key
     }

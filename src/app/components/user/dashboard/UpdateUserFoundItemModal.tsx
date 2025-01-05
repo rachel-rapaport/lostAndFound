@@ -1,31 +1,33 @@
 "use client";
 import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
 import React, { useState } from "react";
-import CategoriesSelect from "../form/select/CategoriesSelect";
-import SubCategoriesSelect from "../form/select/SubCategoriesSelect";
-import ColorSelect from "../form/select/ColorSelect";
-import PublicTransportation from "../form/PublicTransportation";
+import CategoriesSelect from "../../form/select/CategoriesSelect";
+import SubCategoriesSelect from "../../form/select/SubCategoriesSelect";
+import ColorSelect from "../../form/select/ColorSelect";
+import PublicTransportation from "../../form/PublicTransportation";
 import { Question } from "@/app/types/props/question";
-import UploadImage from "../form/UploadImage";
-import QuestionsCreator from "../lostItem/QuestionsCreator";
+import UploadImage from "../../form/UploadImage";
+import QuestionsCreator from "../../lostItem/QuestionsCreator";
 import { Postion } from "@/app/types/props/postion";
-import Location from "../form/Location";
+import Location from "../../form/Location";
 import { Types } from "mongoose";
 import userStore from "@/app/store/userStore";
-import { createFoundItem } from "@/app/services/api/foundItemsService";
-import useFoundItemStore from "@/app/store/foundItemStore";
+import { updateFoundItemById } from "@/app/services/api/foundItemsService";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Token from "@/app/types/NER-model/token";
 import categoryStore from "@/app/store/categoryStore";
+import { FoundItem } from "@/app/types/props/foundItem";
 
-const FoundItemForm = () => {
+const UpdateUserFoundItem = ({
+  foundItemToEdit,
+}: {
+  foundItemToEdit?: FoundItem;
+}) => {
   const [, setSelectedCategory] = useState<string>("");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
-  const [selectedLocation, setSelectedLocation] = useState<
-    "map" | "transport" | null
-  >(null);
+  const [selectedLocation, setSelectedLocation] = useState<"map" | "transport" | null>(null);
   const [transportData, setTransportData] = useState<PublicTransportRequest>({
     typePublicTransportId: "",
     line: "",
@@ -41,22 +43,18 @@ const FoundItemForm = () => {
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
 
-  const setCurrentFoundItem = useFoundItemStore(
-    (state) => state.setCurrentFoundItem
-  );
   const currentUser = userStore((state) => state.user);
   const currentCategory = categoryStore((state) => state.currentCategory);
 
   const router = useRouter();
 
-  // Analyzes text using an external model for extracting nouns
+  const isEditMode = Boolean(foundItemToEdit);
+
   const analyzeTextWithModel = async (sentence: string) => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_RAILWAY_URL}/analyze`,
-        {
-          text: sentence,
-        },
+        { text: sentence },
         { timeout: 40000 }
       );
       const nouns: string = response.data.embeddings[0].tokens
@@ -64,12 +62,12 @@ const FoundItemForm = () => {
         .map((token: Token) => token.lex)
         .join(",");
       return nouns;
-    } catch  {
+    } catch (error) {
+      console.error("Error from analyze sending:", error.message);
       return null;
     }
   };
 
-  // Analyzes text using an external model for extracting nouns
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -77,8 +75,12 @@ const FoundItemForm = () => {
       currentCategory?.title === "שונות"
         ? await analyzeTextWithModel(selectedSubCategory)
         : selectedSubCategory;
+    console.log("analyzed sub category from lost form", analyzedSubCategory);
+
     const foundItem = {
-      _id: new Types.ObjectId(),
+      _id: isEditMode
+        ? foundItemToEdit?._id ?? new Types.ObjectId() // Ensure _id is defined if in edit mode
+        : new Types.ObjectId(),
       subCategoryId: analyzedSubCategory ? analyzedSubCategory : "",
       colorId: selectedColor,
       userId: String(currentUser?._id),
@@ -94,13 +96,15 @@ const FoundItemForm = () => {
       descripition: description,
       image: image,
       questions: questions,
-    };
+    } as unknown as FoundItem;
+
     try {
-      const newFoundItem = await createFoundItem(foundItem, currentCategory);
-      setCurrentFoundItem(newFoundItem.data[0]);
-      router.push("/found-item-after");
+      if (isEditMode) {
+        await updateFoundItemById(String(foundItem._id), foundItem); // Update only
+        router.push("/foundItems-list"); // Redirect after updating
+      }
     } catch (error) {
-      console.error("Error submitting lost item:", error);
+      console.error("Error submitting found item:", error);
     }
   };
 
@@ -123,9 +127,7 @@ const FoundItemForm = () => {
                   </>
                 ) : (
                   <>
-                    <h3 className="section-title">
-                      הכנס תיאור ענייני של הפריט האבוד:{" "}
-                    </h3>
+                    <h3 className="section-title">הכנס תיאור ענייני של הפריט האבוד: </h3>
                     <input
                       type="text"
                       placeholder="הכנס תיאור "
@@ -210,4 +212,4 @@ const FoundItemForm = () => {
   );
 };
 
-export default FoundItemForm;
+export default UpdateUserFoundItem;

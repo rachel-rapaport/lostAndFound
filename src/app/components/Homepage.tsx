@@ -8,7 +8,7 @@ import { useEffect } from "react";
 // from "../utils/NERmodel";
 
 //
-import analyzeTextWithModel from "../utils/NERmodel";
+// import analyzeTextWithModel from "../utils/NERmodel";
 // import Token from "../types/NER-model/token";
 // import NERmodel from "../utils/NERmodel";
 
@@ -28,16 +28,16 @@ const Homepage = () => {
   // })();
 
   useEffect(() => {
-    const analyzeText = async () => {
-      const sentence = "ילד אוכל בננה";
-      const result = await analyzeTextWithModel(sentence);
+    // const analyzeText = async () => {
+    //   const sentence = "ילד אוכל בננה";
+    //   const result = await analyzeTextWithModel(sentence);
       
 
-      console.log(result);
-      // console.log(nouns);
-    };
+    //   console.log(result);
+    //   // console.log(nouns);
+    // };
 
-    analyzeText();
+    // analyzeText();
   }, []); // Add dependencies if needed
 
   // const router = useRouter();

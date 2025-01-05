@@ -2,6 +2,7 @@ import axios from "axios";
 import { LostItemRequest } from "@/app/types/request/lostItemRequest";
 import { Category } from "@/app/types/props/category";
 
+
 // get all lost items
 export const getLostItems = async () => {
   try {
@@ -19,7 +20,7 @@ export const getLostItems = async () => {
 export const getLostItemById = async (id: string) => {
   try {
     const response = await axios.get(`/api/lostItem/${id}`);
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch {
     throw new Error("Failed to get lostItem by id");
@@ -34,7 +35,7 @@ export const createLostItem = async (
   try {
     const response = await axios.post("/api/lostItem", {
       ...lostItem,
-      category: currentCategory, 
+      category: currentCategory,
     });
     console.log(response.data.data[0]);
     return response.data.data[0];
@@ -49,8 +50,12 @@ export const updateLostItemById = async (
   lostItem: LostItemRequest
 ) => {
   try {
+    console.log("from update",lostItem);
+    
     const response = await axios.put(`/api/lostItem/${id}`, lostItem);
     return response.data;
+    console.log("from update after",response.data);
+    
   } catch {
     throw new Error("Failed to update lostItem");
   }
@@ -60,6 +65,8 @@ export const updateLostItemById = async (
 export const deleteLostItemById = async (id: string) => {
   try {
     const response = await axios.delete(`/api/lostItem/${id}`);
+    console.log(response);
+    // if(response.data.data.userId===curr)
 
     return response.data;
   } catch {

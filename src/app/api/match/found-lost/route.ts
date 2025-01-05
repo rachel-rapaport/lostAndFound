@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
         const foundSubCategoryTitles = foundItem.subCategoryId?.title
           ? foundItem.subCategoryId.title
               .split(",")
-              .map((title:string) => title.trim())
+              .map((title: string) => title.trim())
           : [];
         console.log("Lost subcategory titles:", lostSubCategoryTitles);
         console.log("Found subcategory titles:", foundSubCategoryTitles);

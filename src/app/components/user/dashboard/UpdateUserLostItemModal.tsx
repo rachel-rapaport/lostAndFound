@@ -3,23 +3,31 @@ import React, { useEffect, useState } from "react";
 import { Types } from "mongoose";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import PublicTransportation from "../form/PublicTransportation";
-import CategoriesSelect from "../form/select/CategoriesSelect";
-import SubCategoriesSelect from "../form/select/SubCategoriesSelect";
-import ColorSelect from "../form/select/ColorSelect";
-import { Circle } from "../../types/props/circle";
-import userStore from "../../store/userStore";
-import { createLostItem } from "../../services/api/lostItemService";
-import lostItemStore from "../../store/lostItemStore";
-import Map from "../form/Map";
+import PublicTransportation from "../../form/PublicTransportation";
+import CategoriesSelect from "../../form/select/CategoriesSelect";
+import SubCategoriesSelect from "../../form/select/SubCategoriesSelect";
+import ColorSelect from "../../form/select/ColorSelect";
+import userStore from "@/app/store/userStore";
+import lostItemStore from "@/app/store/lostItemStore";
+import Map from "../../form/Map";
 import { LostItemSchema } from "@/app/schemas/lostItemSchema";
 import { PublicTransportRequest } from "@/app/types/request/PublicTransportRequest";
 import categoryStore from "@/app/store/categoryStore";
 import axios from "axios";
 import Token from "@/app/types/NER-model/token";
+import { LostItem } from "@/app/types/props/lostItem";
+import { Circle } from "@/app/types/props/circle";
+import {
+  createLostItem,
+  updateLostItemById,
+} from "@/app/services/api/lostItemService";
 
-const LostForm = () => {
-  const [, setSelectedCategory] = useState<string>("");
+const UpdateUserLostItemModal = ({
+  lostItemToEdit,
+}: {
+  lostItemToEdit?: LostItem;
+}) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<
@@ -32,35 +40,32 @@ const LostForm = () => {
     city: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
   const currentCategory = categoryStore((state) => state.currentCategory);
   const currentUser = userStore((state) => state.user);
   const setCurrentLostItem = lostItemStore((state) => state.setCurrentLostItem);
-
-  // useEffect hook to clear errors when fields are updated
-  useEffect(() => {
-    if (selectedColor) {
-      setErrors((prevErrors) => ({ ...prevErrors, colorId: "" }));
-    }
-    if (selectedSubCategory) {
-      setErrors((prevErrors) => ({ ...prevErrors, subCategoryId: "" }));
-    }
-    if (circles.length > 0) {
-      setErrors((prevErrors) => ({ ...prevErrors, circles: "" }));
-    }
-    if (
-      transportData.city != "" &&
-      transportData.line != "" &&
-      transportData.typePublicTransportId != ""
-    ) {
-      setErrors((prevErrors) => ({ ...prevErrors, publicTransport: "" }));
-    }
-  }, [selectedColor, selectedSubCategory, circles, transportData]);
-
   const router = useRouter();
 
-  // Validation function for the lost item form using Zod schema
-  const validateLostItem = () => {
+  const isEditMode = Boolean(lostItemToEdit);
+
+  // Populate form for edit mode
+  useEffect(() => {
+    if (isEditMode && lostItemToEdit) {
+      setSelectedCategory(lostItemToEdit?.subCategoryId?.categoryId?.title);
+      setSelectedSubCategory(lostItemToEdit.subCategoryId.title);
+      setSelectedColor(lostItemToEdit.colorId.name);
+      setCircles(lostItemToEdit.circles || []);
+      setTransportData(
+        (lostItemToEdit.publicTransport || {
+          typePublicTransportId: "",
+          line: "",
+          city: "",
+        }) as PublicTransportRequest
+      );
+    }
+  }, [isEditMode, lostItemToEdit]);
+
+  // Validation function
+  const validateLostItem = (): boolean => {
     try {
       LostItemSchema.parse({
         subCategoryId: selectedSubCategory,
@@ -86,7 +91,10 @@ const LostForm = () => {
     }
   };
 
-  const analyzeTextWithModel = async (sentence: string) => {
+  // Analyze text for category "שונות"
+  const analyzeTextWithModel = async (
+    sentence: string
+  ): Promise<string | null> => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_RAILWAY_URL}/analyze`,
@@ -95,13 +103,11 @@ const LostForm = () => {
         },
         { timeout: 40000 }
       );
+
       const nouns: string = response.data.embeddings[0].tokens
         .filter((token: Token) => token.morph.pos === "NOUN")
         .map((token: Token) => token.lex)
         .join(",");
-      if (nouns == undefined) {
-        return "שונות";
-      }
       return nouns;
     } catch (error) {
       console.error("Error from analyze sending:", error.message);
@@ -112,31 +118,34 @@ const LostForm = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!validateLostItem()) return;
+
     const analyzedSubCategory =
       currentCategory?.title === "שונות"
         ? await analyzeTextWithModel(selectedSubCategory)
         : selectedSubCategory;
+
     const lostItem = {
-      _id: new Types.ObjectId(),
-      subCategoryId: analyzedSubCategory ? analyzedSubCategory : "",
+      _id: isEditMode
+        ? lostItemToEdit?._id ?? new Types.ObjectId() 
+        : new Types.ObjectId(),
+      subCategoryId: analyzedSubCategory || "",
       colorId: selectedColor,
       userId: String(currentUser?._id),
       circles: selectedLocation === "map" ? circles : null,
-      publicTransport:
-        selectedLocation === "transport"
-          ? {
-              typePublicTransportId: transportData.typePublicTransportId,
-              line: transportData.line,
-              city: transportData.city,
-            }
-          : null,
+      publicTransport: selectedLocation === "transport" ? transportData : null,
     };
+
     try {
-      if (!currentCategory) return;
-      const newListItem = await createLostItem(lostItem, currentCategory);
-      setCurrentLostItem(newListItem);
-      router.replace("/foundItems-list");
+      if (isEditMode) {
+        await updateLostItemById(String(lostItem._id), lostItem);
+      } else {
+        if (!currentCategory) return;
+        const newListItem = await createLostItem(lostItem, currentCategory);
+        setCurrentLostItem(newListItem);
+        router.push("/foundItems-list");
+      }
     } catch (error) {
       console.error("Error submitting lost item:", error);
     }
@@ -145,8 +154,11 @@ const LostForm = () => {
   return (
     <div className="h-full overflow-y-auto no-scrollbar">
       <div className="m-4 h-full overflow-y-auto no-scrollbar">
-        <h2 className="text-3xl font-bold text-center mb-4">פריט אבוד</h2>
+        <h2 className="text-3xl font-bold text-center mb-4">
+          {isEditMode ? "עדכון פריט אבוד" : "פריט אבוד"}
+        </h2>
         <form className="space-y-6 text-right" onSubmit={handleSubmit}>
+          {/* Category selection */}
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="w-full lg:w-1/3 space-y-6">
               <div>
@@ -165,13 +177,14 @@ const LostForm = () => {
                 ) : (
                   <>
                     <h3 className="section-title">
-                      הכנס תיאור ענייני של הפריט האבוד:{" "}
+                      הכנס תיאור ענייני של הפריט האבוד:
                     </h3>
                     <input
                       type="text"
-                      placeholder="הכנס תיאור "
+                      placeholder="הכנס תיאור"
                       className="block w-full px-3 py-2 border border-primary rounded-md shadow-sm focus:ring-primary sm:text-sm"
                       onChange={(e) => setSelectedSubCategory(e.target.value)}
+                      value={selectedSubCategory}
                     />
                     {errors.subCategoryId && (
                       <p className="error-message">{errors.subCategoryId}</p>
@@ -188,7 +201,9 @@ const LostForm = () => {
                 )}
               </div>
             </div>
+
             <div className="lg:w-2/3">
+              {/* Location selection */}
               {selectedLocation === null && (
                 <div>
                   <h3 className="section-title">מיקום</h3>
@@ -214,6 +229,7 @@ const LostForm = () => {
                 </div>
               )}
 
+              {/* Transport fields */}
               {selectedLocation === "transport" && (
                 <>
                   <PublicTransportation
@@ -225,6 +241,8 @@ const LostForm = () => {
                   )}
                 </>
               )}
+
+              {/* Map fields */}
               {selectedLocation === "map" && (
                 <>
                   <Map circles={circles} setCircles={setCircles} />
@@ -238,7 +256,7 @@ const LostForm = () => {
 
           <div className="flex flex-col items-center">
             <button type="submit" className="secondary-btn">
-              שלח
+              {isEditMode ? "עדכן" : "שלח"}
             </button>
           </div>
         </form>
@@ -247,4 +265,4 @@ const LostForm = () => {
   );
 };
 
-export default LostForm;
+export default UpdateUserLostItemModal;
