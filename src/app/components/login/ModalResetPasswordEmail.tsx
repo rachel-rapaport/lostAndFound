@@ -3,15 +3,11 @@ import { z } from "zod";
 import { resetPasswordSchema } from "@/app/schemas/loginSchemaZod";
 import { getVercelUrlWithoutRequest } from "@/app/utils/vercelUrl";
 import { sendEmailForResetPassword } from "@/app/utils/sendToUser";
-interface PasswordResetModalProps {
+
+const PasswordResetModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-}
-
-const PasswordResetModal: React.FC<PasswordResetModalProps> = ({
-  isOpen,
-  onClose,
-}) => {
+}> = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
@@ -30,7 +26,7 @@ const PasswordResetModal: React.FC<PasswordResetModalProps> = ({
       if (err instanceof z.ZodError) {
         setError(err.errors.map((e) => e.message).join(", "));
       } else {
-        setError("An unexpected error occurred.");
+        setError("שגיאה לא צפויה");
       }
     }
   };

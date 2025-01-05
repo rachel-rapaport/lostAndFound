@@ -1,7 +1,5 @@
-// Login / sign up form - include forgot password and token
 "use client";
 import { useRouter } from "next/navigation";
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { z } from "zod";
@@ -13,8 +11,6 @@ import { loginSchema, signUpSchema } from "@/app/schemas/loginSchemaZod";
 import PasswordResetModal from "./ModalResetPasswordEmail";
 
 const LoginForm = () => {
-  const router = useRouter();
-
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +24,6 @@ const LoginForm = () => {
   const setUser = userStore((state) => state.setUser);
 
   useEffect(() => {
-
     const clearData = () => {
       setFullName("");
       setEmail("");
@@ -39,6 +34,8 @@ const LoginForm = () => {
 
     clearData();
   }, []);
+
+  const router = useRouter();
 
   // Log in / Sign up
   const toggleForm = () => {
@@ -99,9 +96,9 @@ const LoginForm = () => {
       );
       if (response) {
         setUser(response.data.user.data); // Update the store with user data
-        router.push("/home");
+        router.push("/");
       } else {
-        setError("error");
+        setError("שגיאה");
       }
     } catch (error) {
       handleError(error, "Account creation failed.");
@@ -121,7 +118,7 @@ const LoginForm = () => {
           // The user logged in successfully
           setUser(response.user); // Update the store with user data
           if (router) {
-            router.push("/home");
+            router.push("/");
           }
         } else {
           // The user is logged in already
@@ -130,11 +127,11 @@ const LoginForm = () => {
           }
         }
       } else {
-        setError("Password or email is incorrect");
+        setError("שם משתמש או סיסמא אינם נכונים");
       }
     } catch (error) {
       console.error(error);
-      setError("An error occurred during login");
+      setError("שגיאה לא צפויה");
     }
   };
 
@@ -144,7 +141,7 @@ const LoginForm = () => {
       setError(error.response.data.message || defaultMessage);
       setIsLogin(true);
     } else {
-      setError("An unexpected error occurred. Please try again.");
+      setError("שגיאה לא צפויה, נסה שוב");
     }
   };
 

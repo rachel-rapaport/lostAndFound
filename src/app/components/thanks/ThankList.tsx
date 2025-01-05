@@ -7,9 +7,11 @@ import ThankCard from './ThankCard';
 const ThankList = () => {
     const thankList = useThankStore((state) => state.thankList);
     const setThankList = useThankStore((state) => state.setThankList);
+
     const numOfDisplayedCards = 3;
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    // Effect hook to fetch the list of 'thank' data on component mount
     useEffect(() => {
         const fetchThanks = async () => {
             if (!thankList || thankList.length === 0) {
@@ -21,12 +23,14 @@ const ThankList = () => {
         fetchThanks();
     }, [thankList, setThankList]);
 
+    // Handle clicking the right button to move to the next card(s)
     const handleRightClick = () => {
         if (thankList) {
             setCurrentIndex((currentIndex + 1) % thankList.length);
         }
     };
 
+    // Handle clicking the left button to move to the previous card(s)
     const handleLeftClick = () => {
         if (thankList) {
             setCurrentIndex((currentIndex - 1 + thankList.length) % thankList.length);
@@ -35,7 +39,6 @@ const ThankList = () => {
 
     return (
         <div className="flex justify-between items-center w-full">
-            {/* כפתור שמאלה */}
             <button
                 onClick={handleLeftClick}
                 className="flex justify-center items-center p-2 md:p-4 bg-transparent hover:bg-gray-200 rounded-full transition-all"
@@ -45,7 +48,6 @@ const ThankList = () => {
                 </svg>
             </button>
 
-            {/* הצגת הכרטיסים */}
             <div className="flex gap-6 md:gap-10 justify-center items-center w-full flex-wrap">
                 {thankList && thankList.slice(currentIndex, currentIndex + numOfDisplayedCards)
                     // for circular display
@@ -56,7 +58,6 @@ const ThankList = () => {
                 }
             </div>
 
-            {/* כפתור ימינה */}
             <button
                 onClick={handleRightClick}
                 className="flex justify-center items-center p-2 md:p-4 bg-transparent hover:bg-gray-200 rounded-full transition-all"

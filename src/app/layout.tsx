@@ -13,6 +13,10 @@ const LayoutContent: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <QueryClientProvider client={queryClient}>
+      <head>
+        <link rel="icon" href="/icon.ico" type="image/x-icon" />
+        <title>מציאון</title>
+      </head>
       <body>
         {children}
         <Script src="https://cdn.enable.co.il/licenses/enable-L355685mrln16cfb-0125-67060/init.js"></Script>

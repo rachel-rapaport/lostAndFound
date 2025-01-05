@@ -25,7 +25,8 @@ const RoomList: React.FC<RoomListProps> = ({ setShowChat }) => {
   };
 
   return (
-    <div className="no-scrollbar absolute top-full left-0 z-50   overflow-y-auto bg-white p-6 rounded-lg shadow-lg border-2 border-solid border-secondary">
+    <div className="no-scrollbar absolute top-full left-0 z-50 w-[40vw] sm:w-96 max-h-[400px] overflow-y-auto bg-white p-6 rounded-lg shadow-lg border-2 border-solid border-secondary">
+      {" "}
       <h2 className="text-2xl font-semibold mb-2 text-center text-black">
         צ&apos;אטים
       </h2>

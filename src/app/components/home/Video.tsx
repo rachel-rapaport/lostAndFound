@@ -24,7 +24,7 @@ const Video = () => {
           type="video/mp4"
         />
         הדפדפן שלך אינו תומך בתג וידאו.
-      </video>     
+      </video>
     </div>
   );
 };
