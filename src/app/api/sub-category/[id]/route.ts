@@ -23,51 +23,55 @@ export async function GET(request: NextRequest) {
             )
         }
 
+        if (!await SubCategoryModel.exists({ _id: id })) {
+            return NextResponse.json(
+                { message: `Sub category with id ${id} not found` },
+                { status: 404 }
+            );
+        }
+
         //populate data from nested objects
         const data = await SubCategoryModel.aggregate([
             {
-              $match: { _id: new mongoose.Types.ObjectId(id) },
+                $match: { _id: new mongoose.Types.ObjectId(id) },
             },
             {
-              $lookup: {
-                from: 'categories',
-                localField: 'categoryId',
-                foreignField: '_id',
-                as: 'categoryId',
-              },
+                $lookup: {
+                    from: 'categories',
+                    localField: 'categoryId',
+                    foreignField: '_id',
+                    as: 'categoryId',
+                },
             },
             {
-              $unwind: { path: '$categoryId', preserveNullAndEmptyArrays: true },
+                $unwind: { path: '$categoryId', preserveNullAndEmptyArrays: true },
             },
             {
-              $lookup: {
-                from: 'lostitems',
-                localField: 'lostItems',
-                foreignField: '_id',
-                as: 'lostItems',
-              },
+                $lookup: {
+                    from: 'lostitems',
+                    localField: 'lostItems',
+                    foreignField: '_id',
+                    as: 'lostItems',
+                },
             },
             {
-              $lookup: {
-                from: 'founditems',
-                localField: 'foundItems',
-                foreignField: '_id',
-                as: 'foundItems',
-              },
+                $lookup: {
+                    from: 'founditems',
+                    localField: 'foundItems',
+                    foreignField: '_id',
+                    as: 'foundItems',
+                },
             },
             {
-              $project: {
-                _id: 1,
-                title: 1,
-                categoryId: { _id: '$categoryId._id', title: '$categoryId.title' }, // Ensuring categoryId is an object
-                lostItems: 1,
-                foundItems: 1,
-              },
+                $project: {
+                    _id: 1,
+                    title: 1,
+                    categoryId: { _id: '$categoryId._id', title: '$categoryId.title' }, // Ensuring categoryId is an object
+                    lostItems: 1,
+                    foundItems: 1,
+                },
             },
-          ]);
-          
-          console.log(data);
-          
+        ]);
 
         if (!data) {
             return NextResponse.json(
@@ -75,7 +79,6 @@ export async function GET(request: NextRequest) {
                 { status: 404 }
             );
         }
-
 
         return NextResponse.json(
             { message: "Sub category was successfully fetched", data: data },
@@ -90,6 +93,8 @@ export async function GET(request: NextRequest) {
     }
 }
 
+
+//update category by id
 export async function PUT(request: NextRequest) {
     try {
         await connect();
@@ -128,6 +133,8 @@ export async function PUT(request: NextRequest) {
     }
 }
 
+
+//delete sub category by id
 export async function DELETE(request: NextRequest) {
     try {
         await connect();

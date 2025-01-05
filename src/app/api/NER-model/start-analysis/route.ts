@@ -1,4 +1,3 @@
-// locally great vercel nooooooooo
 import { getVercelUrl } from "@/app/utils/vercelUrl";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
@@ -19,8 +18,6 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json(response.data); // Send the response data back
   } catch (error: unknown) {
-    console.log("Error during analysis:", error); // Detailed logging of the error
-
     return NextResponse.json(
       { error: "Failed to analyze text" },
       { status: 500 }

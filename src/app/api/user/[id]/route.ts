@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
@@ -22,6 +21,14 @@ export async function GET(request: NextRequest) {
         { message: "ID is missing" },
         { status: 400 }
       )
+    }
+
+    if (!await UserModel.exists({ _id: id })) {
+
+      return NextResponse.json(
+        { message: `user with id ${id} not found` },
+        { status: 404 }
+      );
     }
 
     //populate data from nested objects
@@ -142,13 +149,11 @@ export async function DELETE(request: NextRequest) {
 
 
     console.log("in api delete before connect");
-    
+
     await connect();
 
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
-console.log("after exract the id ",id);
-
 
     if (!id) {
       return NextResponse.json(

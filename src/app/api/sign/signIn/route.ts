@@ -3,13 +3,11 @@ import jwt from "jsonwebtoken";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
 import { getVercelUrl } from "@/app/utils/vercelUrl";
-// import { getUserStore } from "@/app/store/userStore";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function POST(request: NextRequest) {
   const vercelUrl = getVercelUrl(request);
-  // const setUser = getUserStore().setUser;
 
   // Add CORS headers
   const origin = request.headers.get("origin");
@@ -74,8 +72,7 @@ export async function POST(request: NextRequest) {
       const isProduction = process.env.NODE_ENV === "production";
       headers.append(
         "Set-Cookie",
-        `token=${token}; Path=/; HttpOnly; SameSite=${
-          isProduction ? "None" : "Lax"
+        `token=${token}; Path=/; HttpOnly; SameSite=${isProduction ? "None" : "Lax"
         }${isProduction ? "; Secure" : ""}`
       );
 

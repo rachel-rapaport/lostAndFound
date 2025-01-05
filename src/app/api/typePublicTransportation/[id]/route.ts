@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to fetch publicTransportation" ,error:error},
+      { message: "Failed to fetch publicTransportation", error: error },
       { status: 200 }
     );
 

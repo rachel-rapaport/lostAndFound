@@ -22,9 +22,7 @@ export async function POST(request: NextRequest) {
             })
 
         if (call) {
-            console.log(`Call SID: ${call.sid}`);
             const callDetails = await client.calls(call.sid).fetch();
-            console.log(`Call Status: ${callDetails.status}`);
             return NextResponse.json(
                 { message: "Call was initiated successfully!", data: callDetails },
                 { status: 201 }
