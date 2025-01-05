@@ -64,7 +64,7 @@ const FoundItemForm = () => {
         .map((token: Token) => token.lex)
         .join(",");
       return nouns;
-    } catch (error) {
+    } catch  {
       return null;
     }
   };
