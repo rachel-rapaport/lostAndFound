@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { LostItem } from "@/app/types/props/lostItem";
-import {
-  deleteLostItemById,
-} from "@/app/services/api/lostItemService";
+import { deleteLostItemById } from "@/app/services/api/lostItemService";
 
 import UpdateUserLostItemModal from "./UpdateUserLostItemModal";
 interface LostItemsProps {
@@ -44,12 +42,11 @@ const LostItemsSection: React.FC<LostItemsProps> = ({
               <div>
                 <h3 className="font-semibold">{item.subCategoryId?.title}</h3>
                 <p className="text-gray-500">צבע: {item.colorId?.name}</p>
-                {item.circles && (
-                  <p className="text-gray-500">
-                    מעגלים: {item.circles.join(", ")}
-                  </p>
+                {item?.circles?.[0]?.center?.lat && (
+                  <p className="text-gray-500">מיקום גאוגרפי</p>
                 )}
-                {item.publicTransport && (
+
+                {item.publicTransport?.typePublicTransportId.title && (
                   <p className="text-gray-500">
                     תחבורה ציבורית:{" "}
                     {item.publicTransport.typePublicTransportId.title}
@@ -77,27 +74,24 @@ const LostItemsSection: React.FC<LostItemsProps> = ({
         <p className="text-gray-500">לא נמצאו פריטים.</p>
       )}
 
-{editingItem && (
-  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
-      {/* Close Button */}
-      <button
-        onClick={() => setEditingItem(null)} // Close modal when clicked
-        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-      >
-        ✖
-      </button>
+      {editingItem && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
+            {/* Close Button */}
+            <button
+              onClick={() => setEditingItem(null)} // Close modal when clicked
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+            >
+              ✖
+            </button>
 
-      {/* LostForm */}
-      <div className="h-[600px] max-h-[90vh] w-[800px] no-scrollbar">
-        <UpdateUserLostItemModal lostItemToEdit={editingItem} />
-      </div>
-    </div>
-  </div>
-)}
-
-
-
+            {/* LostForm */}
+            <div className="h-[600px] max-h-[90vh] w-[800px] no-scrollbar">
+              <UpdateUserLostItemModal lostItemToEdit={editingItem} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
