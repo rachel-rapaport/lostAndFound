@@ -27,7 +27,9 @@ const UpdateUserFoundItem = ({
   const [, setSelectedCategory] = useState<string>("");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
-  const [selectedLocation, setSelectedLocation] = useState<"map" | "transport" | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<
+    "map" | "transport" | null
+  >(null);
   const [transportData, setTransportData] = useState<PublicTransportRequest>({
     typePublicTransportId: "",
     line: "",
@@ -109,106 +111,118 @@ const UpdateUserFoundItem = ({
   };
 
   return (
-    <div className="h-full overflow-y-auto no-scrollbar">
-      <div className="m-4 h-full overflow-y-auto no-scrollbar">
-        <h2 className="text-3xl font-bold text-center mb-4">פריט נמצא</h2>
-        <form className="space-y-6 text-right" onSubmit={handleSubmit}>
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="w-full lg:w-1/3 space-y-6">
-              <div>
-                <h3 className="section-title">קטגוריה</h3>
-                <CategoriesSelect onSelect={setSelectedCategory} />
-              </div>
-              <div>
-                {currentCategory?.title !== "שונות" ? (
-                  <>
-                    <h3 className="section-title">תת-קטגוריה</h3>
-                    <SubCategoriesSelect onSelect={setSelectedSubCategory} />
-                  </>
-                ) : (
-                  <>
-                    <h3 className="section-title">הכנס תיאור ענייני של הפריט האבוד: </h3>
-                    <input
-                      type="text"
-                      placeholder="הכנס תיאור "
-                      className="block w-full px-3 py-2 border border-primary rounded-md shadow-sm focus:ring-primary sm:text-sm"
-                      onChange={(e) => setSelectedSubCategory(e.target.value)}
-                    />
-                  </>
-                )}
-              </div>
-              <div>
-                <h3 className="section-title">צבע</h3>
-                <ColorSelect onSelect={setSelectedColor} />
-              </div>
-            </div>
-            <div className="w-full lg:w-2/3 ">
-              {selectedLocation === null && (
-                <div>
-                  <h3 className="section-title">מיקום</h3>
-                  <div className="flex justify-center gap-16">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedLocation("transport")}
-                      className="primary-btn w-full lg:w-auto"
-                    >
-                      תחבורה ציבורית
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedLocation("map")}
-                      className="primary-btn w-full lg:w-auto"
-                    >
-                      מיקום
-                    </button>
-                  </div>
-                </div>
-              )}
+<div className="h-[600px] max-h-[90vh] w-full no-scrollbar mx-auto px-4 py-6 max-w-screen-xs sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl overflow-hidden bg-white">
+  <h2 className="text-sm sm:text-base md:text-xl lg:text-2xl font-bold text-center mb-3 sm:mb-4">
+    פריט נמצא
+  </h2>
+  <form className="space-y-6 text-right overflow-y-auto h-full" onSubmit={handleSubmit}>
+    <div className="flex flex-col sm:flex-row flex-wrap gap-4">
+      {/* Left Section */}
+      <div className="w-full sm:w-1/3 space-y-4">
+        <div>
+          <h3 className="section-title text-center sm:text-right">
+            קטגוריה
+          </h3>
+          <CategoriesSelect onSelect={setSelectedCategory} />
+        </div>
+        <div>
+          {currentCategory?.title !== "שונות" ? (
+            <>
+              <h3 className="section-title text-center sm:text-right">
+                תת-קטגוריה
+              </h3>
+              <SubCategoriesSelect onSelect={setSelectedSubCategory} />
+            </>
+          ) : (
+            <>
+              <h3 className="section-title text-center sm:text-right">
+                הכנס תיאור ענייני של הפריט האבוד:
+              </h3>
+              <input
+                type="text"
+                placeholder="הכנס תיאור"
+                className="block w-full px-2 py-1 sm:px-3 sm:py-2 border border-primary rounded-md shadow-sm focus:ring-primary text-sm sm:text-base"
+                onChange={(e) => setSelectedSubCategory(e.target.value)}
+              />
+            </>
+          )}
+        </div>
+        <div>
+          <h3 className="section-title text-center sm:text-right">צבע</h3>
+          <ColorSelect onSelect={setSelectedColor} />
+        </div>
+      </div>
 
-              {selectedLocation === "transport" && (
-                <>
-                  <PublicTransportation
-                    transportData={transportData}
-                    setTransportData={setTransportData}
-                  />
-                </>
-              )}
-              {selectedLocation === "map" && (
-                <>
-                  <Location setLocation={setLocation} />
-                </>
-              )}
-              <div className="pt-4">
-                <h3 className="section-title">תאור</h3>
-                <input
-                  type="text"
-                  placeholder="כתוב תיאור קצר על הפריט שמצאת"
-                  value={description}
-                  className="w-full h-9 form-input "
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div>
-              <div className="pt-6">
-                <h3 className="section-title">תמונה</h3>
-                <UploadImage setImage={setImage} />
-              </div>
-              <div className="pt-6">
-                <h3 className="section-title">סימנים</h3>
-                <QuestionsCreator
-                  questions={questions}
-                  setQuestions={setQuestions}
-                />
-              </div>
+      {/* Right Section */}
+      <div className="w-full sm:w-2/3 space-y-4">
+        {selectedLocation === null && (
+          <div>
+            <h3 className="section-title text-center sm:text-right">
+              מיקום
+            </h3>
+            <div className="flex flex-col gap-3 sm:gap-4">
+              <button
+                type="button"
+                onClick={() => setSelectedLocation("transport")}
+                className="primary-btn w-full text-sm sm:text-base"
+              >
+                תחבורה ציבורית
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedLocation("map")}
+                className="primary-btn w-full text-sm sm:text-base"
+              >
+                מיקום
+              </button>
             </div>
           </div>
-          <div className="flex flex-col items-center">
-            <button type="submit" className="secondary-btn">
-              שלח
-            </button>
-          </div>
-        </form>
+        )}
+        {selectedLocation === "transport" && (
+          <PublicTransportation
+            transportData={transportData}
+            setTransportData={setTransportData}
+          />
+        )}
+        {selectedLocation === "map" && (
+          <Location setLocation={setLocation} />
+        )}
+        <div>
+          <h3 className="section-title text-center sm:text-right">תאור</h3>
+          <input
+            type="text"
+            placeholder="כתוב תיאור קצר על הפריט שמצאת"
+            value={description}
+            className="w-full px-2 py-1 sm:px-3 sm:py-2 border border-primary rounded-md shadow-sm focus:ring-primary text-sm sm:text-base"
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div>
+          <h3 className="section-title text-center sm:text-right">תמונה</h3>
+          <UploadImage setImage={setImage} />
+        </div>
+        <div>
+          <h3 className="section-title text-center sm:text-right">
+            סימנים
+          </h3>
+          <QuestionsCreator
+            questions={questions}
+            setQuestions={setQuestions}
+          />
+        </div>
       </div>
     </div>
+    <div className="flex justify-center mt-4 sm:mt-6">
+      <button
+        type="submit"
+        className="secondary-btn w-full sm:w-auto text-sm sm:text-base"
+      >
+        שלח
+      </button>
+    </div>
+  </form>
+</div>
+
   );
 };
 

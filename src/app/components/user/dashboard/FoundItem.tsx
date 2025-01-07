@@ -75,7 +75,7 @@ const FoundItemsSection: React.FC<FoundItemsProps> = ({
 
       {editingItem && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
+          <div className="relative p-6 rounded-lg shadow-lg w-full max-w-4xl">
             {/* Close Button */}
             <button
               onClick={() => setEditingItem(null)} // Close modal when clicked
@@ -85,10 +85,8 @@ const FoundItemsSection: React.FC<FoundItemsProps> = ({
             </button>
 
             {/* FoundForm */}
-            <div className="h-[600px] max-h-[90vh] w-[800px] no-scrollbar">
-              <UpdateUserFoundItem
-                foundItemToEdit={editingItem}
-              ></UpdateUserFoundItem>{" "}
+            <div className="h-[500px] sm:h-[600px] max-h-[90vh] w-full sm:w-[600px] lg:w-[800px] no-scrollbar mx-auto px-4">
+              <UpdateUserFoundItem foundItemToEdit={editingItem} />
             </div>
           </div>
         </div>
