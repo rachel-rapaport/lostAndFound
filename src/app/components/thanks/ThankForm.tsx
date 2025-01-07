@@ -28,7 +28,7 @@ const ThankForm = () => {
             thankSchema.parse(formData);
             setErrors({});
             await createThank({ userName: currentUser?.fullName || "", content: formData.thank });
-            router.push('/home');
+            router.push('/');
         }
         catch (error) {
             if (error instanceof z.ZodError) {
@@ -78,7 +78,7 @@ const ThankForm = () => {
             <button
               type="button"
               className="secondary-btn w-full sm:w-auto"
-              onClick={() => router.push('/home')}
+              onClick={() => router.push('/')}
             >
               מעדיף שלא
             </button>

@@ -23,8 +23,8 @@ export async function middleware(req: NextRequest) {
 
       // If valid and user is on the login page, redirect to home
       if (pathname === "/login") {
-        console.log("Valid token, redirecting to /home");
-        return NextResponse.redirect(new URL("/home", req.url));
+        console.log("Valid token, redirecting to /");
+        return NextResponse.redirect(new URL("/", req.url));
       }
 
       // Check for admin access
@@ -54,8 +54,8 @@ export async function middleware(req: NextRequest) {
     // }
   }
   if (pathname === "/login" && token) {
-    console.log("Token exists, redirecting to /home");
-    return NextResponse.redirect(new URL("/home", req.url));
+    console.log("Token exists, redirecting to /");
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   // Restrict access to admin-only pages
