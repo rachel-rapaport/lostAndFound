@@ -22,8 +22,10 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
 
   const setUser = userStore((state) => state.setUser);
+  const clearUser = userStore((state)=>state.clearUser)
 
   useEffect(() => {
+    clearUser()
     const clearData = () => {
       setFullName("");
       setEmail("");
