@@ -119,14 +119,10 @@ const LoginForm = () => {
         if (response.user) {
           // The user logged in successfully
           setUser(response.user); // Update the store with user data
-          if (router) {
             router.push("/");
-          }
         } else {
           // The user is logged in already
-          if (router) {
             router.push("/");
-          }
         }
       } else {
         setError("שם משתמש או סיסמא אינם נכונים");
