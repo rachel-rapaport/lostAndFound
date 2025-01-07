@@ -44,7 +44,7 @@ const ContactTheAdmin = () => {
         },
       }).then((result) => {
         if (result.isConfirmed) {
-          router.push("/home");
+          router.push("/");
         }
       });
     } catch (error) {
