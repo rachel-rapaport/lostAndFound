@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { BellAlertIcon } from "@heroicons/react/24/solid";
+import React, { useState } from "react";
+import { BellAlertIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import userStore from "@/app/store/userStore";
 import { Alerts } from "./Alerts";
 import { Profile } from "../user/Profile";
@@ -10,34 +10,10 @@ import Link from "next/link";
 const Header: React.FC = () => {
   const [showAlerts, setShowAlerts] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const alerts = userStore((state) => state.alerts);
   const unreadAlertsCount = alerts?.filter((alert) => !alert.read).length || 0;
-
-  const alertsRef = useRef<HTMLLIElement | null>(null);
-  const chatRef = useRef<HTMLLIElement | null>(null);
-
-  // Close alerts and chat when clicking outside of them
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        alertsRef.current &&
-        !alertsRef.current.contains(event.target as Node)
-      ) {
-        setShowAlerts(false);
-      }
-
-      if (chatRef.current && !chatRef.current.contains(event.target as Node)) {
-        setShowChat(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   // Toggle the visibility of the alerts section
   const handleAlertsClick = () => {
@@ -49,60 +25,65 @@ const Header: React.FC = () => {
     setShowChat((prev) => !prev);
   };
 
+  // Toggle the visibility of the menu
+  const handleMenuToggle = () => {
+    setShowMenu((prev) => !prev);
+  };
+
   return (
     <header className="bg-secondary p-6 shadow-md">
-      <div className="container mx-auto flex justify-between items-center flex-wrap">
-        <div className="flex gap-x-6 items-center w-full sm:w-auto justify-between">
-          <nav>
-            <ul className="flex gap-x-6">
-              <li>
-                <Link href="/" className="text-3xl font-bold text-primary">
-                  מציאון
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/"
-                  className="text-white font-bold text-2xl hover:text-gray-300"
-                >
-                  דף הבית
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-white font-bold text-2xl hover:text-gray-300"
-                >
-                  אודות
-                </Link>
-              </li>
-            </ul>
-          </nav>
+      <div className="container mx-auto flex justify-between items-center">
+        {/* Hamburger Menu for small screens */}
+        <div className="lg:hidden flex items-center">
+          <button onClick={handleMenuToggle} className="text-white">
+            {showMenu ? (
+              <XMarkIcon fill="white" className="w-8 h-8 " />
+            ) : (
+              <Bars3Icon fill="white" className="w-8 h-8" />
+            )}
+          </button>
         </div>
 
-        <nav className="flex gap-x-6 items-center w-full sm:w-auto justify-between">
-          <ul className="flex gap-x-6">
-            <li>
-              <Link
-                href="/found-item"
-                className="text-white font-bold text-3xl hover:text-gray-300"
-              >
-                מציאה
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/lost-item"
-                className="text-white font-bold text-3xl hover:text-gray-300"
-              >
-                אבידה
-              </Link>
-            </li>
-          </ul>
+        {/* Logo */}
+        <div className="flex">
+          <Link href="/" className="text-3xl font-bold text-primary">
+            מציאון
+          </Link>
+          <div className="hidden lg:flex gap-x-6 items-center mr-6">
+            <Link
+              href="/"
+              className="text-white font-bold text-2xl hover:text-gray-300"
+            >
+              דף הבית
+            </Link>
+            <Link
+              href="/about"
+              className="text-white font-bold text-2xl hover:text-gray-300"
+            >
+              אודות
+            </Link>
+          </div>
+        </div>
+
+        {/* Menu for large screens */}
+        <nav className="hidden lg:flex gap-x-6 items-center">
+          <Link
+            href="/found-item"
+            className="text-white font-bold text-4xl hover:text-gray-300 "
+          >
+            מציאה
+          </Link>
+          <Link
+            href="/lost-item"
+            className="text-white font-bold text-4xl hover:text-gray-300"
+          >
+            אבידה
+          </Link>
         </nav>
 
-        <div className="flex gap-x-6 items-center w-full sm:w-auto justify-between">
-          <li ref={chatRef} className="relative">
+        {/* Actions (chat, alerts, profile) */}
+        <div className="flex gap-x-1 sm:gap-x-2 sm:items-end items-center">
+          <li className="relative">
             <div className="cursor-pointer" onClick={handleChatClick}>
               <ChatBubbleOvalLeftEllipsisIcon
                 fill="white"
@@ -111,8 +92,7 @@ const Header: React.FC = () => {
             </div>
             {showChat && <RoomList setShowChat={setShowChat} />}
           </li>
-
-          <li ref={alertsRef} className="relative">
+          <li className="relative">
             <div className="cursor-pointer" onClick={handleAlertsClick}>
               <BellAlertIcon fill="white" className="w-10 h-10 ml-2" />
               {unreadAlertsCount > 0 && (
@@ -123,12 +103,41 @@ const Header: React.FC = () => {
             </div>
             {showAlerts && <Alerts />}
           </li>
-
           <li>
             <Profile />
           </li>
         </div>
       </div>
+
+      {/* Dropdown menu for small screens */}
+      {showMenu && (
+        <nav className="lg:hidden mt-4 bg-secondary p-4 rounded shadow-md">
+          <Link
+            href="/"
+            className="block text-white font-bold text-2xl hover:text-gray-300"
+          >
+            דף הבית
+          </Link>
+          <Link
+            href="/about"
+            className="block text-white font-bold text-2xl hover:text-gray-300"
+          >
+            אודות
+          </Link>
+          <Link
+            href="/found-item"
+            className="block text-white font-bold text-2xl hover:text-gray-300"
+          >
+            מציאה
+          </Link>
+          <Link
+            href="/lost-item"
+            className="block text-white font-bold text-2xl hover:text-gray-300"
+          >
+            אבידה
+          </Link>
+        </nav>
+      )}
     </header>
   );
 };
