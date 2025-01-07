@@ -12,18 +12,12 @@ import { getFoundItemById } from "@/app/services/api/foundItemsService";
 const ShowQuestions = (props: { id: string }) => {
   const { id } = props;
 
-  const [shuffledQuestions, setShuffledQuestions] = useState<
-    { question: string; answers: string[] }[] | null
-  >(null);
-  const [formData, setFormData] = useState<z.infer<typeof answerSchema>>({
-    answers: [],
-  });
+  const [shuffledQuestions, setShuffledQuestions] = useState<{ question: string; answers: string[] }[] | null>(null);
+  const [formData, setFormData] = useState<z.infer<typeof answerSchema>>({ answers: [], });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const currentFoundItem = useFoundItemStore((state) => state.currentFoundItem);
-  const setCurrentFoundItem = useFoundItemStore(
-    (state) => state.setCurrentFoundItem
-  );
+  const setCurrentFoundItem = useFoundItemStore((state) => state.setCurrentFoundItem);
 
   useEffect(() => {
     const fetchFoundItem = async () => {
@@ -32,6 +26,7 @@ const ShowQuestions = (props: { id: string }) => {
         setCurrentFoundItem(response.data[0]);
       }
     };
+    // In case the user reached the component through a link sent to them and not through the initial process
     if (!currentFoundItem) {
       fetchFoundItem();
     }
@@ -53,7 +48,6 @@ const ShowQuestions = (props: { id: string }) => {
 
   const router = useRouter();
 
-  //change form change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -70,7 +64,6 @@ const ShowQuestions = (props: { id: string }) => {
     }));
   };
 
-  //submit the form
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -95,9 +88,10 @@ const ShowQuestions = (props: { id: string }) => {
   };
 
   return (
-    <div className="flex flex-col max-w-4xl w-full mx-auto px-4">
+    <div className="flex flex-col w-full">
+      {/* <div className="flex flex-col max-w-4xl w-full mx-auto px-4"> */}
       <strong className="font-semibold pb-12 text-center">
-        ענה על הסימנים הבאים:{" "}
+        ענה על הסימנים הבאים:
       </strong>
       <form onSubmit={handleSubmit}>
         {shuffledQuestions &&
@@ -144,7 +138,7 @@ const ShowQuestions = (props: { id: string }) => {
             </div>
           ))}
         {errors.answers && <p className="error-message">{errors.answers}</p>}
-        <div className="flex flex-col sm:flex-row justify-between my-20 space-y-4 sm:space-y-0">
+        <div className="flex flex-col gap-x-5 w-full sm:flex-row justify-between my-20 space-y-4 sm:space-y-0">
           <NotMineButton />
           <button
             type="submit"

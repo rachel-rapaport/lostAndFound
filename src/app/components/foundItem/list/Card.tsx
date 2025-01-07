@@ -1,11 +1,15 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
+import useFoundItemStore from "@/app/store/foundItemStore";
 
 const Card: React.FC<{ counter: number; id: string }> = ({ counter, id }) => {
   const router = useRouter();
+  const getFilteredFoundItemById=useFoundItemStore((state)=>state.getFilteredFoundItemById);
+  const setCurrentFoundItem=useFoundItemStore((state)=>state.setCurrentFoundItem);
 
   const handleClick = () => {
+    setCurrentFoundItem(getFilteredFoundItemById(id));
     router.push(`/questions/${id}`);
   };
 
