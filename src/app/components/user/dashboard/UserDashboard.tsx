@@ -10,6 +10,7 @@ import { FoundItem } from "@/app/types/props/foundItem";
 import { LostItem } from "@/app/types/props/lostItem";
 import LostItemsSection from "./LostItem";
 import FoundItemsSection from "./FoundItem";
+import { useRouter } from "next/navigation";
 
 const UserDashboard: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +19,8 @@ const UserDashboard: React.FC = () => {
   const [, setLoading] = useState(true);
   const currentUser = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
+
+  const router = useRouter();
 
   // fetching user data
   useEffect(() => {
@@ -116,6 +119,21 @@ const UserDashboard: React.FC = () => {
               עריכת הפרטים האישיים
             </button>
           </div>
+
+          {currentUser?.email === "lostandfound.assistance@gmail.com" ? (
+            <div className="mt-4 flex justify-center sm:justify-start">
+              <button
+                className="secondary-btn"
+                onClick={() => {
+                  router.push("/admin");
+                }}
+              >
+                ניהול האתר
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className="col-span-2 space-y-6">
