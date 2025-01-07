@@ -125,7 +125,7 @@ const LoginForm = () => {
         } else {
           // The user is logged in already
           if (router) {
-            router.push("/home");
+            router.push("/");
           }
         }
       } else {
