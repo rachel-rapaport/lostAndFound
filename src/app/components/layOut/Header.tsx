@@ -18,13 +18,13 @@ const Header: React.FC = () => {
   // Toggle the visibility of the alerts section
   const handleAlertsClick = () => {
     setShowAlerts((prev) => !prev);
-    setShowChat((prev) => !prev);
+    setShowChat(false);
   };
 
   // Toggle the visibility of the chat section
   const handleChatClick = () => {
     setShowChat((prev) => !prev);
-    setShowAlerts((prev) => !prev);
+    setShowAlerts(false);
   };
 
   // Toggle the visibility of the menu
