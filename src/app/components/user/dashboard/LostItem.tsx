@@ -76,7 +76,7 @@ const LostItemsSection: React.FC<LostItemsProps> = ({
 
       {editingItem && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
+          <div className="relative bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-lg sm:max-w-xl md:max-w-3xl lg:max-w-4xl">
             {/* Close Button */}
             <button
               onClick={() => setEditingItem(null)} // Close modal when clicked
@@ -86,7 +86,7 @@ const LostItemsSection: React.FC<LostItemsProps> = ({
             </button>
 
             {/* LostForm */}
-            <div className="h-[600px] max-h-[90vh] w-[800px] no-scrollbar">
+            <div className="h-auto max-h-[90vh] w-full no-scrollbar overflow-y-auto">
               <UpdateUserLostItemModal lostItemToEdit={editingItem} />
             </div>
           </div>
