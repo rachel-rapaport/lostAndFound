@@ -17,6 +17,7 @@ import { PublicTransportRequest } from "@/app/types/request/PublicTransportReque
 import categoryStore from "@/app/store/categoryStore";
 import axios from "axios";
 import Token from "@/app/types/NER-model/token";
+import { Oval } from "react-loader-spinner";
 
 const LostForm = () => {
   const [, setSelectedCategory] = useState<string>("");
@@ -31,6 +32,7 @@ const LostForm = () => {
     line: "",
     city: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const currentCategory = categoryStore((state) => state.currentCategory);
@@ -134,6 +136,8 @@ const LostForm = () => {
     };
     try {
       if (!currentCategory) return;
+      setIsLoading(true);
+      setTimeout(() => setIsLoading(false), 3000);
       const newListItem = await createLostItem(lostItem, currentCategory);
       setCurrentLostItem(newListItem);
       router.replace("/foundItems-list");
@@ -237,8 +241,24 @@ const LostForm = () => {
           </div>
 
           <div className="flex flex-col items-center">
-            <button type="submit" className="secondary-btn">
-              שלח
+            <button
+              type="submit"
+              className="secondary-btn flex items-center justify-center"
+            >
+              {isLoading ? (
+                <Oval
+                  height={30}
+                  width={30}
+                  color="#FADB3F"
+                  visible={true}
+                  ariaLabel="oval-loading"
+                  secondaryColor="#FADB3F"
+                  strokeWidth={5}
+                  strokeWidthSecondary={5}
+                />
+              ) : (
+                "שלח"
+              )}
             </button>
           </div>
         </form>

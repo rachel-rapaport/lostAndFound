@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Token from "@/app/types/NER-model/token";
 import categoryStore from "@/app/store/categoryStore";
+import { Oval } from "react-loader-spinner";
 
 const FoundItemForm = () => {
   const [, setSelectedCategory] = useState<string>("");
@@ -40,6 +41,7 @@ const FoundItemForm = () => {
   ]);
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const setCurrentFoundItem = useFoundItemStore(
     (state) => state.setCurrentFoundItem
@@ -64,7 +66,7 @@ const FoundItemForm = () => {
         .map((token: Token) => token.lex)
         .join(",");
       return nouns;
-    } catch  {
+    } catch {
       return null;
     }
   };
@@ -96,6 +98,8 @@ const FoundItemForm = () => {
       questions: questions,
     };
     try {
+      setIsLoading(true);
+      setTimeout(() => setIsLoading(false), 3000);
       const newFoundItem = await createFoundItem(foundItem, currentCategory);
       setCurrentFoundItem(newFoundItem.data[0]);
       router.push("/found-item-after");
@@ -199,9 +203,25 @@ const FoundItemForm = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center">
-            <button type="submit" className="secondary-btn">
-              שלח
+          <div className="flex flex-col items-center justify-center">
+            <button
+              type="submit"
+              className="secondary-btn flex items-center justify-center"
+            >
+              {isLoading ? (
+                <Oval
+                  height={30}
+                  width={30}
+                  color="#FADB3F"
+                  visible={true}
+                  ariaLabel="oval-loading"
+                  secondaryColor="#FADB3F"
+                  strokeWidth={5}
+                  strokeWidthSecondary={5}
+                />
+              ) : (
+                "שלח"
+              )}
             </button>
           </div>
         </form>
