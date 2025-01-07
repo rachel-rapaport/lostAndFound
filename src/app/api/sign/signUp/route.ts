@@ -1,8 +1,8 @@
+import bcrypt from 'bcrypt';
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
-import axios from "axios";
 import { getVercelUrl } from "@/app/utils/vercelUrl";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -35,11 +35,12 @@ export async function POST(request: NextRequest) {
 
   try {
     const { fullName, email, password, phone } = await request.json();
-    console.log("in sign up ");
+    const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     console.log("Payload being sent:", {
       fullName,
       email,
-      password,
+      password: hashedPassword,
       phone,
     });
 
@@ -54,15 +55,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await axios.post(`${baseUrl}/api/user`, {
+    const user = await UserModel.create({
       fullName,
       email,
-      password,
+      password: hashedPassword,
       phone,
     });
-    const user = await response.data;
 
-    const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
+    const token = jwt.sign({ email, hashedPassword }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
 

@@ -22,7 +22,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
 
   const setUser = userStore((state) => state.setUser);
-  const clearUser = userStore((state)=>state.clearUser)
+  const clearUser = userStore((state) => state.clearUser)
 
   useEffect(() => {
     clearUser()
@@ -97,7 +97,7 @@ const LoginForm = () => {
         signUpData.password
       );
       if (response) {
-        setUser(response.data.user.data); // Update the store with user data
+        setUser(response.data.user); // Update the store with user data
         router.push("/");
       } else {
         setError("שגיאה");
@@ -119,10 +119,10 @@ const LoginForm = () => {
         if (response.user) {
           // The user logged in successfully
           setUser(response.user); // Update the store with user data
-            router.push("/");
+          router.push("/");
         } else {
           // The user is logged in already
-            router.push("/");
+          router.push("/");
         }
       } else {
         setError("שם משתמש או סיסמא אינם נכונים");
@@ -149,21 +149,19 @@ const LoginForm = () => {
         {/* Toggle buttons */}
         <button
           onClick={toggleForm}
-          className={`px-8 py-3 text-2xl font-semibold mb-4 md:mb-0 ${
-            isLogin
-              ? "bg-[#FADB3F] text-white rounded-t-lg"
-              : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
-          }`}
+          className={`px-8 py-3 text-2xl font-semibold mb-4 md:mb-0 ${isLogin
+            ? "bg-[#FADB3F] text-white rounded-t-lg"
+            : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
+            }`}
         >
           התחברות
         </button>
         <button
           onClick={toggleForm}
-          className={`px-8 py-3 text-2xl font-semibold ${
-            !isLogin
-              ? "bg-[#FADB3F] text-white rounded-t-lg"
-              : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
-          }`}
+          className={`px-8 py-3 text-2xl font-semibold ${!isLogin
+            ? "bg-[#FADB3F] text-white rounded-t-lg"
+            : "bg-transparent text-[#FADB3F] border-b-4 border-[#FADB3F]"
+            }`}
         >
           הרשמה
         </button>

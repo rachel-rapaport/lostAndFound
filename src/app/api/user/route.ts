@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/app/lib/db/mongo";
 import UserModel from "@/app/lib/models/user";
+import bcrypt from "bcrypt";
 
 //get all users
 export async function GET() {
@@ -75,6 +76,16 @@ export async function POST(req: NextRequest) {
     await connect();
 
     const body = await req.json();
+
+    if (!body.password) {
+      return NextResponse.json(
+        { message: "Password is required" },
+        { status: 400 }
+      );
+    }
+
+    const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10);
+    body.password = await bcrypt.hash(body.password, saltRounds);
     const newUser = await UserModel.create(body);
 
     return NextResponse.json(
