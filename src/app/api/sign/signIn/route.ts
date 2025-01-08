@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import connect from "@/app/lib/db/mongo";
@@ -62,7 +63,8 @@ export async function POST(request: NextRequest) {
   const user = await UserModel.findOne({ email });
 
   if (user) {
-    if (email === user.email && password === user.password) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (email === user.email && isPasswordValid) {
       const token = jwt.sign({ email, id: user._id }, process.env.JWT_SECRET!, {
         expiresIn: "1h",
       });
